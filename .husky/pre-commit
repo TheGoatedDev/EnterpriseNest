@@ -1,1 +1,2 @@
-pnpm lint-staged
+echo "Running lint-staged..."
+pnpm dlx lint-staged
