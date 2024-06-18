@@ -1,5 +1,8 @@
 import { All, Controller, HttpCode } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
+import { CheckHealthDto } from '@/application/health/v1/queries/check-health/check-health.dto';
+import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 
 @ApiTags('Health')
 @Controller({
@@ -10,13 +13,18 @@ export class V1CheckHealthController {
     @ApiOperation({
         summary: 'Health Check',
     })
-    @ApiResponse({
-        status: 200,
-        description: 'The Health Check is successful',
-        type: 'OK',
-    })
+    @ApiStandardisedResponse(
+        {
+            status: 200,
+            description: 'The Health Check is successful',
+        },
+        CheckHealthDto,
+    )
     @HttpCode(200)
-    healthCheck() {
-        return 'OK';
+    healthCheck(): CheckHealthDto {
+        return {
+            message: 'OK',
+            serverTime: new Date(),
+        };
     }
 }

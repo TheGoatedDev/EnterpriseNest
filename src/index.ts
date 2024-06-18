@@ -7,6 +7,7 @@ import { Logger as PinoLogger } from 'nestjs-pino';
 
 import { AppModule } from '@/application/app.module';
 import { MainConfigService } from '@/application/config/configs/main-config.service';
+import { StandardHttpResponseInterceptor } from '@/shared/interceptors/standard-http-response.interceptor';
 
 const bootstrap = async () => {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -21,6 +22,7 @@ const bootstrap = async () => {
     const mainConfig = app.get(MainConfigService);
 
     app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalInterceptors(new StandardHttpResponseInterceptor());
     app.useLogger(app.get(PinoLogger));
 
     app.use(helmet());
@@ -29,20 +31,16 @@ const bootstrap = async () => {
     app.enableShutdownHooks();
 
     const config = new DocumentBuilder()
-        .setTitle('Journal API')
+        .setTitle('EnterpriseNest API')
 
         .setExternalDoc('Postman Collection', '/openapi-json')
         .setVersion('1.0')
-
-        .addSecurity('apiKey', {
-            'x-tokenName': 'x-api-key',
-            in: 'header',
-            type: 'apiKey',
-            name: 'x-api-key',
-        })
         .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('openapi', app, document);
+
+    if (mainConfig.NODE_ENV !== 'production') {
+        SwaggerModule.setup('openapi', app, document);
+    }
 
     await app
         .listen(mainConfig.PORT)
