@@ -76,6 +76,14 @@ module.exports = {
                 '@typescript-eslint/no-extraneous-class': 'off',
             },
         },
+        {
+            files: ['generators/**/*'],
+            rules: {
+                'prefer-named-capture-group': 'off',
+                'import/no-default-export': 'off'
+            },
+
+        }
     ],
 
     ignorePatterns: [
