@@ -4,12 +4,14 @@
   "version": "1.0.0",
   "description": "A Enterprise-Level API Framework based on NestJS, built for scaleability, best-practise and robustness. Based on DDD, Onion, Clean and Hexagonal Architecture.",
   "scripts": {
-    "prepare": "husky",
-    "preinstall": "syncpack fix-mismatches",
+    "prepare": "husky || true",
+    "preinstall": "syncpack fix-mismatches || true",
     "------ DEVELOPMENT  ------": "",
     "dev": "tsup --watch",
     "build": "NODE_ENV=production tsup",
     "start": "node dist/index.js",
+    "------ GENERATION  ------": "",
+    "generate": "turbo gen -c generators/config.ts",
     "------ TESTING  ------": "",
     "test": "echo \"Error: no test specified\" && exit 1",
     "------ LINTING  ------": "",
@@ -24,7 +26,9 @@
     "------ MISC  ------": "",
     "clean": "rm -rf dist",
     "------ CI  ------": "",
-    "ci": "npm run lint && npm run typecheck && npm run test"
+    "ci": "npm run lint && npm run typecheck && npm run test",
+    "------ Docker ------": "",
+    "docker:build": "docker build -t enterprise-nest ."
   },
   "keywords": [],
   "author": "TheGoatedDev",
@@ -51,6 +55,8 @@
     "supertest": "7.0.0",
     "syncpack": "12.3.2",
     "tsup": "8.1.0",
+    "turbo": "2.0.4",
+    "@turbo/gen": "2.0.4",
     "typescript": "5.4.5"
   },
   "dependencies": {
@@ -65,7 +71,9 @@
     "helmet": "7.1.0",
     "nestjs-pino": "4.1.0",
     "pino": "9.2.0",
+    "pino-pretty": "11.2.1",
     "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.1"
+    "rxjs": "7.8.1",
+    "zod": "3.23.8"
   }
 }

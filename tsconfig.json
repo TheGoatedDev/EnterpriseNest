@@ -24,7 +24,8 @@
     }
   },
   "include": ["src",
-    "tests"
+    "tests",
+    "generators"
   ],
   "exclude": ["node_modules", "dist", "coverage"]
 }
