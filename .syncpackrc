@@ -1,0 +1,20 @@
+{
+  "$schema": "https://unpkg.com/syncpack@11.2.1/dist/schema.json",
+  "versionGroups": [
+    {
+      "dependencies": ["@types/**"],
+      "dependencyTypes": ["!dev"],
+      "isBanned": true,
+      "label": "@types packages should only be under devDependencies"
+    }
+  ],
+    "semverGroups": [
+        {
+            "label": "Use only Exact Versions for packages",
+            "dependencies": ["**"],
+            "dependencyTypes": ["dev", "prod"],
+            "range": "",
+            "packages": ["**"]
+        }
+    ]
+}
