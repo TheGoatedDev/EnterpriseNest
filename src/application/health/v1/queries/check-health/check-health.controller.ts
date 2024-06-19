@@ -1,4 +1,4 @@
-import { All, Controller, HttpCode } from '@nestjs/common';
+import { All, Controller, HttpCode, Logger } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CheckHealthDto } from '@/application/health/v1/queries/check-health/check-health.dto';
@@ -9,6 +9,8 @@ import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-res
     version: '1',
 })
 export class V1CheckHealthController {
+    private readonly logger = new Logger(V1CheckHealthController.name);
+
     @All('/health')
     @ApiOperation({
         summary: 'Health Check',
@@ -22,6 +24,8 @@ export class V1CheckHealthController {
     )
     @HttpCode(200)
     healthCheck(): CheckHealthDto {
+        this.logger.log('Health Check is successful');
+
         return {
             message: 'OK',
             serverTime: new Date(),
