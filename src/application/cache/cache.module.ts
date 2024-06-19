@@ -19,6 +19,8 @@ import { RedisConfigService } from '@/application/config/configs/redis-config.se
             ) => {
                 const logger = new Logger('CacheModule');
 
+                logger.log('Configuring CacheModule');
+
                 if (!cacheConfig.useRedis) {
                     logger.warn('Using memory server for CacheModule');
 
