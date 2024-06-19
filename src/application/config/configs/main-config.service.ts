@@ -16,4 +16,8 @@ export class MainConfigService {
     get PORT(): Config['PORT'] {
         return this.configService.get('PORT');
     }
+
+    get APP_NAME(): Config['APP_NAME'] {
+        return this.configService.get('APP_NAME');
+    }
 }

@@ -34,7 +34,7 @@ const bootstrap = async () => {
     app.useLogger(app.get(PinoLogger));
 
     // Express Middleware
-    app.use(helmet());
+    app.use(helmet()); // Helmet is a collection of 14 smaller middleware functions that set security-related HTTP headers
 
     // Enabling NestJS features
     app.enableCors();
@@ -43,7 +43,7 @@ const bootstrap = async () => {
 
     // Swagger/OpenAPI Setup
     const config = new DocumentBuilder()
-        .setTitle('EnterpriseNest API')
+        .setTitle(`${mainConfig.APP_NAME} API`)
         .setExternalDoc('Postman Collection', '/openapi-json')
         .setVersion('1.0')
         .build();

@@ -15,4 +15,11 @@ export class CheckHealthDto {
         example: new Date(),
     })
     serverTime!: Date;
+
+    @Expose()
+    @ApiProperty({
+        description: 'The application name of the health check',
+        example: 'EnterpriseNest',
+    })
+    appName!: string;
 }

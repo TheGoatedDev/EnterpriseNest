@@ -1,6 +1,7 @@
 import { All, Controller, HttpCode, Logger } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+import { MainConfigService } from '@/application/config/configs/main-config.service';
 import { CheckHealthDto } from '@/application/health/v1/queries/check-health/check-health.dto';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 
@@ -10,6 +11,8 @@ import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-res
 })
 export class V1CheckHealthController {
     private readonly logger = new Logger(V1CheckHealthController.name);
+
+    constructor(private readonly mainConfig: MainConfigService) {}
 
     @All('/health')
     @ApiOperation({
@@ -29,6 +32,7 @@ export class V1CheckHealthController {
         return {
             message: 'OK',
             serverTime: new Date(),
+            appName: this.mainConfig.APP_NAME,
         };
     }
 }

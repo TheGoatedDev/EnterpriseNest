@@ -5,6 +5,7 @@ import { OpenTelemetryModule } from 'nestjs-otel';
 import { LoggerModule } from 'nestjs-pino';
 import PinoPretty from 'pino-pretty';
 
+import { CacheModule } from '@/application/cache/cache.module';
 import { ConfigModule } from '@/application/config/config.module';
 import { MainConfigService } from '@/application/config/configs/main-config.service';
 import { HealthModule } from '@/application/health/health.module';
@@ -58,6 +59,7 @@ import { HealthModule } from '@/application/health/health.module';
         }),
 
         ConfigModule,
+        CacheModule,
         HealthModule,
     ],
     controllers: [],
