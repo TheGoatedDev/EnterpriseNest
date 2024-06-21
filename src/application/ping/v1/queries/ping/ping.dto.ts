@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
-export class CheckHealthDto {
+export class PingDto {
     @Expose()
     @ApiProperty({
         description: 'The message of the health check',

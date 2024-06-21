@@ -12,6 +12,7 @@ import { RedisConfigService } from '@/application/config/configs/redis-config.se
         NestConfigModule.forRoot({
             cache: true,
             validate: (config) => ConfigSchema.parse(config),
+            envFilePath: ['.env', '.env.local'],
         }),
     ],
     controllers: [],

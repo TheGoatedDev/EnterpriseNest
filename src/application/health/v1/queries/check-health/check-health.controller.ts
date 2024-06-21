@@ -1,9 +1,11 @@
-import { All, Controller, HttpCode, Logger } from '@nestjs/common';
+import { Controller, Get, HttpCode, Logger } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-
-import { MainConfigService } from '@/application/config/configs/main-config.service';
-import { CheckHealthDto } from '@/application/health/v1/queries/check-health/check-health.dto';
-import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
+import {
+    DiskHealthIndicator,
+    HealthCheck,
+    HealthCheckService,
+    HttpHealthIndicator,
+} from '@nestjs/terminus';
 
 @ApiTags('Health')
 @Controller({
@@ -12,27 +14,28 @@ import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-res
 export class V1CheckHealthController {
     private readonly logger = new Logger(V1CheckHealthController.name);
 
-    constructor(private readonly mainConfig: MainConfigService) {}
+    constructor(
+        private readonly health: HealthCheckService,
+        private readonly http: HttpHealthIndicator,
+        private readonly disk: DiskHealthIndicator,
+    ) {}
 
-    @All('/health')
+    @Get('/health')
     @ApiOperation({
         summary: 'Health Check',
     })
-    @ApiStandardisedResponse(
-        {
-            status: 200,
-            description: 'The Health Check is successful',
-        },
-        CheckHealthDto,
-    )
+    @HealthCheck()
     @HttpCode(200)
-    healthCheck(): CheckHealthDto {
-        this.logger.log('Health Check is successful');
+    healthCheck() {
+        this.logger.log('Checking health');
 
-        return {
-            message: 'OK',
-            serverTime: new Date(),
-            appName: this.mainConfig.APP_NAME,
-        };
+        return this.health.check([
+            () => this.http.pingCheck('internet', 'https://google.com'),
+            () =>
+                this.disk.checkStorage('storage', {
+                    path: '/',
+                    thresholdPercent: 0.5,
+                }),
+        ]);
     }
 }
