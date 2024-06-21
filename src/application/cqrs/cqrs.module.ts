@@ -62,8 +62,6 @@ export class CqrsModule implements OnModuleDestroy, OnModuleInit {
     }
 
     onModuleInit() {
-        this.logger.log('CQRS module initializing');
-
         if (this.subscriber) {
             this.logger.log('Using custom subscriber for CQRS events');
             this.subscriber.bridgeEventsTo(this.eventBus.subject$);
@@ -73,8 +71,6 @@ export class CqrsModule implements OnModuleDestroy, OnModuleInit {
             this.logger.log('Using custom publisher for CQRS events');
             this.eventBus.publisher = this.publisher;
         }
-
-        this.logger.log('CQRS module initialized');
     }
 
     onModuleDestroy() {
