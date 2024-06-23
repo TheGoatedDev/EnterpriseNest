@@ -5,12 +5,14 @@ import { OpenTelemetryModule } from 'nestjs-otel';
 
 import { CacheModule } from '@/application/cache/cache.module';
 import { ConfigModule } from '@/application/config/config.module';
+import { CqrsModule } from '@/application/cqrs/cqrs.module';
 import { HealthModule } from '@/application/health/health.module';
 import { LoggerModule } from '@/application/logger/logger.module';
 import { PingModule } from '@/application/ping/ping.module';
 
 @Module({
     imports: [
+        CqrsModule,
         LoggerModule,
         ScheduleModule.forRoot(),
         OpenTelemetryModule.forRoot({
