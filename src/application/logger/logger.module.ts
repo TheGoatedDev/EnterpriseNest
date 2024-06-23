@@ -36,7 +36,7 @@ import { MainConfigService } from '@/application/config/configs/main-config.serv
                                   target: 'pino-pretty',
 
                                   options: {
-                                      ignore: 'context,hostname,pid,res,req',
+                                      ignore: 'context,hostname,pid,res,req,spanId,traceId',
                                       messageFormat: '{context} - {msg}',
                                   } as PinoPretty.PrettyOptions,
                               }

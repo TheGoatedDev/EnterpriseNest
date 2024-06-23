@@ -20,8 +20,19 @@ export class RedisPublisher implements IEventPublisher, OnModuleInit {
             lazyConnect: true,
         });
 
+        // On Connect
         this.client.on('connect', () => {
             this.logger.log('Connected to Redis');
+        });
+
+        // On Error
+        this.client.on('error', (error) => {
+            this.logger.error('Redis error', error);
+        });
+
+        // On Disconnect
+        this.client.on('disconnect', () => {
+            this.logger.log('Disconnected from Redis');
         });
     }
 

@@ -1,4 +1,12 @@
-import { Inject, Injectable, Logger, OnModuleInit, Type } from '@nestjs/common';
+import {
+    Inject,
+    Injectable,
+    Logger,
+    OnModuleDestroy,
+    OnModuleInit,
+    Optional,
+    Type,
+} from '@nestjs/common';
 import { IEvent, IMessageSource } from '@nestjs/cqrs';
 import Redis from 'ioredis';
 import { Subject } from 'rxjs';
@@ -7,7 +15,9 @@ import { RedisConfigService } from '@/application/config/configs/redis-config.se
 import { EVENTS } from '@/application/cqrs/cqrs.module-type';
 
 @Injectable()
-export class RedisSubscriber implements IMessageSource, OnModuleInit {
+export class RedisSubscriber
+    implements IMessageSource, OnModuleInit, OnModuleDestroy
+{
     private readonly client: Redis;
 
     private readonly logger = new Logger(RedisSubscriber.name);
@@ -16,7 +26,7 @@ export class RedisSubscriber implements IMessageSource, OnModuleInit {
 
     constructor(
         private readonly redisConfig: RedisConfigService,
-        @Inject(EVENTS) private readonly events: Type[],
+        @Inject(EVENTS) @Optional() private readonly events: Type[] = [],
     ) {
         this.client = new Redis({
             host: this.redisConfig.host,
@@ -27,8 +37,19 @@ export class RedisSubscriber implements IMessageSource, OnModuleInit {
             lazyConnect: true,
         });
 
+        // On Connect
         this.client.on('connect', () => {
             this.logger.log('Connected to Redis');
+        });
+
+        // On Error
+        this.client.on('error', (error) => {
+            this.logger.error('Redis error', error);
+        });
+
+        // On Disconnect
+        this.client.on('disconnect', () => {
+            this.logger.log('Disconnected from Redis');
         });
     }
 
@@ -58,6 +79,11 @@ export class RedisSubscriber implements IMessageSource, OnModuleInit {
         this.client.on('error', (error) => {
             this.logger.error('Redis error', error);
         });
+    }
+
+    async onModuleDestroy() {
+        await this.client.unsubscribe('eventBus');
+        await this.client.quit();
     }
 
     bridgeEventsTo<T extends IEvent>(subject: Subject<T>) {

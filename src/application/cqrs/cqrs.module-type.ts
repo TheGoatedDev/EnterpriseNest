@@ -1,10 +1,8 @@
 import { Type } from '@nestjs/common';
-import { IEventPublisher, IMessageSource } from '@nestjs/cqrs';
 
 export interface CqrsModuleType {
-    events?: Type[];
-    publisher?: IEventPublisher;
-    subscriber?: IMessageSource;
+    publisher?: Type;
+    subscriber?: Type;
 }
 
 export const EVENTS = Symbol('EVENTS');
