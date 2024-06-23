@@ -10,5 +10,6 @@ export class PingRanHandler implements IEventHandler<PingRanEvent> {
 
     handle(event: PingRanEvent) {
         this.logger.log('PingRanEvent handled successfully');
+        return void 0;
     }
 }
