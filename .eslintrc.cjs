@@ -83,6 +83,15 @@ module.exports = {
                 'import/no-default-export': 'off'
             },
 
+        },
+
+        // Tests
+        {
+            files: ['**/*.test.ts', '**/*.spec.ts'],
+            rules: {
+                "@typescript-eslint/no-unsafe-assignment": "warn",
+            },
+
         }
     ],
 

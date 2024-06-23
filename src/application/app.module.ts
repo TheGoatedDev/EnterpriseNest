@@ -1,36 +1,45 @@
-import { Module } from '@nestjs/common';
-import { LoggerModule } from 'nestjs-pino';
-import PinoPretty from 'pino-pretty';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import { APP_INTERCEPTOR, Reflector } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
+import { OpenTelemetryModule } from 'nestjs-otel';
 
+import { CacheModule } from '@/application/cache/cache.module';
 import { ConfigModule } from '@/application/config/config.module';
-import { MainConfigService } from '@/application/config/configs/main-config.service';
+import { CqrsModule } from '@/application/cqrs/cqrs.module';
 import { HealthModule } from '@/application/health/health.module';
+import { LoggerModule } from '@/application/logger/logger.module';
+import { PingModule } from '@/application/ping/ping.module';
 
 @Module({
     imports: [
-        ConfigModule,
-        LoggerModule.forRootAsync({
-            inject: [MainConfigService],
-            useFactory: (config: MainConfigService) => ({
-                pinoHttp: {
-                    level: config.NODE_ENV !== 'production' ? 'trace' : 'info',
-                    transport:
-                        config.NODE_ENV === 'development'
-                            ? {
-                                  target: 'pino-pretty',
-
-                                  options: {
-                                      ignore: 'pid,hostname,context,dd,req,res',
-                                      messageFormat: '{context} - {msg}',
-                                  } as PinoPretty.PrettyOptions,
-                              }
-                            : undefined,
+        CqrsModule,
+        LoggerModule,
+        ScheduleModule.forRoot(),
+        OpenTelemetryModule.forRoot({
+            metrics: {
+                hostMetrics: true,
+                apiMetrics: {
+                    enable: true,
                 },
-            }),
+            },
         }),
+
+        ConfigModule,
+        CacheModule,
         HealthModule,
+        PingModule,
     ],
     controllers: [],
-    providers: [],
+    providers: [
+        {
+            provide: APP_INTERCEPTOR,
+            inject: [Reflector],
+            useFactory: (reflector: Reflector) =>
+                new ClassSerializerInterceptor(reflector, {
+                    enableImplicitConversion: true,
+                    excludeExtraneousValues: true,
+                }),
+        },
+    ],
 })
 export class AppModule {}
