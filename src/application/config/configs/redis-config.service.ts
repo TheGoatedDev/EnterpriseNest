@@ -10,7 +10,7 @@ export class RedisConfigService {
     ) {}
 
     get url() {
-        return `redis://${this.username}:${this.password}@${this.host}:${this.port}/${this.db}`;
+        return `redis://${this.username}:${this.password}@${this.host}:${this.port.toString()}/${this.db.toString()}`;
     }
 
     get host() {

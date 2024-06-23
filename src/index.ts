@@ -57,9 +57,11 @@ const bootstrap = async () => {
     await app
         .listen(mainConfig.PORT)
         .then(() => {
-            logger.log(`Application is running on port ${mainConfig.PORT}`);
+            logger.log(
+                `Application is running on port ${mainConfig.PORT.toString()}`,
+            );
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
             logger.error(error);
 
             process.exit(1);
