@@ -1,4 +1,4 @@
-import { All, Controller, HttpCode, Logger } from '@nestjs/common';
+import { Controller, Get, HttpCode, Logger } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -19,14 +19,14 @@ export class V1PingController {
         private readonly eventBus: EventBus,
     ) {}
 
-    @All('/ping')
+    @Get('/ping')
     @ApiOperation({
         summary: 'Ping',
     })
     @ApiStandardisedResponse(
         {
             status: 200,
-            description: 'The Health Check is successful',
+            description: 'The Ping is successful',
         },
         PingDto,
     )

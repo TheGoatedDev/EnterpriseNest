@@ -12,8 +12,6 @@ import { Subject, takeUntil } from 'rxjs';
     exports: [BaseCqrsModule],
 })
 export class CqrsModule implements OnModuleDestroy, OnModuleInit {
-    private readonly logger = new Logger(CqrsModule.name);
-
     private destroy$ = new Subject<void>();
 
     private readonly eventLogger = new Logger('EventBus');
