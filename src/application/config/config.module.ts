@@ -2,7 +2,9 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 
 import { ConfigSchema } from '@/application/config/config-schema';
+import { CacheConfigService } from '@/application/config/configs/cache-config.service';
 import { MainConfigService } from '@/application/config/configs/main-config.service';
+import { RedisConfigService } from '@/application/config/configs/redis-config.service';
 
 @Global()
 @Module({
@@ -10,10 +12,11 @@ import { MainConfigService } from '@/application/config/configs/main-config.serv
         NestConfigModule.forRoot({
             cache: true,
             validate: (config) => ConfigSchema.parse(config),
+            envFilePath: ['.env', '.env.local'],
         }),
     ],
     controllers: [],
-    providers: [MainConfigService],
-    exports: [MainConfigService],
+    providers: [MainConfigService, RedisConfigService, CacheConfigService],
+    exports: [MainConfigService, RedisConfigService, CacheConfigService],
 })
 export class ConfigModule {}
