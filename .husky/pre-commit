@@ -1,2 +1,3 @@
 echo "Running lint-staged..."
-pnpm dlx lint-staged
+npx lint-staged
+npm run test
