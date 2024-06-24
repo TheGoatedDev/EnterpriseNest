@@ -38,6 +38,9 @@ importers:
       '@nestjs/terminus':
         specifier: 10.2.3
         version: 10.2.3(@grpc/grpc-js@1.10.9)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.0.2(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.2)(rxjs@7.8.1))(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9(@grpc/grpc-js@1.10.9)(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9)(cache-manager@5.6.1)(ioredis@5.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/throttler':
+        specifier: ^5.2.0
+        version: 5.2.0(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)
       '@opentelemetry/api':
         specifier: 1.9.0
         version: 1.9.0
@@ -86,6 +89,9 @@ importers:
       nestjs-pino:
         specifier: 4.1.0
         version: 4.1.0(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(pino-http@10.1.0)
+      nestjs-throttler-storage-redis:
+        specifier: ^0.4.4
+        version: 0.4.4(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/throttler@5.2.0(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2))(ioredis@5.4.1)(reflect-metadata@0.2.2)
       pino:
         specifier: 9.2.0
         version: 9.2.0
@@ -881,6 +887,13 @@ packages:
         optional: true
       '@nestjs/platform-express':
         optional: true
+
+  '@nestjs/throttler@5.2.0':
+    resolution: {integrity: sha512-G/G/MV3xf6sy1DwmnJsgeL+d2tQ/xGRNa9ZhZjm9Kyxp+3+ylGzwJtcnhWlN82PMEp3TiDQpTt+9waOIg/bpPg==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+      reflect-metadata: ^0.1.13 || ^0.2.0
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
     resolution: {integrity: sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg==}
@@ -4053,6 +4066,15 @@ packages:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       pino-http: ^6.4.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
 
+  nestjs-throttler-storage-redis@0.4.4:
+    resolution: {integrity: sha512-QLYfsat/qutHQaTn3QAoa79WEHG4Uyk8rWRqNhVCVxzQ+qdzaNBUlBwxb8MYhfCmgoCA+eX3Paws8FZI/bYe7A==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@nestjs/throttler': '>=5.0.0'
+      ioredis: '>=5.0.0'
+      reflect-metadata: ^0.2.1
+
   netmask@2.0.2:
     resolution: {integrity: sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==}
     engines: {node: '>= 0.4.0'}
@@ -6053,6 +6075,12 @@ snapshots:
     optionalDependencies:
       '@nestjs/microservices': 10.3.9(@grpc/grpc-js@1.10.9)(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9)(cache-manager@5.6.1)(ioredis@5.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/platform-express': 10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9)
+
+  '@nestjs/throttler@5.2.0(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)':
+    dependencies:
+      '@nestjs/common': 10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core': 10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      reflect-metadata: 0.2.2
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
     dependencies:
@@ -9951,6 +9979,14 @@ snapshots:
     dependencies:
       '@nestjs/common': 10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       pino-http: 10.1.0
+
+  nestjs-throttler-storage-redis@0.4.4(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/throttler@5.2.0(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2))(ioredis@5.4.1)(reflect-metadata@0.2.2):
+    dependencies:
+      '@nestjs/common': 10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core': 10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/throttler': 5.2.0(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)
+      ioredis: 5.4.1
+      reflect-metadata: 0.2.2
 
   netmask@2.0.2: {}
 

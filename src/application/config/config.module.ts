@@ -5,6 +5,7 @@ import { ConfigSchema } from '@/application/config/config-schema';
 import { CacheConfigService } from '@/application/config/configs/cache-config.service';
 import { MainConfigService } from '@/application/config/configs/main-config.service';
 import { RedisConfigService } from '@/application/config/configs/redis-config.service';
+import { ThrottlerConfigService } from '@/application/config/configs/throttler-config.service';
 
 @Global()
 @Module({
@@ -16,7 +17,17 @@ import { RedisConfigService } from '@/application/config/configs/redis-config.se
         }),
     ],
     controllers: [],
-    providers: [MainConfigService, RedisConfigService, CacheConfigService],
-    exports: [MainConfigService, RedisConfigService, CacheConfigService],
+    providers: [
+        MainConfigService,
+        RedisConfigService,
+        CacheConfigService,
+        ThrottlerConfigService,
+    ],
+    exports: [
+        MainConfigService,
+        RedisConfigService,
+        CacheConfigService,
+        ThrottlerConfigService,
+    ],
 })
 export class ConfigModule {}

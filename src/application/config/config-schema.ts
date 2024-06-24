@@ -20,6 +20,11 @@ export const ConfigSchema = z.object({
     // Cache
     CACHE_TTL_MS: StringToNumber.default(60000),
     CACHE_USE_REDIS: z.enum(['true', 'false']).default('false'),
+
+    // Throttler / Rate Limiter
+    THROTTLER_DEFAULT_TTL_MS: StringToNumber.default(60000),
+    THROTTLER_DEFAULT_LIMIT: StringToNumber.default(100),
+    THROTTLER_USE_REDIS: z.enum(['true', 'false']).default('false'),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;
