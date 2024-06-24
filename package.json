@@ -81,6 +81,7 @@
     "@opentelemetry/resources": "1.25.1",
     "@opentelemetry/sdk-node": "0.52.1",
     "@opentelemetry/semantic-conventions": "1.25.1",
+    "@paralleldrive/cuid2": "^2.2.2",
     "axios": "1.7.2",
     "cache-manager-redis-yet": "5.1.2",
     "class-transformer": "0.5.1",
