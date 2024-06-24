@@ -36,6 +36,7 @@
   "author": "TheGoatedDev",
   "license": "MIT",
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@nestjs/testing": "10.3.9",
     "@swc/jest": "0.2.36",
     "@turbo/gen": "2.0.4",

@@ -14,10 +14,13 @@ import { ThrottlerModule } from '@/application/throttler/throttler.module';
 
 @Module({
     imports: [
-        CqrsModule,
-        LoggerModule,
-        ThrottlerModule,
-        ScheduleModule.forRoot(),
+        // System Modules
+        CqrsModule, // CQRS Module for Command Query Responsibility Segregation
+        ConfigModule, // Configuration Module
+        CacheModule, // Cache Module
+        LoggerModule, // Logger Module
+        ThrottlerModule, // Throttler Module
+        ScheduleModule.forRoot(), // Schedule Module for Cron Jobs
         OpenTelemetryModule.forRoot({
             metrics: {
                 hostMetrics: true,
@@ -25,14 +28,12 @@ import { ThrottlerModule } from '@/application/throttler/throttler.module';
                     enable: true,
                 },
             },
-        }),
+        }), // OpenTelemetry Module for Tracing
 
-        ConfigModule,
-        CacheModule,
+        // Application Modules
         HealthModule,
         PingModule,
     ],
-    controllers: [],
     providers: [
         {
             provide: APP_GUARD,
