@@ -4,13 +4,16 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { OpenTelemetryModule } from 'nestjs-otel';
 
-import { CacheModule } from '@/application/cache/cache.module';
-import { ConfigModule } from '@/application/config/config.module';
-import { CqrsModule } from '@/application/cqrs/cqrs.module';
-import { HealthModule } from '@/application/health/health.module';
-import { LoggerModule } from '@/application/logger/logger.module';
-import { PingModule } from '@/application/ping/ping.module';
-import { ThrottlerModule } from '@/application/throttler/throttler.module';
+import { AuthenticationModule } from '@/application/modules/authentication/authentication.module';
+import { PingModule } from '@/application/modules/ping/ping.module';
+import { UserModule } from '@/application/modules/user/user.module';
+import { CacheModule } from '@/application/system/cache/cache.module';
+import { ConfigModule } from '@/application/system/config/config.module';
+import { CqrsModule } from '@/application/system/cqrs/cqrs.module';
+import { HealthModule } from '@/application/system/health/health.module';
+import { LoggerModule } from '@/application/system/logger/logger.module';
+import { RepositoriesModule } from '@/application/system/repositories/repositories.module';
+import { ThrottlerModule } from '@/application/system/throttler/throttler.module';
 
 @Module({
     imports: [
@@ -20,6 +23,7 @@ import { ThrottlerModule } from '@/application/throttler/throttler.module';
         CacheModule, // Cache Module
         LoggerModule, // Logger Module
         ThrottlerModule, // Throttler Module
+        RepositoriesModule, // Repositories Module
         ScheduleModule.forRoot(), // Schedule Module for Cron Jobs
         OpenTelemetryModule.forRoot({
             metrics: {
@@ -33,6 +37,8 @@ import { ThrottlerModule } from '@/application/throttler/throttler.module';
         // Application Modules
         HealthModule,
         PingModule,
+        AuthenticationModule,
+        UserModule,
     ],
     providers: [
         {
