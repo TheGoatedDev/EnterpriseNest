@@ -1,4 +1,4 @@
-import { Entity } from '@/core/ddd/base-entity';
+import { Entity } from '@/core/base/entity/entity.base';
 import { GenericAlreadyExistsException } from '@/core/exceptions/already-exists.exception';
 import { GenericNotFoundException } from '@/core/exceptions/not-found.exception';
 import { RepositoryPort } from '@/core/ports/repository.port';

@@ -1,4 +1,7 @@
-import { DomainPrimitive, ValueObject } from '@/core/ddd/base-value-object';
+import {
+    DomainPrimitive,
+    ValueObject,
+} from '@/core/base/value-object/value-object.base';
 
 class TestValueObject extends ValueObject<string> {
     protected validate(props: DomainPrimitive<string>): void {

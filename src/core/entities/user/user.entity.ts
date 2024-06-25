@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { createId } from '@paralleldrive/cuid2';
 import { Expose } from 'class-transformer';
 
-import { CreateEntityProps, Entity } from '@/core/ddd/base-entity';
+import { CreateEntityProps, Entity } from '@/core/base/entity/entity.base';
 import { OnUserChangedEmailEvent } from '@/core/entities/user/events/on-user-changed-email.event';
 import { OnUserChangedFirstNameEvent } from '@/core/entities/user/events/on-user-changed-first-name.event';
 import { OnUserChangedLastNameEvent } from '@/core/entities/user/events/on-user-changed-last-name.event';

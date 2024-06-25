@@ -1,7 +1,7 @@
 import { createId } from '@paralleldrive/cuid2';
 
 import { AbstractMockRepository } from '@/core/abstracts/mock-repository/mock.repository';
-import { Entity } from '@/core/ddd/base-entity';
+import { Entity } from '@/core/base/entity/entity.base';
 import { GenericAlreadyExistsException } from '@/core/exceptions/already-exists.exception';
 import { GenericNotFoundException } from '@/core/exceptions/not-found.exception';
 

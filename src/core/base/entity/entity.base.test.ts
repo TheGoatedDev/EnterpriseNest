@@ -1,7 +1,7 @@
-import type { CreateEntityProps } from './base-entity';
-import { Entity } from './base-entity';
-import type { DomainPrimitive } from './base-value-object';
-import { ValueObject } from './base-value-object';
+import type { DomainPrimitive } from '../value-object/value-object.base';
+import { ValueObject } from '../value-object/value-object.base';
+import type { CreateEntityProps } from './entity.base';
+import { Entity } from './entity.base';
 
 interface Person {
     name: string;

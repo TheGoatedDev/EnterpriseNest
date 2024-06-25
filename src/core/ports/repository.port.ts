@@ -1,4 +1,4 @@
-import { Entity } from '@/core/ddd/base-entity';
+import { Entity } from '@/core/base/entity/entity.base';
 
 /**
  * RepositoryPort for managing database operations for a particular Entity type.
