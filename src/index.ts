@@ -4,11 +4,12 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import compression from 'compression';
 import helmet from 'helmet';
 import { Logger as PinoLogger } from 'nestjs-pino';
 
 import { AppModule } from '@/application/app.module';
-import { MainConfigService } from '@/application/config/configs/main-config.service';
+import { MainConfigService } from '@/application/system/config/configs/main-config.service';
 import { StandardHttpResponseInterceptor } from '@/shared/interceptors/standard-http-response.interceptor';
 import { otelSDK } from '@/shared/utilities/tracing';
 
@@ -36,6 +37,17 @@ const bootstrap = async () => {
     // Express Middleware
     app.use(helmet()); // Helmet is a collection of 14 smaller middleware functions that set security-related HTTP headers
 
+    // Proxy Specific Setup
+    if (mainConfig.BEHIND_PROXY) {
+        logger.warn('Application is behind a proxy');
+
+        // Trusting the proxy
+        app.set('trust proxy', true);
+
+        // Enabling compression
+        app.use(compression({}));
+    }
+
     // Enabling NestJS features
     app.enableCors();
     app.enableVersioning();
@@ -46,6 +58,9 @@ const bootstrap = async () => {
         .setTitle(`${mainConfig.APP_NAME} API`)
         .setExternalDoc('Postman Collection', '/openapi-json')
         .setVersion('1.0')
+        .addBearerAuth(undefined, 'access-token')
+        .addBearerAuth(undefined, 'refresh-token')
+        .addSecurityRequirements('access-token')
         .build();
     const document = SwaggerModule.createDocument(app, config);
 
