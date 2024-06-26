@@ -17,8 +17,7 @@ import { OnUserChangedFirstNameEvent } from '@/application/modules/user/events/o
 import { OnUserChangedLastNameEvent } from '@/application/modules/user/events/on-user-changed-last-name.event';
 import { OnUserChangedPasswordEvent } from '@/application/modules/user/events/on-user-changed-password.event';
 import { OnUserChangedRoleEvent } from '@/application/modules/user/events/on-user-changed-role.event';
-import { OnUserCreatedEvent } from '@/application/modules/user/events/on-user-created.event';
-import { CreateEntityProps, Entity } from '@/core/base/entity/entity.base';
+import { Entity } from '@/core/base/entity/entity.base';
 import { GenericInternalValidationException } from '@/core/exceptions/internal-validation.exception';
 
 export const CreateUserMock = (): User =>
@@ -37,11 +36,6 @@ export class User extends Entity<UserProps> {
         };
 
         return new User({ id, data });
-    }
-
-    constructor(props: CreateEntityProps<UserProps>) {
-        super(props);
-        this.apply(new OnUserCreatedEvent(this));
     }
 
     @Expose()

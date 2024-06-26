@@ -94,6 +94,7 @@
     "class-validator": "0.14.1",
     "compression": "^1.7.4",
     "dotenv": "16.4.5",
+    "generate-password": "^1.7.1",
     "hash-wasm": "^4.11.0",
     "helmet": "7.1.0",
     "ioredis": "5.4.1",
