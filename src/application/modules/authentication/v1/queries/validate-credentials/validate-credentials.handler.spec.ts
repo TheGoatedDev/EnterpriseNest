@@ -3,19 +3,17 @@ import { JwtModule } from '@nestjs/jwt';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 
+import { AuthenticationNoEmailMatchException } from '@/application/modules/authentication/exceptions/no-email-match.exception';
+import { AuthenticationPasswordIncorrectException } from '@/application/modules/authentication/exceptions/password-incorrect.exception';
+import { User } from '@/application/modules/user/entity/user.entity';
+import { UserRepositoryPort } from '@/application/modules/user/ports/user-repository.port';
+import { USER_REPOSITORY } from '@/application/modules/user/user.constants';
 import { MockRepositoriesModule } from '@/application/system/repositories/mock-repositories.module';
-import { UserRepositoryPort } from '@/core/entities/user/ports/user-repository.port';
-import { USER_REPOSITORY } from '@/core/entities/user/user.constants';
-import { User } from '@/core/entities/user/user.entity';
-import {
-    UserNoEmailMatchException,
-    UserPasswordIncorrectException,
-} from '@/core/entities/user/user.errors';
 import { HashingService } from '@/core/services/hashing/hashing.service';
 
 import { V1FindUserByEmailQueryHandler } from '../../../../user/v1/queries/find-user-by-email/find-user-by-email.handler';
-import { V1ValidateUserQueryHandler } from './validate-user.handler';
-import { V1ValidateUserQuery } from './validate-user.query';
+import { V1ValidateCredentialsQueryHandler } from './validate-credentials.handler';
+import { V1ValidateCredentialsQuery } from './validate-credentials.query';
 
 describe('validateUserQueryHandler', () => {
     let mockUserRepository: UserRepositoryPort;
@@ -32,7 +30,7 @@ describe('validateUserQueryHandler', () => {
                 MockRepositoriesModule,
             ],
             providers: [
-                V1ValidateUserQueryHandler,
+                V1ValidateCredentialsQueryHandler,
                 HashingService,
                 V1FindUserByEmailQueryHandler,
             ],
@@ -54,9 +52,9 @@ describe('validateUserQueryHandler', () => {
     });
 
     it('should find user by authenticating', async () => {
-        const result = await V1ValidateUserQueryHandler.runHandler(
+        const result = await V1ValidateCredentialsQueryHandler.runHandler(
             queryBus,
-            new V1ValidateUserQuery(testUser.email, 'password'),
+            new V1ValidateCredentialsQuery(testUser.email, 'password'),
         );
 
         expect(result).toEqual(testUser);
@@ -64,19 +62,19 @@ describe('validateUserQueryHandler', () => {
 
     it('should throw error if the email dont match', async () => {
         await expect(
-            V1ValidateUserQueryHandler.runHandler(
+            V1ValidateCredentialsQueryHandler.runHandler(
                 queryBus,
-                new V1ValidateUserQuery('non-found', 'password'),
+                new V1ValidateCredentialsQuery('non-found', 'password'),
             ),
-        ).rejects.toThrow(UserNoEmailMatchException);
+        ).rejects.toThrow(AuthenticationNoEmailMatchException);
     });
 
     it('should throw error if the password dont match', async () => {
         await expect(
-            V1ValidateUserQueryHandler.runHandler(
+            V1ValidateCredentialsQueryHandler.runHandler(
                 queryBus,
-                new V1ValidateUserQuery(testUser.email, 'incorrect'),
+                new V1ValidateCredentialsQuery(testUser.email, 'incorrect'),
             ),
-        ).rejects.toThrow(UserPasswordIncorrectException);
+        ).rejects.toThrow(AuthenticationPasswordIncorrectException);
     });
 });

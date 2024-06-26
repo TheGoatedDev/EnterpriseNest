@@ -5,9 +5,14 @@ import { JwtService } from '@nestjs/jwt';
 
 import { V1LoginCommand } from './login.command';
 
+interface V1LoginCommandHandlerResponse {
+    accessToken: string;
+    refreshToken: string;
+}
+
 @CommandHandler(V1LoginCommand)
 export class V1LoginCommandHandler
-    implements ICommandHandler<V1LoginCommand, string>
+    implements ICommandHandler<V1LoginCommand, V1LoginCommandHandlerResponse>
 {
     private readonly logger = new Logger(V1LoginCommandHandler.name);
 
@@ -16,13 +21,16 @@ export class V1LoginCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1LoginCommand,
-    ): Promise<string> {
-        return bus.execute<V1LoginCommand, string>(
+    ): Promise<{
+        accessToken: string;
+        refreshToken: string;
+    }> {
+        return bus.execute<V1LoginCommand, V1LoginCommandHandlerResponse>(
             new V1LoginCommand(command.user, command.ip),
         );
     }
 
-    xecute(command: V1LoginCommand): Promise<string> {
+    execute(command: V1LoginCommand): Promise<V1LoginCommandHandlerResponse> {
         this.logger.log(
             `User ${command.user.id} has logged in with IP ${command.ip ?? 'unknown'}`,
         );
@@ -32,11 +40,18 @@ export class V1LoginCommandHandler
         //     new V1CreateSessionCommand(command.user, command.ip),
         // );
 
-        // return this.jwtService.sign({
-        //     sub: command.user.id,
-        //     email: command.user.email,
-        // });
+        const accessToken = this.jwtService.sign(
+            {
+                sub: command.user.id,
+            },
+            {
+                expiresIn: '24h',
+            },
+        );
 
-        return '';
+        return Promise.resolve({
+            accessToken,
+            refreshToken: 'refresh-token',
+        });
     }
 }

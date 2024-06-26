@@ -1,5 +1,5 @@
-import type { User } from '../user.entity';
-import type { UserRoleEnum } from '../user-role.enum';
+import type { User } from '../entity/user.entity';
+import type { UserRoleEnum } from '../entity/user-role.enum';
 
 export class OnUserChangedRoleEvent {
     constructor(

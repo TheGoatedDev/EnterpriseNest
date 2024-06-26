@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
+import { User } from '@/application/modules/user/entity/user.entity';
+import { UserRepositoryPort } from '@/application/modules/user/ports/user-repository.port';
 import { AbstractMockRepository } from '@/core/abstracts/mock-repository/mock.repository';
-import { UserRepositoryPort } from '@/core/entities/user/ports/user-repository.port';
-import { User } from '@/core/entities/user/user.entity';
 import { GenericAlreadyExistsException } from '@/core/exceptions/already-exists.exception';
 import { GenericNotFoundException } from '@/core/exceptions/not-found.exception';
 import { HashingService } from '@/core/services/hashing/hashing.service';

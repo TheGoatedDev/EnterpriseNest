@@ -1,4 +1,4 @@
-import type { User } from '../user.entity';
+import type { User } from '../entity/user.entity';
 
 export class OnUserChangedLastNameEvent {
     constructor(
