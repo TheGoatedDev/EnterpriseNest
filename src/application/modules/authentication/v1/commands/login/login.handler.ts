@@ -22,7 +22,7 @@ export class V1LoginCommandHandler
         );
     }
 
-    execute(command: V1LoginCommand): Promise<string> {
+    xecute(command: V1LoginCommand): Promise<string> {
         this.logger.log(
             `User ${command.user.id} has logged in with IP ${command.ip ?? 'unknown'}`,
         );
