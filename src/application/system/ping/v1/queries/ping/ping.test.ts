@@ -3,8 +3,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 
-import { V1PingController } from '@/application/modules/ping/v1/queries/ping/ping.controller';
 import { MainConfigService } from '@/application/system/config/configs/main-config.service';
+import { V1PingController } from '@/application/system/ping/v1/queries/ping/ping.controller';
 
 describe('pingController (e2e)', () => {
     let app: NestExpressApplication;

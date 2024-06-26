@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
-import { PingRanEvent } from '@/application/modules/ping/events/ping-ran.event';
+import { PingRanEvent } from '@/application/system/ping/events/ping-ran.event';
 
 @Injectable()
 @EventsHandler(PingRanEvent)

@@ -9,6 +9,7 @@ import { CommandBus, EventBus } from '@nestjs/cqrs';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 
+import { Public } from '@/application/modules/authentication/decorator/public.decorator';
 import { OnLoginUserEvent } from '@/application/modules/authentication/events/on-login-user.event';
 import { LocalAuthGuard } from '@/application/modules/authentication/strategies/local/local.guard';
 import { V1LoginCommandHandler } from '@/application/modules/authentication/v1/commands/login/login.handler';
@@ -28,7 +29,8 @@ export class V1LoginController {
         private readonly eventBus: EventBus,
     ) {}
 
-    // Throttle the login endpoint to prevent brute force attacks (10 Requests per 30 minutes)
+    @Public()
+    // Throttle the login endpoint to prevent brute force attacks (5 Requests per 1 minute)
     @Throttle({
         default: {
             limit: 5,

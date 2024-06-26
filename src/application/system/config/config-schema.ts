@@ -26,6 +26,11 @@ export const ConfigSchema = z.object({
     THROTTLER_DEFAULT_TTL_MS: StringToNumber.default(60000),
     THROTTLER_DEFAULT_LIMIT: StringToNumber.default(100),
     THROTTLER_USE_REDIS: z.enum(['true', 'false']).default('false'),
+
+    // Authentication
+    AUTH_JWT_SECRET: z.string(),
+    AUTH_ACCESS_TOKEN_EXPIRATION: z.string().default('1h'),
+    AUTH_REFRESH_TOKEN_EXPIRATION: z.string().default('7d'),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;

@@ -2,9 +2,10 @@ import { Controller, Get, HttpCode, Logger } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { PingRanEvent } from '@/application/modules/ping/events/ping-ran.event';
-import { PingDto } from '@/application/modules/ping/v1/queries/ping/ping.dto';
+import { Public } from '@/application/modules/authentication/decorator/public.decorator';
 import { MainConfigService } from '@/application/system/config/configs/main-config.service';
+import { PingRanEvent } from '@/application/system/ping/events/ping-ran.event';
+import { PingResponseDto } from '@/application/system/ping/v1/queries/ping/dto/ping.response.dto';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 
 @ApiTags('Ping')
@@ -19,6 +20,7 @@ export class V1PingController {
         private readonly eventBus: EventBus,
     ) {}
 
+    @Public()
     @Get('/ping')
     @ApiOperation({
         summary: 'Ping',
@@ -28,10 +30,10 @@ export class V1PingController {
             status: 200,
             description: 'The Ping is successful',
         },
-        PingDto,
+        PingResponseDto,
     )
     @HttpCode(200)
-    healthCheck(): PingDto {
+    healthCheck(): PingResponseDto {
         this.logger.log('Health Check is successful');
 
         this.eventBus.publish(new PingRanEvent());

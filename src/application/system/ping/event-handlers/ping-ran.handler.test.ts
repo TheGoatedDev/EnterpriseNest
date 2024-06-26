@@ -2,8 +2,8 @@
 import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { PingRanHandler } from '@/application/modules/ping/event-handlers/ping-ran.handler';
-import { PingRanEvent } from '@/application/modules/ping/events/ping-ran.event';
+import { PingRanHandler } from '@/application/system/ping/event-handlers/ping-ran.handler';
+import { PingRanEvent } from '@/application/system/ping/events/ping-ran.event';
 
 describe('pingRanHandler', () => {
     let handler: PingRanHandler;

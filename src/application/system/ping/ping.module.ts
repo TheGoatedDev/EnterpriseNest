@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { PingRanHandler } from '@/application/modules/ping/event-handlers/ping-ran.handler';
-import { V1PingModule } from '@/application/modules/ping/v1/v1-ping.module';
+import { PingRanHandler } from '@/application/system/ping/event-handlers/ping-ran.handler';
+import { V1PingModule } from '@/application/system/ping/v1/v1-ping.module';
 
 const EventHandlers = [PingRanHandler];
 

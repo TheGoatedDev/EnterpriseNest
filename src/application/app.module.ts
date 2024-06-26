@@ -1,11 +1,11 @@
-import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR, Reflector } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { OpenTelemetryModule } from 'nestjs-otel';
 
 import { AuthenticationModule } from '@/application/modules/authentication/authentication.module';
-import { PingModule } from '@/application/modules/ping/ping.module';
+import { AccessTokenGuard } from '@/application/modules/authentication/strategies/access-token/access-token.guard';
 import { UserModule } from '@/application/modules/user/user.module';
 import { CacheModule } from '@/application/system/cache/cache.module';
 import { ConfigModule } from '@/application/system/config/config.module';
@@ -13,8 +13,10 @@ import { CqrsModule } from '@/application/system/cqrs/cqrs.module';
 import { HealthModule } from '@/application/system/health/health.module';
 import { JwtModule } from '@/application/system/jwt/jwt.module';
 import { LoggerModule } from '@/application/system/logger/logger.module';
+import { PingModule } from '@/application/system/ping/ping.module';
 import { RepositoriesModule } from '@/application/system/repositories/repositories.module';
 import { ThrottlerModule } from '@/application/system/throttler/throttler.module';
+import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-class-serializer.interceptor';
 
 @Module({
     imports: [
@@ -35,14 +37,18 @@ import { ThrottlerModule } from '@/application/system/throttler/throttler.module
                 },
             },
         }), // OpenTelemetry Module for Tracing
-
-        // Application Modules
         HealthModule,
         PingModule,
+
+        // Application Modules
         AuthenticationModule,
         UserModule,
     ],
     providers: [
+        {
+            provide: APP_GUARD,
+            useClass: AccessTokenGuard,
+        },
         {
             provide: APP_GUARD,
             useClass: ThrottlerGuard,
@@ -51,7 +57,7 @@ import { ThrottlerModule } from '@/application/system/throttler/throttler.module
             provide: APP_INTERCEPTOR,
             inject: [Reflector],
             useFactory: (reflector: Reflector) =>
-                new ClassSerializerInterceptor(reflector, {
+                new RolesClassSerializerInterceptor(reflector, {
                     enableImplicitConversion: true,
                     excludeExtraneousValues: true,
                 }),
