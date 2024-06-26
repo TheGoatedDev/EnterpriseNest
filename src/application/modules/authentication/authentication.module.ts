@@ -7,8 +7,8 @@ import { V1AuthenticationModule } from '@/application/modules/authentication/v1/
 const EventHandlers: Type[] = [];
 
 @Module({
-    imports: [V1AuthenticationModule, PassportModule],
-    controllers: [],
+    imports: [PassportModule, V1AuthenticationModule],
+
     providers: [...EventHandlers, LocalStrategy],
 })
 export class AuthenticationModule {}

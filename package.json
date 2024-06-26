@@ -1,6 +1,5 @@
 {
   "name": "enterprise-nest",
-  "type": "module",
   "version": "1.0.0",
   "description": "A Enterprise-Level API Framework based on NestJS, built for scaleability, best-practise and robustness. Based on DDD, Onion, Clean and Hexagonal Architecture.",
   "scripts": {

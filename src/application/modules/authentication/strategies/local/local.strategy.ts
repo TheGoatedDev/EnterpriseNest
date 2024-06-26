@@ -3,7 +3,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 
-import { V1FindUserByEmailQueryHandler } from '@/application/modules/user/v1/queries/find-user-by-email/find-user-by-email.handler';
+import { V1ValidateUserQueryHandler } from '@/application/modules/authentication/v1/queries/validate-user/validate-user.handler';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -20,16 +20,13 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         email: string,
         password: string,
     ): Promise<unknown> {
-        const user = await V1FindUserByEmailQueryHandler.runHandler(
+        const user = await V1ValidateUserQueryHandler.runHandler(
             this.queryBus,
             {
                 email,
+                password,
             },
         );
-
-        if (!user) {
-            return null;
-        }
 
         return user;
     }

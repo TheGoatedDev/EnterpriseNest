@@ -11,7 +11,6 @@ const tsupConfig = defineConfig({
     silent: !isWatch,
     onSuccess: isWatch ? 'node dist/index.js' : undefined,
     tsconfig: 'tsconfig.json',
-    format: ['esm'],
 });
 
 export default tsupConfig;
