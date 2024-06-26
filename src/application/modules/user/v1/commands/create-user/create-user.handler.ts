@@ -29,7 +29,9 @@ export class V1CreateUserCommandHandler
         bus: CommandBus,
         command: V1CreateUserCommand,
     ): Promise<User> {
-        return bus.execute<V1CreateUserCommand, User>(command);
+        return bus.execute<V1CreateUserCommand, User>(
+            new V1CreateUserCommand(command.user),
+        );
     }
 
     async execute(command: V1CreateUserCommand): Promise<User> {

@@ -6,13 +6,13 @@ import { User } from '@/application/modules/user/entity/user.entity';
 import type { UserRepositoryPort } from '@/application/modules/user/ports/user-repository.port';
 import { USER_REPOSITORY } from '@/application/modules/user/user.constants';
 
-import { V1FindUserByEmailQuery } from './find-user-by-email.query';
+import { V1FindUserByIDQuery } from './find-user-by-id.query';
 
-@QueryHandler(V1FindUserByEmailQuery)
-export class V1FindUserByEmailQueryHandler
-    implements IQueryHandler<V1FindUserByEmailQuery, User | undefined>
+@QueryHandler(V1FindUserByIDQuery)
+export class V1FindUserByIDQueryHandler
+    implements IQueryHandler<V1FindUserByIDQuery, User | undefined>
 {
-    private readonly logger = new Logger(V1FindUserByEmailQueryHandler.name);
+    private readonly logger = new Logger(V1FindUserByIDQueryHandler.name);
 
     constructor(
         @Inject(USER_REPOSITORY)
@@ -21,14 +21,14 @@ export class V1FindUserByEmailQueryHandler
 
     static runHandler(
         bus: QueryBus,
-        query: V1FindUserByEmailQuery,
+        query: V1FindUserByIDQuery,
     ): Promise<User | undefined> {
-        return bus.execute<V1FindUserByEmailQuery, User | undefined>(
-            new V1FindUserByEmailQuery(query.email),
+        return bus.execute<V1FindUserByIDQuery, User | undefined>(
+            new V1FindUserByIDQuery(query.id),
         );
     }
 
-    execute(query: V1FindUserByEmailQuery): Promise<User | undefined> {
-        return this.userRepository.findOneByEmail(query.email);
+    execute(query: V1FindUserByIDQuery): Promise<User | undefined> {
+        return this.userRepository.findOneById(query.id);
     }
 }

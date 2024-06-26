@@ -1,3 +1,4 @@
+import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import {
     IsEmail,
@@ -46,4 +47,26 @@ export class UserRoleDto {
         description: 'User role',
     })
     role!: UserRoleEnum;
+}
+
+export class UserFirstNameDto {
+    @IsNotEmpty()
+    @Optional()
+    @MinLength(2)
+    @ApiProperty({
+        description: 'User first name',
+        example: 'John',
+    })
+    firstName!: string | undefined;
+}
+
+export class UserLastNameDto {
+    @IsNotEmpty()
+    @MinLength(2)
+    @Optional()
+    @ApiProperty({
+        description: 'User last name',
+        example: 'Doe',
+    })
+    lastName!: string | undefined;
 }

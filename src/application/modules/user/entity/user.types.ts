@@ -13,6 +13,8 @@ export interface UserProps {
 }
 
 export interface CreateUserProps {
+    firstName?: string;
+    lastName?: string;
     email: string;
     password: string;
 }
