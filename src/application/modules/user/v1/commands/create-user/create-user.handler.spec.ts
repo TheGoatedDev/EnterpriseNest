@@ -3,9 +3,9 @@ import { JwtModule } from '@nestjs/jwt';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 
-import { User } from '@/application/modules/user/entity/user.entity';
 import { MockRepositoriesModule } from '@/application/system/repositories/mock-repositories.module';
-import { GenericAlreadyExistsException } from '@/core/exceptions/already-exists.exception';
+import { User } from '@/domain/user/user.entity';
+import { GenericAlreadyExistsException } from '@/shared/exceptions/already-exists.exception';
 
 import { V1CreateUserCommand } from './create-user.command';
 import { V1CreateUserCommandHandler } from './create-user.handler';

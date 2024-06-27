@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { UserRoleEnum } from '@/application/modules/user/entity/user-role.enum';
+import { UserRoleEnum } from '@/domain/user/user-role.enum';
 
 export interface UserProps {
     firstName?: string;

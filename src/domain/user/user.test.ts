@@ -1,4 +1,4 @@
-import { GenericInternalValidationException } from '@/core/exceptions/internal-validation.exception';
+import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
 
 import { CreateUserMock, User } from './user.entity';
 import type { CreateUserProps } from './user.types';

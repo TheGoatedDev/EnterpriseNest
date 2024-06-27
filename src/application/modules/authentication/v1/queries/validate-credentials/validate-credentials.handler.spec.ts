@@ -5,11 +5,11 @@ import { Test } from '@nestjs/testing';
 
 import { AuthenticationNoEmailMatchException } from '@/application/modules/authentication/exceptions/no-email-match.exception';
 import { AuthenticationPasswordIncorrectException } from '@/application/modules/authentication/exceptions/password-incorrect.exception';
-import { User } from '@/application/modules/user/entity/user.entity';
-import { UserRepositoryPort } from '@/application/modules/user/ports/user-repository.port';
-import { USER_REPOSITORY } from '@/application/modules/user/user.constants';
 import { MockRepositoriesModule } from '@/application/system/repositories/mock-repositories.module';
-import { HashingService } from '@/core/services/hashing/hashing.service';
+import { User } from '@/domain/user/user.entity';
+import { USER_REPOSITORY } from '@/infrastructure/repositories/user/user.repository.constants';
+import { UserRepositoryPort } from '@/infrastructure/repositories/user/user.repository.port';
+import { HashingService } from '@/shared/services/hashing/hashing.service';
 
 import { V1FindUserByEmailQueryHandler } from '../../../../user/v1/queries/find-user-by-email/find-user-by-email.handler';
 import { V1ValidateCredentialsQueryHandler } from './validate-credentials.handler';

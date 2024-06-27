@@ -2,7 +2,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Counter } from '@opentelemetry/api';
 import { MetricService } from 'nestjs-otel';
 
-import { OnLoginUserEvent } from '@/application/modules/authentication/events/on-login-user.event';
+import { OnLoginUserEvent } from '@/domain/authentication/events/on-login-user.event';
 
 @EventsHandler(OnLoginUserEvent)
 export class OnLoginUserWhenSuccessAddToCounterHandler

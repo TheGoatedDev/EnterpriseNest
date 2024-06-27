@@ -1,9 +1,9 @@
 import { createId } from '@paralleldrive/cuid2';
 
-import { AbstractMockRepository } from '@/core/abstracts/mock-repository/mock.repository';
-import { Entity } from '@/core/base/entity/entity.base';
-import { GenericAlreadyExistsException } from '@/core/exceptions/already-exists.exception';
-import { GenericNotFoundException } from '@/core/exceptions/not-found.exception';
+import { Entity } from '@/domain/base/entity/entity.base';
+import { AbstractMockRepository } from '@/infrastructure/repositories/mock/abstracts/mock.repository';
+import { GenericAlreadyExistsException } from '@/shared/exceptions/already-exists.exception';
+import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
 
 class MockEntity extends Entity<{
     mockField: string;

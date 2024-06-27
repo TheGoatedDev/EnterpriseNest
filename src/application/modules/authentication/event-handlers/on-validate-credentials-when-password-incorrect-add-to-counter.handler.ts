@@ -2,7 +2,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Counter } from '@opentelemetry/api';
 import { MetricService } from 'nestjs-otel';
 
-import { OnValidateCredentialsEvent } from '@/application/modules/authentication/events/on-validate-credentials.event';
+import { OnValidateCredentialsEvent } from '@/domain/authentication/events/on-validate-credentials.event';
 
 @EventsHandler(OnValidateCredentialsEvent)
 export class OnValidateCredentialsWhenPasswordIncorrectAddToCounterHandler

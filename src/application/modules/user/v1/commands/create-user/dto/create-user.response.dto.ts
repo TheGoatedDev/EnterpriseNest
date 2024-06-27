@@ -1,7 +1,7 @@
 import { ApiProperty, IntersectionType } from '@nestjs/swagger';
 
-import { UserPasswordDto } from '@/application/modules/user/entity/user.dto';
-import { User } from '@/application/modules/user/entity/user.entity';
+import { UserPasswordDto } from '@/domain/user/user.dto';
+import { User } from '@/domain/user/user.entity';
 
 export class V1CreateUserResponseDto extends IntersectionType(UserPasswordDto) {
     @ApiProperty({

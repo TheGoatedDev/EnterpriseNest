@@ -9,7 +9,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { IS_PUBLIC_KEY } from '@/application/modules/authentication/decorator/public.decorator';
 import { ROLES_KEY } from '@/application/modules/authentication/decorator/roles.decorator';
-import { UserRoleEnum } from '@/application/modules/user/entity/user-role.enum';
+import { UserRoleEnum } from '@/domain/user/user-role.enum';
 import { RequestWithUser } from '@/types/express/request-with-user';
 
 @Injectable()

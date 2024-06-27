@@ -2,9 +2,9 @@ import { Inject, Logger } from '@nestjs/common';
 import type { IQueryHandler, QueryBus } from '@nestjs/cqrs';
 import { QueryHandler } from '@nestjs/cqrs';
 
-import { User } from '@/application/modules/user/entity/user.entity';
-import type { UserRepositoryPort } from '@/application/modules/user/ports/user-repository.port';
-import { USER_REPOSITORY } from '@/application/modules/user/user.constants';
+import { User } from '@/domain/user/user.entity';
+import { USER_REPOSITORY } from '@/infrastructure/repositories/user/user.repository.constants';
+import type { UserRepositoryPort } from '@/infrastructure/repositories/user/user.repository.port';
 
 import { V1FindUserByEmailQuery } from './find-user-by-email.query';
 

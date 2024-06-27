@@ -1,11 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { generate as generatePassword } from 'generate-password';
 
 import { Roles } from '@/application/modules/authentication/decorator/roles.decorator';
-import { User } from '@/application/modules/user/entity/user.entity';
-import { UserRoleEnum } from '@/application/modules/user/entity/user-role.enum';
+import { User } from '@/domain/user/user.entity';
+import { AllStaffRoles } from '@/domain/user/user-role.enum';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 
 import { V1CreateUserCommand } from './create-user.command';
@@ -18,12 +18,9 @@ import { V1CreateUserResponseDto } from './dto/create-user.response.dto';
     version: '1',
 })
 export class V1CreateUserController {
-    constructor(
-        private readonly commandBus: CommandBus,
-        private readonly queryBus: QueryBus,
-    ) {}
+    constructor(private readonly commandBus: CommandBus) {}
 
-    @Roles(UserRoleEnum.ADMIN, UserRoleEnum.DEVELOPER)
+    @Roles(...AllStaffRoles)
     @Post('/user')
     @ApiOperation({
         summary: 'Creates a User',

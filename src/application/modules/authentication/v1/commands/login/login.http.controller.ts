@@ -10,9 +10,9 @@ import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 
 import { Public } from '@/application/modules/authentication/decorator/public.decorator';
-import { OnLoginUserEvent } from '@/application/modules/authentication/events/on-login-user.event';
 import { LocalAuthGuard } from '@/application/modules/authentication/strategies/local/local.guard';
 import { V1LoginCommandHandler } from '@/application/modules/authentication/v1/commands/login/login.handler';
+import { OnLoginUserEvent } from '@/domain/authentication/events/on-login-user.event';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 import type { RequestWithUser } from '@/types/express/request-with-user';
 

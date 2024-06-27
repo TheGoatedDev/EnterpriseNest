@@ -3,13 +3,10 @@ import { JwtModule } from '@nestjs/jwt';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 
-import {
-    CreateUserMock,
-    User,
-} from '@/application/modules/user/entity/user.entity';
-import { UserRepositoryPort } from '@/application/modules/user/ports/user-repository.port';
-import { USER_REPOSITORY } from '@/application/modules/user/user.constants';
 import { MockRepositoriesModule } from '@/application/system/repositories/mock-repositories.module';
+import { CreateUserMock, User } from '@/domain/user/user.entity';
+import { USER_REPOSITORY } from '@/infrastructure/repositories/user/user.repository.constants';
+import { UserRepositoryPort } from '@/infrastructure/repositories/user/user.repository.port';
 
 import { V1FindUserByIDQueryHandler } from './find-user-by-id.handler';
 import { V1FindUserByIDQuery } from './find-user-by-id.query';

@@ -1,7 +1,7 @@
-import { Entity } from '@/core/base/entity/entity.base';
-import { GenericAlreadyExistsException } from '@/core/exceptions/already-exists.exception';
-import { GenericNotFoundException } from '@/core/exceptions/not-found.exception';
-import { RepositoryPort } from '@/core/ports/repository.port';
+import { Entity } from '@/domain/base/entity/entity.base';
+import { RepositoryPort } from '@/infrastructure/repositories/repository.port';
+import { GenericAlreadyExistsException } from '@/shared/exceptions/already-exists.exception';
+import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
 
 export abstract class AbstractMockRepository<EntityType extends Entity<unknown>>
     implements RepositoryPort<EntityType>

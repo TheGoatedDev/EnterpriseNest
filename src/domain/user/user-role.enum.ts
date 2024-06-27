@@ -5,5 +5,3 @@ export enum UserRoleEnum {
 }
 
 export const AllStaffRoles = [UserRoleEnum.ADMIN, UserRoleEnum.DEVELOPER];
-
-export const ReadWriteStaffRoles = [UserRoleEnum.ADMIN, UserRoleEnum.DEVELOPER];

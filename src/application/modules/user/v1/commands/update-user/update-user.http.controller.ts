@@ -9,11 +9,11 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { Roles } from '@/application/modules/authentication/decorator/roles.decorator';
-import { UserRoleEnum } from '@/application/modules/user/entity/user-role.enum';
 import { V1UpdateUserResponseDto } from '@/application/modules/user/v1/commands/update-user/dto/update-user.response.dto';
-import { GenericInternalValidationException } from '@/core/exceptions/internal-validation.exception';
-import { GenericNotFoundException } from '@/core/exceptions/not-found.exception';
+import { AllStaffRoles } from '@/domain/user/user-role.enum';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
+import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
+import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
 
 import { V1FindUserByIDQueryHandler } from '../../queries/find-user-by-id/find-user-by-id.handler';
 import { V1FindUserByIDQuery } from '../../queries/find-user-by-id/find-user-by-id.query';
@@ -31,7 +31,7 @@ export class V1UpdateUserController {
         private readonly queryBus: QueryBus,
     ) {}
 
-    @Roles(UserRoleEnum.ADMIN, UserRoleEnum.DEVELOPER)
+    @Roles(...AllStaffRoles)
     @Put('/user/:id')
     @ApiOperation({
         summary: 'Updates the  for a user',

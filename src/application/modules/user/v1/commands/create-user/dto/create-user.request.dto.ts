@@ -4,7 +4,7 @@ import {
     UserEmailDto,
     UserFirstNameDto,
     UserLastNameDto,
-} from '@/application/modules/user/entity/user.dto';
+} from '@/domain/user/user.dto';
 
 export class V1CreateUserRequestDto extends IntersectionType(
     UserEmailDto,

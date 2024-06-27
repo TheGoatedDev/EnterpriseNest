@@ -3,22 +3,19 @@ import { ApiProperty } from '@nestjs/swagger';
 import { createId } from '@paralleldrive/cuid2';
 import { Expose } from 'class-transformer';
 
+import { Entity } from '@/domain/base/entity/entity.base';
+import { OnUserChangedEmailEvent } from '@/domain/user/events/on-user-changed-email.event';
+import { OnUserChangedFirstNameEvent } from '@/domain/user/events/on-user-changed-first-name.event';
+import { OnUserChangedLastNameEvent } from '@/domain/user/events/on-user-changed-last-name.event';
+import { OnUserChangedPasswordEvent } from '@/domain/user/events/on-user-changed-password.event';
+import { OnUserChangedRoleEvent } from '@/domain/user/events/on-user-changed-role.event';
 import {
     CreateUserProps,
     UserDataSchema,
     UserProps,
-} from '@/application/modules/user/entity/user.types';
-import {
-    AllStaffRoles,
-    UserRoleEnum,
-} from '@/application/modules/user/entity/user-role.enum';
-import { OnUserChangedEmailEvent } from '@/application/modules/user/events/on-user-changed-email.event';
-import { OnUserChangedFirstNameEvent } from '@/application/modules/user/events/on-user-changed-first-name.event';
-import { OnUserChangedLastNameEvent } from '@/application/modules/user/events/on-user-changed-last-name.event';
-import { OnUserChangedPasswordEvent } from '@/application/modules/user/events/on-user-changed-password.event';
-import { OnUserChangedRoleEvent } from '@/application/modules/user/events/on-user-changed-role.event';
-import { Entity } from '@/core/base/entity/entity.base';
-import { GenericInternalValidationException } from '@/core/exceptions/internal-validation.exception';
+} from '@/domain/user/user.types';
+import { AllStaffRoles, UserRoleEnum } from '@/domain/user/user-role.enum';
+import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
 
 export const CreateUserMock = (): User =>
     User.create({

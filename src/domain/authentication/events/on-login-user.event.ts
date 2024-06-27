@@ -1,4 +1,4 @@
-import { User } from '@/application/modules/user/entity/user.entity';
+import { User } from '@/domain/user/user.entity';
 
 export class OnLoginUserEvent {
     constructor(

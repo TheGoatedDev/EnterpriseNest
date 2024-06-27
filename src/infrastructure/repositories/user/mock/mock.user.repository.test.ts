@@ -1,7 +1,7 @@
-import { HashingService } from '@/core/services/hashing/hashing.service';
+import { CreateUserMock, User } from '@/domain/user/user.entity';
+import { HashingService } from '@/shared/services/hashing/hashing.service';
 
-import { CreateUserMock, User } from '../entity/user.entity';
-import { MockUserRepository } from './mock-user.repository';
+import { MockUserRepository } from './mock.user.repository';
 
 describe('mockUserRepository', () => {
     let mockUserRepository: MockUserRepository;

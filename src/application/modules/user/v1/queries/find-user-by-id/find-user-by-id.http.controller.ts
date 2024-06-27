@@ -3,9 +3,9 @@ import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { Roles } from '@/application/modules/authentication/decorator/roles.decorator';
-import { UserRoleEnum } from '@/application/modules/user/entity/user-role.enum';
-import { GenericNotFoundException } from '@/core/exceptions/not-found.exception';
+import { AllStaffRoles } from '@/domain/user/user-role.enum';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
+import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
 
 import { V1FindUserByIDResponseDto } from './dto/find-user-by-id.response.dto';
 import { V1FindUserByIDQueryHandler } from './find-user-by-id.handler';
@@ -18,7 +18,7 @@ import { V1FindUserByIDQuery } from './find-user-by-id.query';
 export class V1FindUserByIDController {
     constructor(private readonly queryBus: QueryBus) {}
 
-    @Roles(UserRoleEnum.ADMIN, UserRoleEnum.DEVELOPER)
+    @Roles(...AllStaffRoles)
     @Get('/user/:id')
     @ApiOperation({
         summary: 'Find User by ID',

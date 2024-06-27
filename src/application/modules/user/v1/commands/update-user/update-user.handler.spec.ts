@@ -3,14 +3,14 @@ import { JwtModule } from '@nestjs/jwt';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 
-import { User } from '@/application/modules/user/entity/user.entity';
-import { CreateUserProps } from '@/application/modules/user/entity/user.types';
-import { UserRoleEnum } from '@/application/modules/user/entity/user-role.enum';
-import { UserRepositoryPort } from '@/application/modules/user/ports/user-repository.port';
-import { USER_REPOSITORY } from '@/application/modules/user/user.constants';
 import { MockRepositoriesModule } from '@/application/system/repositories/mock-repositories.module';
-import { GenericNotFoundException } from '@/core/exceptions/not-found.exception';
-import { HashingService } from '@/core/services/hashing/hashing.service';
+import { User } from '@/domain/user/user.entity';
+import { CreateUserProps } from '@/domain/user/user.types';
+import { UserRoleEnum } from '@/domain/user/user-role.enum';
+import { USER_REPOSITORY } from '@/infrastructure/repositories/user/user.repository.constants';
+import { UserRepositoryPort } from '@/infrastructure/repositories/user/user.repository.port';
+import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
+import { HashingService } from '@/shared/services/hashing/hashing.service';
 
 import { V1UpdateUserCommand } from './update-user.command';
 import { V1UpdateUserCommandHandler } from './update-user.handler';
