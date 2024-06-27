@@ -7,6 +7,7 @@ import { AccessTokenStrategy } from '@/application/modules/authentication/strate
 import { LocalStrategy } from '@/application/modules/authentication/strategies/local/local.strategy';
 import { RefreshTokenStrategy } from '@/application/modules/authentication/strategies/refresh-token/refresh-token.strategy';
 import { V1AuthenticationModule } from '@/application/modules/authentication/v1/v1-authentication.module';
+import { JwtModule } from '@/application/system/jwt/jwt.module';
 
 const EventHandlers: Type[] = [
     OnValidateCredentialsWhenPasswordIncorrectAddToCounterHandler,
@@ -14,7 +15,7 @@ const EventHandlers: Type[] = [
 ];
 
 @Module({
-    imports: [PassportModule, V1AuthenticationModule],
+    imports: [PassportModule, V1AuthenticationModule, JwtModule],
 
     providers: [
         ...EventHandlers,

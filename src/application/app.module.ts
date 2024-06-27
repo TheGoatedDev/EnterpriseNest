@@ -11,7 +11,6 @@ import { CacheModule } from '@/application/system/cache/cache.module';
 import { ConfigModule } from '@/application/system/config/config.module';
 import { CqrsModule } from '@/application/system/cqrs/cqrs.module';
 import { HealthModule } from '@/application/system/health/health.module';
-import { JwtModule } from '@/application/system/jwt/jwt.module';
 import { LoggerModule } from '@/application/system/logger/logger.module';
 import { PingModule } from '@/application/system/ping/ping.module';
 import { RepositoriesModule } from '@/application/system/repositories/repositories.module';
@@ -28,7 +27,6 @@ import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-clas
         ThrottlerModule, // Throttler Module
         RepositoriesModule, // Repositories Module
         ScheduleModule.forRoot(), // Schedule Module for Cron Jobs
-        JwtModule, // JWT Module for Authentication
         OpenTelemetryModule.forRoot({
             metrics: {
                 hostMetrics: true,
@@ -37,10 +35,10 @@ import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-clas
                 },
             },
         }), // OpenTelemetry Module for Tracing
-        HealthModule,
-        PingModule,
 
         // Application Modules
+        HealthModule,
+        PingModule,
         AuthenticationModule,
         UserModule,
     ],

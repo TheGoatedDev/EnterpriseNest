@@ -6,7 +6,6 @@ const EventHandlers: Type[] = [];
 
 @Module({
     imports: [V1UserModule],
-    controllers: [],
     providers: [...EventHandlers],
 })
 export class UserModule {}
