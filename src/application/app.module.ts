@@ -4,17 +4,17 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { OpenTelemetryModule } from 'nestjs-otel';
 
-import { AuthenticationModule } from '@/application/modules/authentication/authentication.module';
-import { AccessTokenGuard } from '@/application/modules/authentication/strategies/access-token/access-token.guard';
-import { UserModule } from '@/application/modules/user/user.module';
-import { CacheModule } from '@/application/system/cache/cache.module';
-import { ConfigModule } from '@/application/system/config/config.module';
-import { CqrsModule } from '@/application/system/cqrs/cqrs.module';
+import { AuthenticationModule } from '@/application/authentication/authentication.module';
+import { AccessTokenGuard } from '@/application/authentication/strategies/access-token/access-token.guard';
 import { HealthModule } from '@/application/system/health/health.module';
-import { LoggerModule } from '@/application/system/logger/logger.module';
 import { PingModule } from '@/application/system/ping/ping.module';
-import { RepositoriesModule } from '@/application/system/repositories/repositories.module';
-import { ThrottlerModule } from '@/application/system/throttler/throttler.module';
+import { UserModule } from '@/application/user/user.module';
+import { CacheModule } from '@/infrastructure/cache/cache.module';
+import { ConfigModule } from '@/infrastructure/config/config.module';
+import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
+import { LoggerModule } from '@/infrastructure/logger/logger.module';
+import { RepositoriesModule } from '@/infrastructure/repositories/repositories.module';
+import { ThrottlerModule } from '@/infrastructure/throttler/throttler.module';
 import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-class-serializer.interceptor';
 
 @Module({
