@@ -2,7 +2,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
 
-import { V1CheckHealthController } from '@/application/system/health/v1/queries/check-health/check-health.controller';
+import { V1CheckHealthController } from '@/application/health/v1/queries/check-health/check-health.controller';
 
 @Module({
     imports: [TerminusModule, HttpModule],

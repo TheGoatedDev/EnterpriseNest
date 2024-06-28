@@ -6,8 +6,8 @@ import { OpenTelemetryModule } from 'nestjs-otel';
 
 import { AuthenticationModule } from '@/application/authentication/authentication.module';
 import { AccessTokenGuard } from '@/application/authentication/strategies/access-token/access-token.guard';
-import { HealthModule } from '@/application/system/health/health.module';
-import { PingModule } from '@/application/system/ping/ping.module';
+import { HealthModule } from '@/application/health/health.module';
+import { PingModule } from '@/application/ping/ping.module';
 import { UserModule } from '@/application/user/user.module';
 import { CacheModule } from '@/infrastructure/cache/cache.module';
 import { ConfigModule } from '@/infrastructure/config/config.module';
