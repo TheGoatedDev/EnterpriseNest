@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 
+import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-user-by-id/find-user-by-id.handler';
+import { AccessTokenPayload } from '@/domain/authentication/access-token-payload.type';
+import { User } from '@/domain/user/user.entity';
 import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
+import { RequestWithUser } from '@/types/express/request-with-user';
 
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(
@@ -18,12 +22,47 @@ export class AccessTokenStrategy extends PassportStrategy(
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
             secretOrKey: authenticationConfig.jwtSecret,
+            passReqToCallback: true,
         };
 
         super(options);
     }
 
-    validate(payload: unknown): Promise<unknown> {
-        return Promise.resolve(payload);
+    async validate(
+        request: RequestWithUser,
+        payload: AccessTokenPayload,
+    ): Promise<User> {
+        if (!payload.sub) {
+            throw new UnauthorizedException(
+                'Invalid Access Token: Missing User ID',
+            );
+        }
+
+        if (!payload.ip || payload.ip !== request.ip) {
+            throw new UnauthorizedException(
+                'Invalid Access Token: IP Mismatch',
+            );
+        }
+
+        const user = await V1FindUserByIDQueryHandler.runHandler(
+            this.queryBus,
+            {
+                id: payload.sub,
+            },
+        );
+
+        if (!user) {
+            throw new UnauthorizedException(
+                'Invalid Access Token: User Not Found',
+            );
+        }
+
+        if (!user.verifiedAt) {
+            throw new UnauthorizedException(
+                'Invalid Access Token: User Not Verified',
+            );
+        }
+
+        return Promise.resolve(user);
     }
 }
