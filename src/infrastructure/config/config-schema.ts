@@ -31,6 +31,9 @@ export const ConfigSchema = z.object({
     AUTH_JWT_SECRET: z.string(),
     AUTH_ACCESS_TOKEN_EXPIRATION: z.string().default('1h'),
     AUTH_REFRESH_TOKEN_EXPIRATION: z.string().default('7d'),
+
+    // Email
+    EMAIL_FROM: z.string().email().default('no-reply@test.com'),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;
