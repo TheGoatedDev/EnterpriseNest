@@ -36,11 +36,15 @@ export class AccessTokenGuard extends AuthGuard('accessToken') {
             return baseCanActivate;
         }
 
-        const requiredRoles = this.reflector.getAllAndOverride<
-            UserRoleEnum[] | undefined
-        >(ROLES_KEY, [context.getHandler(), context.getClass()]);
+        const requiredRoles =
+            this.reflector.getAllAndOverride<UserRoleEnum[] | undefined>(
+                ROLES_KEY,
+                [context.getHandler(), context.getClass()],
+            ) ?? [];
 
-        if (!requiredRoles || requiredRoles.length === 0) {
+        this.logger.log(`Required roles: ${requiredRoles.join(', ')}`);
+
+        if (requiredRoles.length === 0) {
             return true;
         }
 
