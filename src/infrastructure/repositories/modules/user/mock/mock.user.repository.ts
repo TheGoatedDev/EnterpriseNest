@@ -27,6 +27,10 @@ export class MockUserRepository
             throw new GenericAlreadyExistsException();
         }
 
+        if (await this.findOneByEmail(entity.email)) {
+            throw new GenericAlreadyExistsException();
+        }
+
         if (!entity.isPasswordHashed) {
             entity.password = await this.hashingService.hash(entity.password);
         }

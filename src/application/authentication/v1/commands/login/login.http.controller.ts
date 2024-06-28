@@ -5,14 +5,13 @@ import {
     UnauthorizedException,
     UseGuards,
 } from '@nestjs/common';
-import { CommandBus, EventBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 
 import { Public } from '@/application/authentication/decorator/public.decorator';
 import { LocalAuthGuard } from '@/application/authentication/strategies/local/local.guard';
 import { V1LoginCommandHandler } from '@/application/authentication/v1/commands/login/login.handler';
-import { OnLoginUserEvent } from '@/domain/authentication/events/on-login-user.event';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 import type { RequestWithUser } from '@/types/express/request-with-user';
 
@@ -24,10 +23,7 @@ import { V1LoginResponseDto } from './dto/login.response.dto';
     version: '1',
 })
 export class V1LoginController {
-    constructor(
-        private readonly commandBus: CommandBus,
-        private readonly eventBus: EventBus,
-    ) {}
+    constructor(private readonly commandBus: CommandBus) {}
 
     @Public()
     // Throttle the login endpoint to prevent brute force attacks (5 Requests per 1 minute)
@@ -61,8 +57,6 @@ export class V1LoginController {
             user,
             ip: request.ip,
         }).then((token) => {
-            this.eventBus.publish(new OnLoginUserEvent(user, request.ip));
-
             return {
                 accessToken: token.accessToken,
                 refreshToken: token.refreshToken,

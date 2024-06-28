@@ -1,7 +1,13 @@
 import { Logger } from '@nestjs/common';
-import type { ICommandHandler } from '@nestjs/cqrs';
-import { CommandBus, CommandHandler } from '@nestjs/cqrs';
+import {
+    CommandBus,
+    CommandHandler,
+    EventBus,
+    ICommandHandler,
+} from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
+
+import { OnLoginUserEvent } from '@/domain/authentication/events/on-login-user.event';
 
 import { V1LoginCommand } from './login.command';
 
@@ -16,7 +22,10 @@ export class V1LoginCommandHandler
 {
     private readonly logger = new Logger(V1LoginCommandHandler.name);
 
-    constructor(private readonly jwtService: JwtService) {}
+    constructor(
+        private readonly jwtService: JwtService,
+        private readonly eventBus: EventBus,
+    ) {}
 
     static runHandler(
         bus: CommandBus,
@@ -48,6 +57,8 @@ export class V1LoginCommandHandler
                 expiresIn: '24h',
             },
         );
+
+        this.eventBus.publish(new OnLoginUserEvent(command.user, command.ip));
 
         return Promise.resolve({
             accessToken,

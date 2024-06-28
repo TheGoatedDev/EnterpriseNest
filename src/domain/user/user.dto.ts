@@ -1,6 +1,7 @@
 import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import {
+    IsDate,
     IsEmail,
     IsEnum,
     IsNotEmpty,
@@ -69,4 +70,14 @@ export class UserLastNameDto {
         example: 'Doe',
     })
     lastName!: string | undefined;
+}
+
+export class UserVerifiedAtDto {
+    @Optional()
+    @IsDate()
+    @ApiProperty({
+        description: 'User verified at',
+        example: new Date(),
+    })
+    verifiedAt!: Date | undefined;
 }
