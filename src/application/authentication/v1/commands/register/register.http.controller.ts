@@ -20,11 +20,11 @@ export class V1RegisterController {
     constructor(private readonly commandBus: CommandBus) {}
 
     @Public()
-    // Throttle the register endpoint to prevent brute force attacks (10 Requests per hour)
+    // Throttle the register endpoint to prevent brute force attacks (10 Requests per minute)
     @Throttle({
         default: {
             limit: 10,
-            ttl: 60 * 60 * 1000,
+            ttl: 60 * 1000,
         },
     })
     @Post('/authentication/register')
