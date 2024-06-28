@@ -8,6 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 
 import { OnVerificationSentEvent } from '@/domain/verification/events/on-verification-sent.event';
+import { VerifyEmailTokenPayload } from '@/domain/verification/verify-email-token-payload.type';
 import { EmailConfigService } from '@/infrastructure/config/configs/email.config.service';
 import { EMAIL } from '@/infrastructure/email/email.constants';
 import type { EmailPort } from '@/infrastructure/email/email.port';
@@ -58,14 +59,16 @@ export class V1SendVerificationCommandHandler
         //     new V1CreateSessionCommand(command.user, command.ip),
         // );
 
-        const verificationToken = this.jwtService.sign(
-            {
+        const payload: VerifyEmailTokenPayload = {
+            type: 'verify-email',
+            data: {
                 sub: command.user.id,
             },
-            {
-                expiresIn: '12h',
-            },
-        );
+        };
+
+        const verificationToken = this.jwtService.sign(payload, {
+            expiresIn: '12h',
+        });
 
         await this.email.sendEmail({
             from: this.emailConfig.from,

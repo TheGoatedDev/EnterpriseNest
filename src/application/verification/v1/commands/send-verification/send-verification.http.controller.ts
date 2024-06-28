@@ -28,7 +28,7 @@ export class V1SendVerificationController {
     ) {}
 
     @Public()
-    // Throttle the send-verification endpoint to prevent brute force attacks (5 Requests per 1 hour)
+    // Throttle the confirm-verification endpoint to prevent brute force attacks (5 Requests per 1 hour)
     @Throttle({
         default: {
             limit: 5,
