@@ -52,9 +52,20 @@ export class V1LoginCommandHandler
         const accessToken = this.jwtService.sign(
             {
                 sub: command.user.id,
+                ip: command.ip,
             },
             {
                 expiresIn: '24h',
+            },
+        );
+
+        const refreshToken = this.jwtService.sign(
+            {
+                ip: command.ip,
+                uuid: 'UNKNOWN', // TODO: Implement UUID for refresh tokens
+            },
+            {
+                expiresIn: '7d',
             },
         );
 
@@ -62,7 +73,7 @@ export class V1LoginCommandHandler
 
         return Promise.resolve({
             accessToken,
-            refreshToken: 'refresh-token',
+            refreshToken,
         });
     }
 }
