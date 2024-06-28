@@ -9,6 +9,8 @@ export interface UserProps {
     email: string;
     password: string;
 
+    verifiedAt?: Date;
+
     role: UserRoleEnum;
 }
 
@@ -45,6 +47,8 @@ export const UserPasswordSchema = z
 export const UserDataSchema = z.object({
     firstName: z.string().min(2).optional(),
     lastName: z.string().min(2).optional(),
+
+    verifiedAt: z.date().optional(),
 
     email: z.string().email(),
     password: UserPasswordSchema.or(z.string().startsWith('$argon2id$')),

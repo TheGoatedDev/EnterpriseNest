@@ -9,6 +9,7 @@ import { OnUserChangedFirstNameEvent } from '@/domain/user/events/on-user-change
 import { OnUserChangedLastNameEvent } from '@/domain/user/events/on-user-changed-last-name.event';
 import { OnUserChangedPasswordEvent } from '@/domain/user/events/on-user-changed-password.event';
 import { OnUserChangedRoleEvent } from '@/domain/user/events/on-user-changed-role.event';
+import { OnUserChangedVerifiedAtEvent } from '@/domain/user/events/on-user-changed-verified-at.event';
 import {
     CreateUserProps,
     UserDataSchema,
@@ -29,6 +30,7 @@ export class User extends Entity<UserProps> {
 
         const data: UserProps = {
             role: UserRoleEnum.USER,
+            verifiedAt: undefined,
             ...props,
         };
 
@@ -128,6 +130,28 @@ export class User extends Entity<UserProps> {
     set role(role: UserRoleEnum) {
         this.apply(new OnUserChangedRoleEvent(this, this.data.role, role));
         this.data.role = role;
+        this.updated();
+    }
+
+    @Expose()
+    @ApiProperty({
+        description: 'User Verified At',
+        type: Date,
+        required: false,
+    })
+    get verifiedAt(): Date | undefined {
+        return this.data.verifiedAt;
+    }
+
+    set verifiedAt(verifiedAt: Date | undefined) {
+        this.apply(
+            new OnUserChangedVerifiedAtEvent(
+                this,
+                this.data.verifiedAt,
+                verifiedAt,
+            ),
+        );
+        this.data.verifiedAt = verifiedAt;
         this.updated();
     }
 

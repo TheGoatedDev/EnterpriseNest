@@ -31,6 +31,13 @@ describe('user', () => {
         expect(user.email).toBe('oof@email.com');
     });
 
+    test('user verifiedAt can be updated', () => {
+        expect(user.verifiedAt).toBeUndefined();
+        const date = new Date();
+        user.verifiedAt = date;
+        expect(user.verifiedAt).toBe(date);
+    });
+
     test('user password can be updated', () => {
         user.password = 'Password123!';
         expect(user.password).toBe('Password123!');
