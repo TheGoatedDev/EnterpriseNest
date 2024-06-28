@@ -16,14 +16,8 @@ export interface EmailOptions {
     }[];
 }
 
-export interface EmailPort<SenderOptions> {
-    sendEmail: (
-        email: EmailOptions,
-        senderOptions: SenderOptions,
-    ) => Promise<void>;
+export interface EmailPort {
+    sendEmail: (email: EmailOptions) => Promise<void>;
 
-    sendEmails: (
-        emails: EmailOptions[],
-        senderOptions: SenderOptions,
-    ) => Promise<void>;
+    sendEmails: (emails: EmailOptions[]) => Promise<void>;
 }

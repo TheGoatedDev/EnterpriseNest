@@ -4,10 +4,10 @@ import { EMAIL } from '@/infrastructure/email/email.constants';
 import { EmailOptions, EmailPort } from '@/infrastructure/email/email.port';
 
 @Injectable()
-class MockEmail implements EmailPort<undefined> {
+class MockEmail implements EmailPort {
     private readonly logger = new Logger(MockEmail.name);
 
-    sendEmail(email: EmailOptions, senderOptions: undefined): Promise<void> {
+    sendEmail(email: EmailOptions): Promise<void> {
         const content = email.text ?? email.html ?? '';
 
         this.logger.log(
@@ -17,10 +17,7 @@ class MockEmail implements EmailPort<undefined> {
         return Promise.resolve();
     }
 
-    sendEmails(
-        emails: EmailOptions[],
-        senderOptions: undefined,
-    ): Promise<void> {
+    sendEmails(emails: EmailOptions[]): Promise<void> {
         for (const email of emails) {
             const content = email.text ?? email.html ?? '';
 
