@@ -20,8 +20,8 @@ import { V1CreateUserResponseDto } from './dto/create-user.response.dto';
 export class V1CreateUserController {
     constructor(private readonly commandBus: CommandBus) {}
 
-    @Roles(...AllStaffRoles)
     @Post('/user')
+    @Roles(...AllStaffRoles)
     @ApiOperation({
         summary: 'Creates a User',
         description:

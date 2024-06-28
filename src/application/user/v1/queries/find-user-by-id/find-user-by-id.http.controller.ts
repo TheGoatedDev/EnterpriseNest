@@ -18,8 +18,8 @@ import { V1FindUserByIDQuery } from './find-user-by-id.query';
 export class V1FindUserByIDController {
     constructor(private readonly queryBus: QueryBus) {}
 
-    @Roles(...AllStaffRoles)
     @Get('/user/:id')
+    @Roles(...AllStaffRoles)
     @ApiOperation({
         summary: 'Find User by ID',
         description: 'Requires the user to be an read admin.',

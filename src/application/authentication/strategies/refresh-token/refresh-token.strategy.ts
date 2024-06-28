@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+    BadRequestException,
+    Injectable,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
@@ -21,6 +25,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
             secretOrKey: authenticationConfig.jwtSecret,
+            algorithms: ['HS256', 'HS384', 'HS512'],
         };
 
         super(options);
@@ -30,13 +35,19 @@ export class RefreshTokenStrategy extends PassportStrategy(
         request: RequestWithUser,
         payload: RefreshTokenPayload,
     ): Promise<User> {
-        if (!payload.uuid) {
+        if (payload.type !== 'refresh-token') {
+            throw new BadRequestException(
+                'Invalid Access Token: Invalid Token Type',
+            );
+        }
+
+        if (!payload.data.uuid) {
             throw new UnauthorizedException(
                 'Invalid Access Token: Missing User ID',
             );
         }
 
-        if (!payload.ip || payload.ip !== request.ip) {
+        if (!payload.data.ip || payload.data.ip !== request.ip) {
             throw new UnauthorizedException(
                 'Invalid Access Token: IP Mismatch',
             );

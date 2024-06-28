@@ -7,7 +7,9 @@ import {
 } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 
+import { AccessTokenPayload } from '@/domain/authentication/access-token-payload.type';
 import { OnLoginUserEvent } from '@/domain/authentication/events/on-login-user.event';
+import { RefreshTokenPayload } from '@/domain/authentication/refresh-token-payload.type';
 
 import { V1LoginCommand } from './login.command';
 
@@ -51,21 +53,29 @@ export class V1LoginCommandHandler
 
         const accessToken = this.jwtService.sign(
             {
-                sub: command.user.id,
-                ip: command.ip,
-            },
+                type: 'access-token',
+                data: {
+                    sub: command.user.id,
+                    ip: command.ip,
+                },
+            } satisfies AccessTokenPayload,
             {
                 expiresIn: '24h',
+                algorithm: 'HS512',
             },
         );
 
         const refreshToken = this.jwtService.sign(
             {
-                ip: command.ip,
-                uuid: 'UNKNOWN', // TODO: Implement UUID for refresh tokens
-            },
+                type: 'refresh-token',
+                data: {
+                    ip: command.ip,
+                    uuid: 'UNKNOWN', // TODO: Implement UUID for refresh tokens
+                },
+            } satisfies RefreshTokenPayload,
             {
                 expiresIn: '7d',
+                algorithm: 'HS512',
             },
         );
 

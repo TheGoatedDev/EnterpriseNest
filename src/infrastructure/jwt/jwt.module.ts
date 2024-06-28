@@ -13,6 +13,7 @@ import { AuthenticationConfigService } from '@/infrastructure/config/configs/aut
             useFactory: (configService: AuthenticationConfigService) => ({
                 secret: configService.jwtSecret,
                 signOptions: { expiresIn: configService.accessTokenExpiration },
+                algorithms: ['HS256', 'HS384', 'HS512'],
             }),
         }),
     ],

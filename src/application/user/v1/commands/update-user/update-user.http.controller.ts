@@ -31,8 +31,8 @@ export class V1UpdateUserController {
         private readonly queryBus: QueryBus,
     ) {}
 
-    @Roles(...AllStaffRoles)
     @Put('/user/:id')
+    @Roles(...AllStaffRoles)
     @ApiOperation({
         summary: 'Updates the  for a user',
         description:
