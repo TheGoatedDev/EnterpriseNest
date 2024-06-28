@@ -33,11 +33,19 @@ export class V1RegisterController {
     })
     @ApiStandardisedResponse(
         {
-            status: 200,
+            status: 201,
             description: 'User Was Registered Successfully',
         },
         V1RegisterResponseDto,
     )
+    @ApiStandardisedResponse({
+        status: 409,
+        description: 'User Already Exists',
+    })
+    @ApiStandardisedResponse({
+        status: 400,
+        description: 'Validation Error',
+    })
     async register(
         @Req() request: RequestWithUser,
         @Body() body: V1RegisterRequestDto,

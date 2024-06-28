@@ -5,7 +5,6 @@ export class StandardHttpResponseDto<Data = null> {
     @Expose()
     @ApiProperty({
         description: 'The status code of the response',
-        example: 200,
     })
     statusCode!: number;
 

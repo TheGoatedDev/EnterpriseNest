@@ -41,10 +41,14 @@ export class V1LoginController {
     @ApiStandardisedResponse(
         {
             status: 200,
-            description: 'Session Tokens',
+            description: 'User Logged In Successfully',
         },
         V1LoginResponseDto,
     )
+    @ApiStandardisedResponse({
+        status: 401,
+        description: 'User is Not Verified or Email or Password is Incorrect',
+    })
     @ApiBody({ type: V1LoginRequestDto })
     async login(@Req() request: RequestWithUser): Promise<V1LoginResponseDto> {
         const user = request.user;
