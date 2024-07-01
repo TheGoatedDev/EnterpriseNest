@@ -7,6 +7,8 @@ import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 
+import { V1FindSessionByTokenQueryHandler } from '@/application/session/v1/queries/find-session-by-token/find-session-by-token.handler';
+import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-user-by-id/find-user-by-id.handler';
 import { RefreshTokenPayload } from '@/domain/authentication/refresh-token-payload.type';
 import { User } from '@/domain/user/user.entity';
 import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
@@ -31,31 +33,66 @@ export class RefreshTokenStrategy extends PassportStrategy(
         super(options);
     }
 
-    validate(
+    async validate(
         request: RequestWithUser,
         payload: RefreshTokenPayload,
     ): Promise<User> {
         if (payload.type !== 'refresh-token') {
             throw new BadRequestException(
-                'Invalid Access Token: Invalid Token Type',
+                'Invalid Refresh Token: Invalid Token Type',
             );
         }
 
-        if (!payload.data.uuid) {
+        if (!payload.data.token) {
             throw new UnauthorizedException(
-                'Invalid Access Token: Missing User ID',
+                'Invalid Refresh Token: Missing Token',
             );
         }
+
+        const session = await V1FindSessionByTokenQueryHandler.runHandler(
+            this.queryBus,
+            {
+                sessionToken: payload.data.token,
+            },
+        );
 
         if (!payload.data.ip || payload.data.ip !== request.ip) {
             throw new UnauthorizedException(
-                'Invalid Access Token: IP Mismatch',
+                'Invalid Refresh Token: Payload IP Mismatch with Request IP',
             );
         }
 
-        // TODO: Implement the query handler to find the user by the UUID of the refresh token
-        throw new Error('Method not implemented.');
+        if (!session) {
+            throw new UnauthorizedException(
+                'Invalid Refresh Token: Session not found',
+            );
+        }
 
-        // return Promise.resolve(user);
+        if (session.ip !== payload.data.ip) {
+            throw new UnauthorizedException(
+                'Invalid Refresh Token: Payload IP mismatch with session IP',
+            );
+        }
+
+        if (session.ip !== request.ip) {
+            throw new UnauthorizedException(
+                'Invalid Refresh Token: Session IP mismatch with request IP',
+            );
+        }
+
+        const user = await V1FindUserByIDQueryHandler.runHandler(
+            this.queryBus,
+            {
+                id: session.userId,
+            },
+        );
+
+        if (!user) {
+            throw new UnauthorizedException(
+                'Invalid Refresh Token: User not found',
+            );
+        }
+
+        return Promise.resolve(user);
     }
 }
