@@ -1,20 +1,18 @@
 import type { ClassProvider } from '@nestjs/common';
 import { Global, Module } from '@nestjs/common';
 
-import { MockUserRepository } from '@/infrastructure/repositories/modules/user/mock/mock.user.repository';
-import { USER_REPOSITORY } from '@/infrastructure/repositories/modules/user/user.repository.constants';
+import { MockSessionRepositoryProvider } from '@/infrastructure/repositories/modules/session/mock/mock.session.repository';
+import { MockUserRepositoryProvider } from '@/infrastructure/repositories/modules/user/mock/mock.user.repository';
 import { HashingService } from '@/shared/services/hashing/hashing.service';
 
 export const MOCK_REPOSITORIES: ClassProvider[] = [
-    {
-        provide: USER_REPOSITORY,
-        useClass: MockUserRepository,
-    },
+    MockUserRepositoryProvider,
+    MockSessionRepositoryProvider,
 ];
 
 @Global()
 @Module({
     providers: [...MOCK_REPOSITORIES, HashingService],
-    exports: MOCK_REPOSITORIES.map((provider) => provider.provide),
+    exports: MOCK_REPOSITORIES.map((provider) => provider),
 })
 export class MockRepositoriesModule {}
