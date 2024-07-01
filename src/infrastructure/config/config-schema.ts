@@ -29,6 +29,8 @@ export const ConfigSchema = z.object({
 
     // Authentication
     AUTH_JWT_SECRET: z.string(),
+    AUTH_JWT_ACCESS_SECRET: z.string(),
+    AUTH_JWT_REFRESH_SECRET: z.string(),
     AUTH_ACCESS_TOKEN_EXPIRATION: z.string().default('1h'),
     AUTH_REFRESH_TOKEN_EXPIRATION: z.string().default('7d'),
 
