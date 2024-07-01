@@ -9,7 +9,7 @@ import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 
 import { V1FindSessionByTokenQueryHandler } from '@/application/session/v1/queries/find-session-by-token/find-session-by-token.handler';
 import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-user-by-id/find-user-by-id.handler';
-import { RefreshTokenPayload } from '@/domain/authentication/refresh-token-payload.type';
+import { RefreshTokenPayload } from '@/domain/jwt/refresh-token-payload.type';
 import { User } from '@/domain/user/user.entity';
 import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
 import { RequestWithUser } from '@/types/express/request-with-user';

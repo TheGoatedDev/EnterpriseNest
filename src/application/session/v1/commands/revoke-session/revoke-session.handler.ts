@@ -24,7 +24,9 @@ export class V1RevokeSessionCommandHandler
         bus: CommandBus,
         command: V1RevokeSessionCommand,
     ): Promise<Session> {
-        return bus.execute<V1RevokeSessionCommand, Session>(command);
+        return bus.execute<V1RevokeSessionCommand, Session>(
+            new V1RevokeSessionCommand(command.session),
+        );
     }
 
     async execute(command: V1RevokeSessionCommand): Promise<Session> {

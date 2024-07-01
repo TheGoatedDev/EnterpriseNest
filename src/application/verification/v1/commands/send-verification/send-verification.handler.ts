@@ -7,8 +7,8 @@ import {
 } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 
+import { VerifyEmailTokenPayload } from '@/domain/jwt/verify-email-token-payload.type';
 import { OnVerificationSentEvent } from '@/domain/verification/events/on-verification-sent.event';
-import { VerifyEmailTokenPayload } from '@/domain/verification/verify-email-token-payload.type';
 import { EmailConfigService } from '@/infrastructure/config/configs/email.config.service';
 import { MAILER } from '@/infrastructure/mailer/mailer.constants';
 import type { MailerPort } from '@/infrastructure/mailer/mailer.port';
