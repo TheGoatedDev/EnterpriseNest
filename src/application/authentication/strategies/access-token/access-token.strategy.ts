@@ -44,7 +44,7 @@ export class AccessTokenStrategy extends PassportStrategy(
         }
 
         if (!payload.data.sub) {
-            throw new UnauthorizedException(
+            throw new BadRequestException(
                 'Invalid Access Token: Missing User ID',
             );
         }
