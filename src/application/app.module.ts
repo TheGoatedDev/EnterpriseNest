@@ -8,13 +8,14 @@ import { AuthenticationModule } from '@/application/authentication/authenticatio
 import { AccessTokenGuard } from '@/application/authentication/strategies/access-token/access-token.guard';
 import { HealthModule } from '@/application/health/health.module';
 import { PingModule } from '@/application/ping/ping.module';
+import { SessionModule } from '@/application/session/session.module';
 import { UserModule } from '@/application/user/user.module';
 import { VerificationModule } from '@/application/verification/verification.module';
 import { CacheModule } from '@/infrastructure/cache/cache.module';
 import { ConfigModule } from '@/infrastructure/config/config.module';
 import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
-import { EmailModule } from '@/infrastructure/email/email.module';
 import { LoggerModule } from '@/infrastructure/logger/logger.module';
+import { MailerModule } from '@/infrastructure/mailer/mailer.module';
 import { RepositoriesModule } from '@/infrastructure/repositories/repositories.module';
 import { ThrottlerModule } from '@/infrastructure/throttler/throttler.module';
 import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-class-serializer.interceptor';
@@ -37,12 +38,13 @@ import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-clas
                 },
             },
         }), // OpenTelemetry Module for Tracing
-        EmailModule, // Email Module
+        MailerModule, // Email Module
 
         // Application Modules
         HealthModule,
         PingModule,
         AuthenticationModule,
+        SessionModule,
         VerificationModule,
         UserModule,
     ],
