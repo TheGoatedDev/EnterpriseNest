@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AccessTokenPayload } from '@/domain/authentication/access-token-payload.type';
 import { OnLoginUserEvent } from '@/domain/authentication/events/on-login-user.event';
 import { RefreshTokenPayload } from '@/domain/authentication/refresh-token-payload.type';
+import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
 
 import { V1LoginCommand } from './login.command';
 
@@ -27,6 +28,7 @@ export class V1LoginCommandHandler
     constructor(
         private readonly jwtService: JwtService,
         private readonly eventBus: EventBus,
+        private readonly authenticationConfigService: AuthenticationConfigService,
     ) {}
 
     static runHandler(
@@ -60,8 +62,10 @@ export class V1LoginCommandHandler
                 },
             } satisfies AccessTokenPayload,
             {
-                expiresIn: '24h',
+                expiresIn:
+                    this.authenticationConfigService.accessTokenExpiration,
                 algorithm: 'HS512',
+                secret: this.authenticationConfigService.jwtAccessSecret,
             },
         );
 
@@ -70,12 +74,14 @@ export class V1LoginCommandHandler
                 type: 'refresh-token',
                 data: {
                     ip: command.ip,
-                    uuid: 'UNKNOWN', // TODO: Implement UUID for refresh tokens
+                    token: 'UNKNOWN', // TODO: Implement UUID for refresh tokens
                 },
             } satisfies RefreshTokenPayload,
             {
-                expiresIn: '7d',
+                expiresIn:
+                    this.authenticationConfigService.refreshTokenExpiration,
                 algorithm: 'HS512',
+                secret: this.authenticationConfigService.jwtRefreshSecret,
             },
         );
 
