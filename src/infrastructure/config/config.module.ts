@@ -15,6 +15,7 @@ import { ThrottlerConfigService } from '@/infrastructure/config/configs/throttle
         NestConfigModule.forRoot({
             cache: true,
             validate: (config) => ConfigSchema.parse(config),
+
             envFilePath: ['.env', '.env.local'],
         }),
     ],

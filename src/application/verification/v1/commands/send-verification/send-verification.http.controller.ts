@@ -35,7 +35,7 @@ export class V1SendVerificationController {
             ttl: 60 * 60 * 1000,
         },
     })
-    @Post('/verification/send-verification')
+    @Post('/verification/send')
     @ApiOperation({
         summary: 'Send Verification Email',
     })

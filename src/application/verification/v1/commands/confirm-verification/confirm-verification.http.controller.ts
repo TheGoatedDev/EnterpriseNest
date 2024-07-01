@@ -25,7 +25,7 @@ export class V1ConfirmVerificationController {
             ttl: 60 * 60 * 1000,
         },
     })
-    @Post('/verification/confirm-verification')
+    @Post('/verification/confirm')
     @ApiOperation({
         summary: 'Confirm Verification Email',
     })
