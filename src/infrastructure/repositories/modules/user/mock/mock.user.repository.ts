@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { type ClassProvider, Injectable } from '@nestjs/common';
 
 import { User } from '@/domain/user/user.entity';
 import { AbstractMockRepository } from '@/infrastructure/repositories/modules/mock/abstracts/mock.repository';
+import { USER_REPOSITORY } from '@/infrastructure/repositories/modules/user/user.repository.constants';
 import { UserRepositoryPort } from '@/infrastructure/repositories/modules/user/user.repository.port';
 import { GenericAlreadyExistsException } from '@/shared/exceptions/already-exists.exception';
 import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
@@ -53,3 +54,8 @@ export class MockUserRepository
         return Promise.resolve(entity);
     };
 }
+
+export const MockUserRepositoryProvider: ClassProvider = {
+    provide: USER_REPOSITORY,
+    useClass: MockUserRepository,
+};
