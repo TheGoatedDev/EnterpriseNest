@@ -28,7 +28,9 @@ export class V1CreateSessionCommandHandler
         bus: CommandBus,
         command: V1CreateSessionCommand,
     ): Promise<Session> {
-        return bus.execute<V1CreateSessionCommand, Session>(command);
+        return bus.execute<V1CreateSessionCommand, Session>(
+            new V1CreateSessionCommand(command.user, command.ip),
+        );
     }
 
     async execute(command: V1CreateSessionCommand): Promise<Session> {

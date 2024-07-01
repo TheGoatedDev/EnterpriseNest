@@ -24,7 +24,7 @@ export class V1FindSessionByTokenQueryHandler
         query: V1FindSessionByTokenQuery,
     ): Promise<Session | undefined> {
         return bus.execute<V1FindSessionByTokenQuery, Session | undefined>(
-            query,
+            new V1FindSessionByTokenQuery(query.sessionToken),
         );
     }
 

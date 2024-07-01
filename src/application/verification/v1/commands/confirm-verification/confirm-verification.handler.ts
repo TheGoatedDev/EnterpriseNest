@@ -14,9 +14,9 @@ import { JwtService } from '@nestjs/jwt';
 
 import { V1UpdateUserCommandHandler } from '@/application/user/v1/commands/update-user/update-user.handler';
 import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-user-by-id/find-user-by-id.handler';
+import { VerifyEmailTokenPayload } from '@/domain/jwt/verify-email-token-payload.type';
 import { User } from '@/domain/user/user.entity';
 import { OnVerificationConfirmedEvent } from '@/domain/verification/events/on-verification-confirmed.event';
-import { VerifyEmailTokenPayload } from '@/domain/verification/verify-email-token-payload.type';
 
 import { V1ConfirmVerificationCommand } from './confirm-verification.command';
 

@@ -25,7 +25,9 @@ export class V1FindAllSessionsByUserQueryHandler
         bus: QueryBus,
         query: V1FindAllSessionsByUserQuery,
     ): Promise<Session[]> {
-        return bus.execute<V1FindAllSessionsByUserQuery, Session[]>(query);
+        return bus.execute<V1FindAllSessionsByUserQuery, Session[]>(
+            new V1FindAllSessionsByUserQuery(query.user),
+        );
     }
 
     execute(query: V1FindAllSessionsByUserQuery): Promise<Session[]> {
