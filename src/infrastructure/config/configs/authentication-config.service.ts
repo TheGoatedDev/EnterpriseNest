@@ -15,6 +15,18 @@ export class AuthenticationConfigService {
         );
     }
 
+    get jwtAccessSecret() {
+        return this.configService.get<Config['AUTH_JWT_ACCESS_SECRET']>(
+            'AUTH_JWT_ACCESS_SECRET',
+        );
+    }
+
+    get jwtRefreshSecret() {
+        return this.configService.get<Config['AUTH_JWT_REFRESH_SECRET']>(
+            'AUTH_JWT_REFRESH_SECRET',
+        );
+    }
+
     get accessTokenExpiration() {
         return this.configService.get<Config['AUTH_ACCESS_TOKEN_EXPIRATION']>(
             'AUTH_ACCESS_TOKEN_EXPIRATION',
