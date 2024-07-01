@@ -7,9 +7,10 @@ import {
 } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 
-import { AccessTokenPayload } from '@/domain/authentication/access-token-payload.type';
+import { V1CreateSessionCommandHandler } from '@/application/session/v1/commands/create-session/create-session.handler';
 import { OnLoginUserEvent } from '@/domain/authentication/events/on-login-user.event';
-import { RefreshTokenPayload } from '@/domain/authentication/refresh-token-payload.type';
+import { AccessTokenPayload } from '@/domain/jwt/access-token-payload.type';
+import { RefreshTokenPayload } from '@/domain/jwt/refresh-token-payload.type';
 import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
 
 import { V1LoginCommand } from './login.command';
@@ -29,6 +30,7 @@ export class V1LoginCommandHandler
         private readonly jwtService: JwtService,
         private readonly eventBus: EventBus,
         private readonly authenticationConfigService: AuthenticationConfigService,
+        private readonly commandBus: CommandBus,
     ) {}
 
     static runHandler(
@@ -43,15 +45,20 @@ export class V1LoginCommandHandler
         );
     }
 
-    execute(command: V1LoginCommand): Promise<V1LoginCommandHandlerResponse> {
+    async execute(
+        command: V1LoginCommand,
+    ): Promise<V1LoginCommandHandlerResponse> {
         this.logger.log(
             `User ${command.user.id} has logged in with IP ${command.ip ?? 'unknown'}`,
         );
 
-        // const session = await V1CreateSessionCommandHandler.runHandler(
-        //     this.commandBus,
-        //     new V1CreateSessionCommand(command.user, command.ip),
-        // );
+        const session = await V1CreateSessionCommandHandler.runHandler(
+            this.commandBus,
+            {
+                user: command.user,
+                ip: command.ip,
+            },
+        );
 
         const accessToken = this.jwtService.sign(
             {
@@ -74,7 +81,7 @@ export class V1LoginCommandHandler
                 type: 'refresh-token',
                 data: {
                     ip: command.ip,
-                    token: 'UNKNOWN', // TODO: Implement UUID for refresh tokens
+                    token: session.token,
                 },
             } satisfies RefreshTokenPayload,
             {
