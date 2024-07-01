@@ -1,4 +1,4 @@
-export interface EmailOptions {
+export interface MailerOptions {
     from: string;
     to: string | string[];
     subject: string;
@@ -16,8 +16,8 @@ export interface EmailOptions {
     }[];
 }
 
-export interface EmailPort {
-    sendEmail: (email: EmailOptions) => Promise<void>;
+export interface MailerPort {
+    sendEmail: (email: MailerOptions) => Promise<void>;
 
-    sendEmails: (emails: EmailOptions[]) => Promise<void>;
+    sendEmails: (emails: MailerOptions[]) => Promise<void>;
 }

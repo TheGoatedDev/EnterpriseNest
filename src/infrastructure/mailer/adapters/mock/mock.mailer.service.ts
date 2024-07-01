@@ -1,13 +1,13 @@
 import { Injectable, Logger, Provider } from '@nestjs/common';
 
-import { EMAIL } from '@/infrastructure/email/email.constants';
-import { EmailOptions, EmailPort } from '@/infrastructure/email/email.port';
+import { MAILER } from '@/infrastructure/mailer/mailer.constants';
+import { MailerOptions, MailerPort } from '@/infrastructure/mailer/mailer.port';
 
 @Injectable()
-class MockEmail implements EmailPort {
-    private readonly logger = new Logger(MockEmail.name);
+class MockMailerService implements MailerPort {
+    private readonly logger = new Logger(MockMailerService.name);
 
-    sendEmail(email: EmailOptions): Promise<void> {
+    sendEmail(email: MailerOptions): Promise<void> {
         const content = email.text ?? email.html ?? '';
 
         this.logger.log(
@@ -17,7 +17,7 @@ class MockEmail implements EmailPort {
         return Promise.resolve();
     }
 
-    sendEmails(emails: EmailOptions[]): Promise<void> {
+    sendEmails(emails: MailerOptions[]): Promise<void> {
         for (const email of emails) {
             const content = email.text ?? email.html ?? '';
 
@@ -30,7 +30,7 @@ class MockEmail implements EmailPort {
     }
 }
 
-export const MockEmailService: Provider = {
-    provide: EMAIL,
-    useClass: MockEmail,
+export const MockMailerServiceProvider: Provider = {
+    provide: MAILER,
+    useClass: MockMailerService,
 };
