@@ -8,7 +8,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 
 import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-user-by-id/find-user-by-id.handler';
-import { AccessTokenPayload } from '@/domain/authentication/access-token-payload.type';
+import { AccessTokenPayload } from '@/domain/jwt/access-token-payload.type';
 import { User } from '@/domain/user/user.entity';
 import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
 import { RequestWithUser } from '@/types/express/request-with-user';

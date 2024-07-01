@@ -42,8 +42,6 @@ export class AccessTokenGuard extends AuthGuard('accessToken') {
                 [context.getHandler(), context.getClass()],
             ) ?? [];
 
-        this.logger.log(`Required roles: ${requiredRoles.join(', ')}`);
-
         if (requiredRoles.length === 0) {
             return true;
         }
