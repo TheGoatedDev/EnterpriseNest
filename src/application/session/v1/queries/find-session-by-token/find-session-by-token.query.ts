@@ -1,3 +1,3 @@
 export class V1FindSessionByTokenQuery {
-    constructor(public readonly sessionToken: string) {}
+    constructor(public readonly refreshToken: string) {}
 }

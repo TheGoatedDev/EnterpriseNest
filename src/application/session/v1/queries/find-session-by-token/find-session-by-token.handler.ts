@@ -24,12 +24,12 @@ export class V1FindSessionByTokenQueryHandler
         query: V1FindSessionByTokenQuery,
     ): Promise<Session | undefined> {
         return bus.execute<V1FindSessionByTokenQuery, Session | undefined>(
-            new V1FindSessionByTokenQuery(query.sessionToken),
+            new V1FindSessionByTokenQuery(query.refreshToken),
         );
     }
 
     execute(query: V1FindSessionByTokenQuery): Promise<Session | undefined> {
-        this.logger.log(`Finding session by token ${query.sessionToken}`);
-        return this.sessionRepository.findOneByToken(query.sessionToken);
+        this.logger.log(`Finding session by token ${query.refreshToken}`);
+        return this.sessionRepository.findOneByToken(query.refreshToken);
     }
 }
