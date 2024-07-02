@@ -66,6 +66,7 @@ export class V1RefreshTokenCommandHandler
                 data: {
                     sub: command.user.id,
                     ip: command.ip,
+                    refreshToken: command.refreshToken,
                 },
             } satisfies AccessTokenPayload,
             {

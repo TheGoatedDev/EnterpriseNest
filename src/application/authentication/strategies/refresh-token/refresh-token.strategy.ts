@@ -1,9 +1,4 @@
-import {
-    ForbiddenException,
-    Injectable,
-    Logger,
-    UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
@@ -13,6 +8,7 @@ import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-u
 import { RefreshTokenPayload } from '@/domain/jwt/refresh-token-payload.type';
 import { User } from '@/domain/user/user.entity';
 import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
+import { GenericUnauthenticatedException } from '@/shared/exceptions/unauthenticated.exception';
 import { RequestWithUser } from '@/types/express/request-with-user';
 
 @Injectable()
@@ -44,13 +40,13 @@ export class RefreshTokenStrategy extends PassportStrategy(
         this.logger.log(`Validating Refresh Token: ${JSON.stringify(payload)}`);
 
         if (payload.type !== 'refresh-token') {
-            throw new ForbiddenException(
+            throw new UnauthorizedException(
                 'Invalid Refresh Token: Invalid Token Type',
             );
         }
 
         if (!payload.data.token) {
-            throw new ForbiddenException(
+            throw new GenericUnauthenticatedException(
                 'Invalid Refresh Token: Missing Token',
             );
         }
@@ -63,25 +59,25 @@ export class RefreshTokenStrategy extends PassportStrategy(
         );
 
         if (!payload.data.ip || payload.data.ip !== request.ip) {
-            throw new UnauthorizedException(
+            throw new GenericUnauthenticatedException(
                 'Invalid Refresh Token: Payload IP Mismatch with Request IP',
             );
         }
 
         if (!session) {
-            throw new ForbiddenException(
+            throw new GenericUnauthenticatedException(
                 'Invalid Refresh Token: Session not found',
             );
         }
 
         if (session.ip !== payload.data.ip) {
-            throw new ForbiddenException(
+            throw new GenericUnauthenticatedException(
                 'Invalid Refresh Token: Payload IP mismatch with session IP',
             );
         }
 
         if (session.ip !== request.ip) {
-            throw new ForbiddenException(
+            throw new GenericUnauthenticatedException(
                 'Invalid Refresh Token: Session IP mismatch with request IP',
             );
         }
@@ -94,7 +90,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
         );
 
         if (!user) {
-            throw new ForbiddenException(
+            throw new GenericUnauthenticatedException(
                 'Invalid Refresh Token: User not found',
             );
         }
