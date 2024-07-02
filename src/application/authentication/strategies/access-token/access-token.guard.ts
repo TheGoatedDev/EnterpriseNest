@@ -33,6 +33,7 @@ export class AccessTokenGuard extends AuthGuard('accessToken') {
         const baseCanActivate = await super.canActivate(context);
 
         if (!baseCanActivate) {
+            this.logger.error('Access Token is invalid');
             return baseCanActivate;
         }
 

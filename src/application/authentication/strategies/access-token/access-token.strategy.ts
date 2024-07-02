@@ -25,7 +25,7 @@ export class AccessTokenStrategy extends PassportStrategy(
         const options: StrategyOptions = {
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: authenticationConfig.jwtSecret,
+            secretOrKey: authenticationConfig.jwtAccessSecret,
             algorithms: ['HS256', 'HS384', 'HS512'],
             passReqToCallback: true,
         };
