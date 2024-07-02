@@ -1,17 +1,13 @@
-import {
-    Controller,
-    Post,
-    Req,
-    UnauthorizedException,
-    UseGuards,
-} from '@nestjs/common';
+import { Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 
+import { CurrentUser } from '@/application/authentication/decorator/current-user.decorator';
 import { Public } from '@/application/authentication/decorator/public.decorator';
 import { LocalAuthGuard } from '@/application/authentication/strategies/local/local.guard';
 import { V1LoginCommandHandler } from '@/application/authentication/v1/commands/login/login.handler';
+import { User } from '@/domain/user/user.entity';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 import type { RequestWithUser } from '@/types/express/request-with-user';
 
@@ -50,13 +46,10 @@ export class V1LoginController {
         description: 'User is Not Verified or Email or Password is Incorrect',
     })
     @ApiBody({ type: V1LoginRequestDto })
-    async login(@Req() request: RequestWithUser): Promise<V1LoginResponseDto> {
-        const user = request.user;
-
-        if (!user) {
-            throw new UnauthorizedException("Email or password doesn't match");
-        }
-
+    async login(
+        @Req() request: RequestWithUser,
+        @CurrentUser() user: User,
+    ): Promise<V1LoginResponseDto> {
         return V1LoginCommandHandler.runHandler(this.commandBus, {
             user,
             ip: request.ip,
