@@ -1,15 +1,12 @@
-import {
-    ExecutionContext,
-    Injectable,
-    Logger,
-    UnauthorizedException,
-} from '@nestjs/common';
+import { ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
 import { IS_PUBLIC_KEY } from '@/application/authentication/decorator/public.decorator';
 import { ROLES_KEY } from '@/application/authentication/decorator/roles.decorator';
 import { UserRoleEnum } from '@/domain/user/user-role.enum';
+import { GenericNoPermissionException } from '@/shared/exceptions/no-permission.exception';
+import { GenericUnauthenticatedException } from '@/shared/exceptions/unauthenticated.exception';
 import { RequestWithUser } from '@/types/express/request-with-user';
 
 @Injectable()
@@ -50,7 +47,7 @@ export class AccessTokenGuard extends AuthGuard('accessToken') {
         const { user } = context.switchToHttp().getRequest<RequestWithUser>();
 
         if (!user) {
-            throw new UnauthorizedException('Not authenticated');
+            throw new GenericUnauthenticatedException('Not authenticated');
         }
 
         const hasRole = requiredRoles.some((role) => user.role.includes(role));
@@ -59,7 +56,7 @@ export class AccessTokenGuard extends AuthGuard('accessToken') {
             this.logger.error(
                 `User does not have the required role: ${requiredRoles.join(', ')}`,
             );
-            throw new UnauthorizedException(
+            throw new GenericNoPermissionException(
                 `User does not have the required role: ${requiredRoles.join(', ')}`,
             );
         }
