@@ -62,6 +62,7 @@ export class V1LoginCommandHandler
                 type: 'access-token',
                 data: {
                     sub: command.user.id,
+                    refreshToken: session.token,
                     ip: command.ip,
                 },
             } satisfies AccessTokenPayload,

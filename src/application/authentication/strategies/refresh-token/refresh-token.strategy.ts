@@ -99,6 +99,8 @@ export class RefreshTokenStrategy extends PassportStrategy(
             );
         }
 
+        request.session = session;
+
         return Promise.resolve(user);
     }
 }

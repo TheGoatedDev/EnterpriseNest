@@ -1,12 +1,13 @@
 import {
     BadRequestException,
+    ForbiddenException,
     Injectable,
-    UnauthorizedException,
 } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 
+import { V1FindSessionByTokenQueryHandler } from '@/application/session/v1/queries/find-session-by-token/find-session-by-token.handler';
 import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-user-by-id/find-user-by-id.handler';
 import { AccessTokenPayload } from '@/domain/jwt/access-token-payload.type';
 import { User } from '@/domain/user/user.entity';
@@ -49,10 +50,14 @@ export class AccessTokenStrategy extends PassportStrategy(
             );
         }
 
-        if (!payload.data.ip || payload.data.ip !== request.ip) {
-            throw new UnauthorizedException(
-                'Invalid Access Token: IP Mismatch',
+        if (!payload.data.refreshToken) {
+            throw new BadRequestException(
+                'Invalid Access Token: Missing Refresh Token',
             );
+        }
+
+        if (!payload.data.ip || payload.data.ip !== request.ip) {
+            throw new ForbiddenException('Invalid Access Token: IP Mismatch');
         }
 
         const user = await V1FindUserByIDQueryHandler.runHandler(
@@ -63,16 +68,37 @@ export class AccessTokenStrategy extends PassportStrategy(
         );
 
         if (!user) {
-            throw new UnauthorizedException(
+            throw new ForbiddenException(
                 'Invalid Access Token: User Not Found',
             );
         }
 
         if (!user.verifiedAt) {
-            throw new UnauthorizedException(
+            throw new ForbiddenException(
                 'Invalid Access Token: User Not Verified',
             );
         }
+
+        const session = await V1FindSessionByTokenQueryHandler.runHandler(
+            this.queryBus,
+            {
+                refreshToken: payload.data.refreshToken,
+            },
+        );
+
+        if (!session) {
+            throw new ForbiddenException(
+                'Invalid Access Token: Session Not Found',
+            );
+        }
+
+        if (session.isRevoked) {
+            throw new ForbiddenException(
+                'Invalid Access Token: Session Revoked',
+            );
+        }
+
+        request.session = session;
 
         return Promise.resolve(user);
     }

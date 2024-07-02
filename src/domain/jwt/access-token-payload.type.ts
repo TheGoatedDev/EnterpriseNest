@@ -4,6 +4,7 @@ export type AccessTokenPayload = BaseTokenPayload<
     'access-token',
     {
         sub: string;
+        refreshToken: string;
         ip?: string;
     }
 >;
