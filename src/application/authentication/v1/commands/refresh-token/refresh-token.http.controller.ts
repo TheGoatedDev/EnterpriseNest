@@ -1,21 +1,16 @@
-import {
-    Controller,
-    Post,
-    Req,
-    UnauthorizedException,
-    UseGuards,
-} from '@nestjs/common';
+import { Controller, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Throttle } from '@nestjs/throttler';
+import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 
+import { CurrentUser } from '@/application/authentication/decorator/current-user.decorator';
 import { Public } from '@/application/authentication/decorator/public.decorator';
-import { LocalAuthGuard } from '@/application/authentication/strategies/local/local.guard';
+import { Token } from '@/application/authentication/decorator/token.decorator';
+import { RefreshTokenGuard } from '@/application/authentication/strategies/refresh-token/refresh-token.guard';
 import { V1RefreshTokenCommandHandler } from '@/application/authentication/v1/commands/refresh-token/refresh-token.handler';
+import { User } from '@/domain/user/user.entity';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 import type { RequestWithUser } from '@/types/express/request-with-user';
 
-import { V1RefreshTokenRequestDto } from './dto/refresh-token.request.dto';
 import { V1RefreshTokenResponseDto } from './dto/refresh-token.response.dto';
 
 @ApiTags('Authentication')
@@ -25,16 +20,11 @@ import { V1RefreshTokenResponseDto } from './dto/refresh-token.response.dto';
 export class V1RefreshTokenController {
     constructor(private readonly commandBus: CommandBus) {}
 
-    @Public()
-    // Throttle the refresh-token endpoint to prevent brute force attacks (5 Requests per 1 minute)
-    @Throttle({
-        default: {
-            limit: 5,
-            ttl: 60 * 1000,
-        },
-    })
-    @UseGuards(LocalAuthGuard)
-    @Post('/authentication/refresh-token')
+    @Public() // This is to bypass the AccessTokenGuard
+    @UseGuards(RefreshTokenGuard)
+    @ApiSecurity('refresh-token')
+    @Post('/authentication/refresh')
+    @HttpCode(200)
     @ApiOperation({
         summary:
             'RefreshToken to a User Account and get access and refresh token',
@@ -50,24 +40,15 @@ export class V1RefreshTokenController {
         status: 401,
         description: 'User is Not Verified or Email or Password is Incorrect',
     })
-    @ApiBody({ type: V1RefreshTokenRequestDto })
     async refreshToken(
         @Req() request: RequestWithUser,
+        @CurrentUser() user: User,
+        @Token() token: string,
     ): Promise<V1RefreshTokenResponseDto> {
-        const user = request.user;
-
-        if (!user) {
-            throw new UnauthorizedException("Email or password doesn't match");
-        }
-
         return V1RefreshTokenCommandHandler.runHandler(this.commandBus, {
             user,
+            refreshToken: token,
             ip: request.ip,
-        }).then((token) => {
-            return {
-                accessToken: token.accessToken,
-                refreshToken: token.refreshToken,
-            };
         });
     }
 }
