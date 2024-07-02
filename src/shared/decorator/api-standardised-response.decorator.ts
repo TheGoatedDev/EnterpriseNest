@@ -6,25 +6,27 @@ import {
     getSchemaPath,
 } from '@nestjs/swagger';
 
-import { StandardHttpResponseDto } from '@/core/dto/standard-http-response.dto';
+import { StandardHttpResponseDto } from '@/shared/dto/standard-http-response.dto';
 
 export const ApiStandardisedResponse = <DataDto extends Type<unknown>>(
     apiReponseOptions: ApiResponseOptions,
-    dataDto: DataDto,
+    dataDto?: DataDto,
 ) =>
     applyDecorators(
-        ApiExtraModels(StandardHttpResponseDto, dataDto),
+        ApiExtraModels(StandardHttpResponseDto, ...(dataDto ? [dataDto] : [])),
         ApiResponse({
             ...apiReponseOptions,
             schema: {
                 allOf: [
                     { $ref: getSchemaPath(StandardHttpResponseDto) },
                     {
-                        properties: {
-                            data: {
-                                $ref: getSchemaPath(dataDto),
+                        ...(dataDto && {
+                            properties: {
+                                data: {
+                                    $ref: getSchemaPath(dataDto),
+                                },
                             },
-                        },
+                        }),
                     },
                 ],
             },

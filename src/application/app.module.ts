@@ -4,18 +4,20 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { OpenTelemetryModule } from 'nestjs-otel';
 
-import { AuthenticationModule } from '@/application/modules/authentication/authentication.module';
-import { AccessTokenGuard } from '@/application/modules/authentication/strategies/access-token/access-token.guard';
-import { UserModule } from '@/application/modules/user/user.module';
-import { CacheModule } from '@/application/system/cache/cache.module';
-import { ConfigModule } from '@/application/system/config/config.module';
-import { CqrsModule } from '@/application/system/cqrs/cqrs.module';
-import { HealthModule } from '@/application/system/health/health.module';
-import { JwtModule } from '@/application/system/jwt/jwt.module';
-import { LoggerModule } from '@/application/system/logger/logger.module';
-import { PingModule } from '@/application/system/ping/ping.module';
-import { RepositoriesModule } from '@/application/system/repositories/repositories.module';
-import { ThrottlerModule } from '@/application/system/throttler/throttler.module';
+import { AuthenticationModule } from '@/application/authentication/authentication.module';
+import { AccessTokenGuard } from '@/application/authentication/strategies/access-token/access-token.guard';
+import { HealthModule } from '@/application/health/health.module';
+import { PingModule } from '@/application/ping/ping.module';
+import { SessionModule } from '@/application/session/session.module';
+import { UserModule } from '@/application/user/user.module';
+import { VerificationModule } from '@/application/verification/verification.module';
+import { CacheModule } from '@/infrastructure/cache/cache.module';
+import { ConfigModule } from '@/infrastructure/config/config.module';
+import { CqrsModule } from '@/infrastructure/cqrs/cqrs.module';
+import { LoggerModule } from '@/infrastructure/logger/logger.module';
+import { MailerModule } from '@/infrastructure/mailer/mailer.module';
+import { RepositoriesModule } from '@/infrastructure/repositories/repositories.module';
+import { ThrottlerModule } from '@/infrastructure/throttler/throttler.module';
 import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-class-serializer.interceptor';
 
 @Module({
@@ -28,7 +30,6 @@ import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-clas
         ThrottlerModule, // Throttler Module
         RepositoriesModule, // Repositories Module
         ScheduleModule.forRoot(), // Schedule Module for Cron Jobs
-        JwtModule, // JWT Module for Authentication
         OpenTelemetryModule.forRoot({
             metrics: {
                 hostMetrics: true,
@@ -37,11 +38,14 @@ import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-clas
                 },
             },
         }), // OpenTelemetry Module for Tracing
-        HealthModule,
-        PingModule,
+        MailerModule, // Email Module
 
         // Application Modules
+        HealthModule,
+        PingModule,
         AuthenticationModule,
+        SessionModule,
+        VerificationModule,
         UserModule,
     ],
     providers: [

@@ -1,0 +1,1 @@
+export const SESSION_REPOSITORY = Symbol('SESSION_REPOSITORY');

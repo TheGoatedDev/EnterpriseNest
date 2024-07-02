@@ -7,7 +7,7 @@ import { ClassSerializerInterceptor, Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
 import { map } from 'rxjs';
 
-import { UserRoleEnum } from '@/application/modules/user/entity/user-role.enum';
+import { UserRoleEnum } from '@/domain/user/user-role.enum';
 import { RequestWithUser } from '@/types/express/request-with-user';
 
 @Injectable()

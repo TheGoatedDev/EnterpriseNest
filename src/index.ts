@@ -9,7 +9,7 @@ import helmet from 'helmet';
 import { Logger as PinoLogger } from 'nestjs-pino';
 
 import { AppModule } from '@/application/app.module';
-import { MainConfigService } from '@/application/system/config/configs/main-config.service';
+import { MainConfigService } from '@/infrastructure/config/configs/main-config.service';
 import { StandardHttpResponseInterceptor } from '@/shared/interceptors/standard-http-response.interceptor';
 import { otelSDK } from '@/shared/utilities/tracing';
 
