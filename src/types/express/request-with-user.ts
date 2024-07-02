@@ -1,7 +1,9 @@
 import { Request } from 'express';
 
-import { User } from '@/application/modules/user/entity/user.entity';
+import { Session } from '@/domain/session/session.entity';
+import { User } from '@/domain/user/user.entity';
 
 export interface RequestWithUser extends Request {
     user?: User;
+    session?: Session;
 }

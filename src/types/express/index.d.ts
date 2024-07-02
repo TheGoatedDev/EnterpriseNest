@@ -1,4 +1,4 @@
-import { User as BaseUser } from '@/application/modules/user/entity/user.entity';
+import { User as BaseUser } from '@/domain/user/user.entity';
 
 export {};
 

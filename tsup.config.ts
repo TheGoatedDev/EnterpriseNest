@@ -11,6 +11,13 @@ const tsupConfig = defineConfig({
     silent: !isWatch,
     onSuccess: isWatch ? 'node dist/index.js' : undefined,
     tsconfig: 'tsconfig.json',
-});
+    minify: isDev ? false : "terser",
+    treeshake: true,
+    terserOptions: {
+        keep_classnames: true,
+        compress: true
+
+    }
+})
 
 export default tsupConfig;

@@ -9,7 +9,7 @@ import { Response } from 'express';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { StandardHttpResponseDto } from '@/core/dto/standard-http-response.dto';
+import { StandardHttpResponseDto } from '@/shared/dto/standard-http-response.dto';
 
 @Injectable()
 export class StandardHttpResponseInterceptor<T> implements NestInterceptor {
