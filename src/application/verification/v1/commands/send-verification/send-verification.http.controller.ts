@@ -1,10 +1,4 @@
-import {
-    Body,
-    Controller,
-    ForbiddenException,
-    HttpCode,
-    Post,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
@@ -12,7 +6,9 @@ import { Throttle } from '@nestjs/throttler';
 import { Public } from '@/application/authentication/decorator/public.decorator';
 import { V1FindUserByEmailQueryHandler } from '@/application/user/v1/queries/find-user-by-email/find-user-by-email.handler';
 import { V1SendVerificationCommandHandler } from '@/application/verification/v1/commands/send-verification/send-verification.handler';
+import { UserAlreadyVerifiedException } from '@/domain/user/exceptions/user-already-verified.exception';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
+import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
 
 import { V1SendVerificationRequestDto } from './dto/send-verification.request.dto';
 import { V1SendVerificationResponseDto } from './dto/send-verification.response.dto';
@@ -58,8 +54,12 @@ export class V1SendVerificationController {
             },
         );
 
-        if (!user || user.verifiedAt) {
-            throw new ForbiddenException('User not found or already verified');
+        if (!user) {
+            throw new GenericNotFoundException('User not found');
+        }
+
+        if (user.verifiedAt) {
+            throw new UserAlreadyVerifiedException();
         }
 
         await V1SendVerificationCommandHandler.runHandler(this.commandBus, {

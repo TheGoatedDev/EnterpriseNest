@@ -1,8 +1,4 @@
-import {
-    BadRequestException,
-    ForbiddenException,
-    Logger,
-} from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import {
     CommandBus,
     CommandHandler,
@@ -17,6 +13,7 @@ import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-u
 import { VerifyEmailTokenPayload } from '@/domain/jwt/verify-email-token-payload.type';
 import { User } from '@/domain/user/user.entity';
 import { OnVerificationConfirmedEvent } from '@/domain/verification/events/on-verification-confirmed.event';
+import { GenericUnauthenticatedException } from '@/shared/exceptions/unauthenticated.exception';
 
 import { V1ConfirmVerificationCommand } from './confirm-verification.command';
 
@@ -64,11 +61,11 @@ export class V1ConfirmVerificationCommandHandler
             .verifyAsync<VerifyEmailTokenPayload>(command.verificationToken)
             .catch(() => {
                 this.logger.error('Invalid Token');
-                throw new BadRequestException('Invalid Token');
+                throw new GenericUnauthenticatedException('Invalid Token');
             });
 
         if (payload.type !== 'verify-email') {
-            throw new ForbiddenException('Invalid Token Type');
+            throw new GenericUnauthenticatedException('Invalid Token Type');
         }
 
         const user = await V1FindUserByIDQueryHandler.runHandler(
@@ -79,7 +76,9 @@ export class V1ConfirmVerificationCommandHandler
         );
 
         if (!user) {
-            throw new ForbiddenException('User not found or Token is invalid');
+            throw new GenericUnauthenticatedException(
+                'User not found or Token is invalid',
+            );
         }
 
         user.verifiedAt = new Date();
