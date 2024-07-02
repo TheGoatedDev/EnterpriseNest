@@ -1,9 +1,9 @@
 import { Logger } from '@nestjs/common';
 import { EventBus, IQueryHandler, QueryBus, QueryHandler } from '@nestjs/cqrs';
 
-import { AuthenticationNoEmailMatchException } from '@/application/authentication/exceptions/no-email-match.exception';
-import { AuthenticationPasswordIncorrectException } from '@/application/authentication/exceptions/password-incorrect.exception';
 import { OnValidateCredentialsEvent } from '@/domain/authentication/events/on-validate-credentials.event';
+import { AuthenticationNoEmailMatchException } from '@/domain/authentication/exceptions/no-email-match.exception';
+import { AuthenticationPasswordIncorrectException } from '@/domain/authentication/exceptions/password-incorrect.exception';
 import { User } from '@/domain/user/user.entity';
 import { HashingService } from '@/shared/services/hashing/hashing.service';
 

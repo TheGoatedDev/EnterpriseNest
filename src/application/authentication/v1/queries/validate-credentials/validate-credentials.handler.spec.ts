@@ -3,8 +3,8 @@ import { JwtModule } from '@nestjs/jwt';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 
-import { AuthenticationNoEmailMatchException } from '@/application/authentication/exceptions/no-email-match.exception';
-import { AuthenticationPasswordIncorrectException } from '@/application/authentication/exceptions/password-incorrect.exception';
+import { AuthenticationNoEmailMatchException } from '@/domain/authentication/exceptions/no-email-match.exception';
+import { AuthenticationPasswordIncorrectException } from '@/domain/authentication/exceptions/password-incorrect.exception';
 import { User } from '@/domain/user/user.entity';
 import { USER_REPOSITORY } from '@/infrastructure/repositories/modules/user/user.repository.constants';
 import { UserRepositoryPort } from '@/infrastructure/repositories/modules/user/user.repository.port';
