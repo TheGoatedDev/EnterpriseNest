@@ -1,6 +1,7 @@
 import {
-    BadRequestException,
+    ForbiddenException,
     Injectable,
+    Logger,
     UnauthorizedException,
 } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
@@ -19,6 +20,8 @@ export class RefreshTokenStrategy extends PassportStrategy(
     Strategy,
     'refreshToken',
 ) {
+    private readonly logger = new Logger(RefreshTokenStrategy.name);
+
     constructor(
         private readonly queryBus: QueryBus,
         private readonly authenticationConfig: AuthenticationConfigService,
@@ -26,8 +29,9 @@ export class RefreshTokenStrategy extends PassportStrategy(
         const options: StrategyOptions = {
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: authenticationConfig.jwtSecret,
+            secretOrKey: authenticationConfig.jwtRefreshSecret,
             algorithms: ['HS256', 'HS384', 'HS512'],
+            passReqToCallback: true,
         };
 
         super(options);
@@ -37,14 +41,16 @@ export class RefreshTokenStrategy extends PassportStrategy(
         request: RequestWithUser,
         payload: RefreshTokenPayload,
     ): Promise<User> {
+        this.logger.log(`Validating Refresh Token: ${JSON.stringify(payload)}`);
+
         if (payload.type !== 'refresh-token') {
-            throw new BadRequestException(
+            throw new ForbiddenException(
                 'Invalid Refresh Token: Invalid Token Type',
             );
         }
 
         if (!payload.data.token) {
-            throw new UnauthorizedException(
+            throw new ForbiddenException(
                 'Invalid Refresh Token: Missing Token',
             );
         }
@@ -52,7 +58,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
         const session = await V1FindSessionByTokenQueryHandler.runHandler(
             this.queryBus,
             {
-                sessionToken: payload.data.token,
+                refreshToken: payload.data.token,
             },
         );
 
@@ -63,19 +69,19 @@ export class RefreshTokenStrategy extends PassportStrategy(
         }
 
         if (!session) {
-            throw new UnauthorizedException(
+            throw new ForbiddenException(
                 'Invalid Refresh Token: Session not found',
             );
         }
 
         if (session.ip !== payload.data.ip) {
-            throw new UnauthorizedException(
+            throw new ForbiddenException(
                 'Invalid Refresh Token: Payload IP mismatch with session IP',
             );
         }
 
         if (session.ip !== request.ip) {
-            throw new UnauthorizedException(
+            throw new ForbiddenException(
                 'Invalid Refresh Token: Session IP mismatch with request IP',
             );
         }
@@ -88,7 +94,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
         );
 
         if (!user) {
-            throw new UnauthorizedException(
+            throw new ForbiddenException(
                 'Invalid Refresh Token: User not found',
             );
         }
