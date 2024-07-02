@@ -36,10 +36,7 @@ export class V1LoginCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1LoginCommand,
-    ): Promise<{
-        accessToken: string;
-        refreshToken: string;
-    }> {
+    ): Promise<V1LoginCommandHandlerResponse> {
         return bus.execute<V1LoginCommand, V1LoginCommandHandlerResponse>(
             new V1LoginCommand(command.user, command.ip),
         );
