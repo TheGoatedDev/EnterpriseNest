@@ -24,15 +24,15 @@ export class V1RefreshTokenController {
     @UseGuards(RefreshTokenGuard)
     @ApiSecurity('refresh-token')
     @Post('/authentication/refresh')
-    @HttpCode(200)
+    @HttpCode(201)
     @ApiOperation({
         summary:
             'RefreshToken to a User Account and get access and refresh token',
     })
     @ApiStandardisedResponse(
         {
-            status: 200,
-            description: 'User Logged In Successfully',
+            status: 201,
+            description: 'Tokens Refreshed Successfully',
         },
         V1RefreshTokenResponseDto,
     )
