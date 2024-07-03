@@ -4,7 +4,6 @@ import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '@/application/authentication/decorator/current-user.decorator';
 import { Public } from '@/application/authentication/decorator/public.decorator';
-import { Token } from '@/application/authentication/decorator/token.decorator';
 import { RefreshTokenGuard } from '@/application/authentication/strategies/refresh-token/refresh-token.guard';
 import { V1RefreshTokenCommandHandler } from '@/application/authentication/v1/commands/refresh/refresh.handler';
 import { User } from '@/domain/user/user.entity';
@@ -43,7 +42,6 @@ export class V1RefreshTokenController {
     async refreshToken(
         @Req() request: RequestWithUser,
         @CurrentUser() user: User,
-        @Token() token: string,
     ): Promise<V1RefreshTokenResponseDto> {
         return V1RefreshTokenCommandHandler.runHandler(this.commandBus, {
             user,

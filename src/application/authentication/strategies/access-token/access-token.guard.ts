@@ -44,7 +44,8 @@ export class AccessTokenGuard extends AuthGuard('accessToken') {
             return true;
         }
 
-        const { user } = context.switchToHttp().getRequest<RequestWithUser>();
+        const user = context.switchToHttp().getRequest<RequestWithUser>()
+            .user as RequestWithUser['user'] | undefined;
 
         if (!user) {
             throw new GenericUnauthenticatedException('Not authenticated');

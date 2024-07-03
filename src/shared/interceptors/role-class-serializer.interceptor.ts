@@ -16,7 +16,8 @@ export class RolesClassSerializerInterceptor extends ClassSerializerInterceptor 
         context: ExecutionContext,
         next: CallHandler,
     ): Observable<unknown> {
-        const user = context.switchToHttp().getRequest<RequestWithUser>().user;
+        const user = context.switchToHttp().getRequest<RequestWithUser>()
+            .user as RequestWithUser['user'] | undefined;
 
         const userRole = user?.role ?? UserRoleEnum.USER;
 
