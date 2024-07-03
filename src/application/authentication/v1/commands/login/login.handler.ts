@@ -9,8 +9,8 @@ import { JwtService } from '@nestjs/jwt';
 
 import { V1CreateSessionCommandHandler } from '@/application/session/v1/commands/create-session/create-session.handler';
 import { OnLoginUserEvent } from '@/domain/authentication/events/on-login-user.event';
-import { AccessTokenPayload } from '@/domain/jwt/access-token-payload.type';
-import { RefreshTokenPayload } from '@/domain/jwt/refresh-token-payload.type';
+import { AccessTokenPayload } from '@/domain/token/access-token-payload.type';
+import { RefreshTokenPayload } from '@/domain/token/refresh-token-payload.type';
 import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
 
 import { V1LoginCommand } from './login.command';
