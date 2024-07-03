@@ -2,8 +2,9 @@ import { Module, Type } from '@nestjs/common';
 
 import { V1LoginCommandHandler } from '@/application/authentication/v1/commands/login/login.handler';
 import { V1LoginController } from '@/application/authentication/v1/commands/login/login.http.controller';
-import { V1RefreshTokenCommandHandler } from '@/application/authentication/v1/commands/refresh-token/refresh-token.handler';
-import { V1RefreshTokenController } from '@/application/authentication/v1/commands/refresh-token/refresh-token.http.controller';
+import { V1LogoutController } from '@/application/authentication/v1/commands/logout/logout.http.controller';
+import { V1RefreshTokenCommandHandler } from '@/application/authentication/v1/commands/refresh/refresh.handler';
+import { V1RefreshTokenController } from '@/application/authentication/v1/commands/refresh/refresh.http.controller';
 import { V1RegisterCommandHandler } from '@/application/authentication/v1/commands/register/register.handler';
 import { V1RegisterController } from '@/application/authentication/v1/commands/register/register.http.controller';
 import { V1ValidateCredentialsQueryHandler } from '@/application/authentication/v1/queries/validate-credentials/validate-credentials.handler';
@@ -20,6 +21,7 @@ const CommandControllers: Type[] = [
     V1LoginController,
     V1RegisterController,
     V1RefreshTokenController,
+    V1LogoutController,
 ];
 
 @Module({

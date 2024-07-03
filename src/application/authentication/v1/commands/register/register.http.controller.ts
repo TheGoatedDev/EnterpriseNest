@@ -60,11 +60,6 @@ export class V1RegisterController {
         return V1RegisterCommandHandler.runHandler(this.commandBus, {
             user,
             ip: request.ip,
-        }).then(({ registeredUser }) => {
-            return {
-                user: registeredUser,
-                verificationRequired: !registeredUser.verifiedAt,
-            };
         });
     }
 }

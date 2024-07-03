@@ -11,7 +11,6 @@ import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-res
 import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
 
 import { V1SendVerificationRequestDto } from './dto/send-verification.request.dto';
-import { V1SendVerificationResponseDto } from './dto/send-verification.response.dto';
 
 @ApiTags('Verification')
 @Controller({
@@ -46,7 +45,7 @@ export class V1SendVerificationController {
     })
     async sendVerification(
         @Body() body: V1SendVerificationRequestDto,
-    ): Promise<V1SendVerificationResponseDto> {
+    ): Promise<void> {
         const user = await V1FindUserByEmailQueryHandler.runHandler(
             this.queryBus,
             {
@@ -66,6 +65,6 @@ export class V1SendVerificationController {
             user,
         });
 
-        return Promise.resolve({});
+        return Promise.resolve();
     }
 }

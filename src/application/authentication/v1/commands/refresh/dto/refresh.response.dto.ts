@@ -6,10 +6,4 @@ export class V1RefreshTokenResponseDto {
         type: String,
     })
     accessToken!: string;
-
-    @ApiProperty({
-        description: 'Refresh token',
-        type: String,
-    })
-    refreshToken!: string;
 }

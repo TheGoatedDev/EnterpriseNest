@@ -18,6 +18,7 @@ import { LoggerModule } from '@/infrastructure/logger/logger.module';
 import { MailerModule } from '@/infrastructure/mailer/mailer.module';
 import { RepositoriesModule } from '@/infrastructure/repositories/repositories.module';
 import { ThrottlerModule } from '@/infrastructure/throttler/throttler.module';
+import { TokenModule } from '@/infrastructure/token/token.module';
 import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-class-serializer.interceptor';
 
 @Module({
@@ -39,6 +40,7 @@ import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-clas
             },
         }), // OpenTelemetry Module for Tracing
         MailerModule, // Email Module
+        TokenModule, // Token Module
 
         // Application Modules
         HealthModule,

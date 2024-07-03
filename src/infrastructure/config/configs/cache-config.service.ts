@@ -14,11 +14,8 @@ export class CacheConfigService {
     }
 
     get useRedis() {
-        const useRedis =
-            this.configService.get<Config['CACHE_USE_REDIS']>(
-                'CACHE_USE_REDIS',
-            );
-
-        return useRedis === 'true';
+        return this.configService.get<Config['CACHE_USE_REDIS']>(
+            'CACHE_USE_REDIS',
+        );
     }
 }
