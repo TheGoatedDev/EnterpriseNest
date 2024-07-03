@@ -11,23 +11,14 @@ import { JwtService } from '@nestjs/jwt';
 import { V1UpdateUserCommandHandler } from '@/application/user/v1/commands/update-user/update-user.handler';
 import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-user-by-id/find-user-by-id.handler';
 import { VerificationTokenPayload } from '@/domain/token/verification-token-payload.type';
-import { User } from '@/domain/user/user.entity';
 import { OnVerificationConfirmedEvent } from '@/domain/verification/events/on-verification-confirmed.event';
 import { GenericUnauthenticatedException } from '@/shared/exceptions/unauthenticated.exception';
 
 import { V1ConfirmVerificationCommand } from './confirm-verification.command';
 
-interface V1ConfirmVerificationCommandHandlerResponse {
-    user: User;
-}
-
 @CommandHandler(V1ConfirmVerificationCommand)
 export class V1ConfirmVerificationCommandHandler
-    implements
-        ICommandHandler<
-            V1ConfirmVerificationCommand,
-            V1ConfirmVerificationCommandHandlerResponse
-        >
+    implements ICommandHandler<V1ConfirmVerificationCommand, void>
 {
     private readonly logger = new Logger(
         V1ConfirmVerificationCommandHandler.name,
@@ -43,16 +34,13 @@ export class V1ConfirmVerificationCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1ConfirmVerificationCommand,
-    ): Promise<V1ConfirmVerificationCommandHandlerResponse> {
-        return bus.execute<
-            V1ConfirmVerificationCommand,
-            V1ConfirmVerificationCommandHandlerResponse
-        >(new V1ConfirmVerificationCommand(command.verificationToken));
+    ): Promise<void> {
+        return bus.execute<V1ConfirmVerificationCommand, void>(
+            new V1ConfirmVerificationCommand(command.verificationToken),
+        );
     }
 
-    async execute(
-        command: V1ConfirmVerificationCommand,
-    ): Promise<V1ConfirmVerificationCommandHandlerResponse> {
+    async execute(command: V1ConfirmVerificationCommand): Promise<void> {
         this.logger.log(
             `Confirming verification for ${command.verificationToken}`,
         );
@@ -89,8 +77,6 @@ export class V1ConfirmVerificationCommandHandler
 
         this.eventBus.publish(new OnVerificationConfirmedEvent(user));
 
-        return Promise.resolve({
-            user,
-        });
+        return Promise.resolve();
     }
 }

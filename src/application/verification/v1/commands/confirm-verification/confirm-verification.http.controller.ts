@@ -8,7 +8,6 @@ import { V1ConfirmVerificationCommandHandler } from '@/application/verification/
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 
 import { V1ConfirmVerificationRequestDto } from './dto/confirm-verification.request.dto';
-import { V1ConfirmVerificationResponseDto } from './dto/confirm-verification.response.dto';
 
 @ApiTags('Verification')
 @Controller({
@@ -40,11 +39,11 @@ export class V1ConfirmVerificationController {
     })
     async confirmVerification(
         @Body() body: V1ConfirmVerificationRequestDto,
-    ): Promise<V1ConfirmVerificationResponseDto> {
+    ): Promise<void> {
         await V1ConfirmVerificationCommandHandler.runHandler(this.commandBus, {
             verificationToken: body.verificationToken,
         });
 
-        return Promise.resolve({});
+        return Promise.resolve();
     }
 }
