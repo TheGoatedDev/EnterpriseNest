@@ -82,6 +82,12 @@ export class RefreshTokenStrategy extends PassportStrategy(
             );
         }
 
+        if (session.isRevoked) {
+            throw new GenericUnauthenticatedException(
+                'Invalid Refresh Token: Session is Revoked',
+            );
+        }
+
         const user = await V1FindUserByIDQueryHandler.runHandler(
             this.queryBus,
             {
