@@ -6,12 +6,12 @@ import { CurrentUser } from '@/application/authentication/decorator/current-user
 import { Public } from '@/application/authentication/decorator/public.decorator';
 import { Token } from '@/application/authentication/decorator/token.decorator';
 import { RefreshTokenGuard } from '@/application/authentication/strategies/refresh-token/refresh-token.guard';
-import { V1RefreshTokenCommandHandler } from '@/application/authentication/v1/commands/refresh-token/refresh-token.handler';
+import { V1RefreshTokenCommandHandler } from '@/application/authentication/v1/commands/refresh/refresh.handler';
 import { User } from '@/domain/user/user.entity';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 import type { RequestWithUser } from '@/types/express/request-with-user';
 
-import { V1RefreshTokenResponseDto } from './dto/refresh-token.response.dto';
+import { V1RefreshTokenResponseDto } from './dto/refresh.response.dto';
 
 @ApiTags('Authentication')
 @Controller({

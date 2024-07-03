@@ -12,7 +12,7 @@ import { OnRefreshTokenEvent } from '@/domain/authentication/events/on-refresh-t
 import { AccessTokenPayload } from '@/domain/jwt/access-token-payload.type';
 import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
 
-import { V1RefreshTokenCommand } from './refresh-token.command';
+import { V1RefreshTokenCommand } from './refresh.command';
 
 interface V1RefreshTokenCommandHandlerResponse {
     accessToken: string;
