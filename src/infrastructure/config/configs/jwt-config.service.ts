@@ -4,14 +4,12 @@ import { ConfigService as NestConfigService } from '@nestjs/config';
 import { Config } from '@/infrastructure/config/config-schema';
 
 @Injectable()
-export class AuthenticationConfigService {
+export class JwtConfigService {
     constructor(
         private readonly configService: NestConfigService<Config, true>,
     ) {}
 
-    get ipStrict() {
-        return this.configService.get<Config['AUTH_IP_STRICT']>(
-            'AUTH_IP_STRICT',
-        );
+    get secret() {
+        return this.configService.get<Config['JWT_SECRET']>('JWT_SECRET');
     }
 }
