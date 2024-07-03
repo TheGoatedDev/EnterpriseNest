@@ -22,10 +22,8 @@ export class ThrottlerConfigService {
     }
 
     get useRedis() {
-        return (
-            this.configService.get<Config['THROTTLER_USE_REDIS']>(
-                'THROTTLER_USE_REDIS',
-            ) === 'true'
+        return this.configService.get<Config['THROTTLER_USE_REDIS']>(
+            'THROTTLER_USE_REDIS',
         );
     }
 }
