@@ -47,7 +47,7 @@ export class V1RefreshTokenController {
     ): Promise<V1RefreshTokenResponseDto> {
         return V1RefreshTokenCommandHandler.runHandler(this.commandBus, {
             user,
-            refreshToken: token,
+            session: request.session,
             ip: request.ip,
         });
     }

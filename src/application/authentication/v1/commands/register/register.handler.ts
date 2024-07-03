@@ -7,20 +7,15 @@ import {
     ICommandHandler,
 } from '@nestjs/cqrs';
 
+import { V1RegisterResponseDto } from '@/application/authentication/v1/commands/register/dto/register.response.dto';
 import { V1CreateUserCommandHandler } from '@/application/user/v1/commands/create-user/create-user.handler';
 import { OnRegisterUserEvent } from '@/domain/authentication/events/on-register-user.event';
-import { User } from '@/domain/user/user.entity';
 
 import { V1RegisterCommand } from './register.command';
 
-interface V1RegisterCommandHandlerResponse {
-    registeredUser: User;
-}
-
 @CommandHandler(V1RegisterCommand)
 export class V1RegisterCommandHandler
-    implements
-        ICommandHandler<V1RegisterCommand, V1RegisterCommandHandlerResponse>
+    implements ICommandHandler<V1RegisterCommand, V1RegisterResponseDto>
 {
     private readonly logger = new Logger(V1RegisterCommandHandler.name);
 
@@ -34,15 +29,13 @@ export class V1RegisterCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1RegisterCommand,
-    ): Promise<V1RegisterCommandHandlerResponse> {
-        return bus.execute<V1RegisterCommand, V1RegisterCommandHandlerResponse>(
+    ): Promise<V1RegisterResponseDto> {
+        return bus.execute<V1RegisterCommand, V1RegisterResponseDto>(
             new V1RegisterCommand(command.user, command.ip),
         );
     }
 
-    async execute(
-        command: V1RegisterCommand,
-    ): Promise<V1RegisterCommandHandlerResponse> {
+    async execute(command: V1RegisterCommand): Promise<V1RegisterResponseDto> {
         this.logger.log(
             `User ${command.user.id} has registered in with IP ${command.ip ?? 'unknown'}`,
         );
@@ -61,7 +54,8 @@ export class V1RegisterCommandHandler
         user.commit();
 
         return Promise.resolve({
-            registeredUser: createdUser,
+            user: createdUser,
+            verificationRequired: !createdUser.verifiedAt,
         });
     }
 }

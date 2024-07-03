@@ -15,17 +15,9 @@ import type { MailerPort } from '@/infrastructure/mailer/mailer.port';
 
 import { V1SendVerificationCommand } from './send-verification.command';
 
-interface V1SendVerificationCommandHandlerResponse {
-    verificationToken: string;
-}
-
 @CommandHandler(V1SendVerificationCommand)
 export class V1SendVerificationCommandHandler
-    implements
-        ICommandHandler<
-            V1SendVerificationCommand,
-            V1SendVerificationCommandHandlerResponse
-        >
+    implements ICommandHandler<V1SendVerificationCommand, void>
 {
     private readonly logger = new Logger(V1SendVerificationCommandHandler.name);
 
@@ -40,24 +32,16 @@ export class V1SendVerificationCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1SendVerificationCommand,
-    ): Promise<V1SendVerificationCommandHandlerResponse> {
-        return bus.execute<
-            V1SendVerificationCommand,
-            V1SendVerificationCommandHandlerResponse
-        >(new V1SendVerificationCommand(command.user));
+    ): Promise<void> {
+        return bus.execute<V1SendVerificationCommand, void>(
+            new V1SendVerificationCommand(command.user),
+        );
     }
 
-    async execute(
-        command: V1SendVerificationCommand,
-    ): Promise<V1SendVerificationCommandHandlerResponse> {
+    async execute(command: V1SendVerificationCommand): Promise<void> {
         this.logger.log(
             `Sending verification email to ${command.user.email} with verification token`,
         );
-
-        // const session = await V1CreateSessionCommandHandler.runHandler(
-        //     this.commandBus,
-        //     new V1CreateSessionCommand(command.user, command.ip),
-        // );
 
         const verificationToken = this.jwtService.sign(
             {
@@ -85,8 +69,6 @@ export class V1SendVerificationCommandHandler
             new OnVerificationSentEvent(command.user, verificationToken),
         );
 
-        return Promise.resolve({
-            verificationToken,
-        });
+        return Promise.resolve();
     }
 }

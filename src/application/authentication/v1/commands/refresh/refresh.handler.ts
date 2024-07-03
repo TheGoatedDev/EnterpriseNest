@@ -4,50 +4,34 @@ import {
     CommandHandler,
     EventBus,
     ICommandHandler,
-    QueryBus,
 } from '@nestjs/cqrs';
-import { JwtService } from '@nestjs/jwt';
 
+import { V1RefreshTokenResponseDto } from '@/application/authentication/v1/commands/refresh/dto/refresh.response.dto';
 import { OnRefreshTokenEvent } from '@/domain/authentication/events/on-refresh-token.event';
-import { AccessTokenPayload } from '@/domain/token/access-token-payload.type';
-import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
+import { V1GenerateAccessTokenCommandHandler } from '@/infrastructure/token/v1/commands/generate-access-token/generate-access-token.handler';
 
 import { V1RefreshTokenCommand } from './refresh.command';
-
-interface V1RefreshTokenCommandHandlerResponse {
-    accessToken: string;
-    refreshToken: string;
-}
 
 @CommandHandler(V1RefreshTokenCommand)
 export class V1RefreshTokenCommandHandler
     implements
-        ICommandHandler<
-            V1RefreshTokenCommand,
-            V1RefreshTokenCommandHandlerResponse
-        >
+        ICommandHandler<V1RefreshTokenCommand, V1RefreshTokenResponseDto>
 {
     private readonly logger = new Logger(V1RefreshTokenCommandHandler.name);
 
     constructor(
-        private readonly jwtService: JwtService,
         private readonly eventBus: EventBus,
-        private readonly authenticationConfigService: AuthenticationConfigService,
         private readonly commandBus: CommandBus,
-        private readonly queryBus: QueryBus,
     ) {}
 
     static runHandler(
         bus: CommandBus,
         command: V1RefreshTokenCommand,
-    ): Promise<V1RefreshTokenCommandHandlerResponse> {
-        return bus.execute<
-            V1RefreshTokenCommand,
-            V1RefreshTokenCommandHandlerResponse
-        >(
+    ): Promise<V1RefreshTokenResponseDto> {
+        return bus.execute<V1RefreshTokenCommand, V1RefreshTokenResponseDto>(
             new V1RefreshTokenCommand(
                 command.user,
-                command.refreshToken,
+                command.session,
                 command.ip,
             ),
         );
@@ -55,39 +39,31 @@ export class V1RefreshTokenCommandHandler
 
     async execute(
         command: V1RefreshTokenCommand,
-    ): Promise<V1RefreshTokenCommandHandlerResponse> {
+    ): Promise<V1RefreshTokenResponseDto> {
         this.logger.log(
-            `User ${command.user.id} has Refreshed Access Token with Refresh Token: ${command.refreshToken}, IP: ${command.ip ?? 'unknown'}`,
+            `User ${command.user.id} has Refreshed Access Token with Session: ${command.session.id}, IP: ${command.ip ?? 'unknown'}`,
         );
 
-        const accessToken = this.jwtService.sign(
-            {
-                type: 'access-token',
-                data: {
-                    sub: command.user.id,
+        const accessToken =
+            await V1GenerateAccessTokenCommandHandler.runHandler(
+                this.commandBus,
+                {
+                    user: command.user,
+                    session: command.session,
                     ip: command.ip,
-                    refreshToken: command.refreshToken,
                 },
-            } satisfies AccessTokenPayload,
-            {
-                expiresIn:
-                    this.authenticationConfigService.accessTokenExpiration,
-                algorithm: 'HS512',
-                secret: this.authenticationConfigService.jwtAccessSecret,
-            },
-        );
+            );
 
         this.eventBus.publish(
             new OnRefreshTokenEvent(
                 command.user,
-                command.refreshToken,
-                accessToken,
+                command.session,
+                accessToken.accessToken,
             ),
         );
 
         return Promise.resolve({
-            accessToken,
-            refreshToken: command.refreshToken,
+            accessToken: accessToken.accessToken,
         });
     }
 }
