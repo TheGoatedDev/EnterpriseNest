@@ -7,7 +7,7 @@ import { SMSOptions, SMSPort } from '@/infrastructure/sms/sms.port';
 class MockSMS implements SMSPort<undefined> {
     private readonly logger = new Logger(MockSMS.name);
 
-    sendSMS(sms: SMSOptions, senderOptions: undefined): Promise<void> {
+    sendSMS(sms: SMSOptions, _: undefined): Promise<void> {
         this.logger.log(
             `Sending SMS to ${JSON.stringify(sms.to)}, body ${sms.text}`,
         );
@@ -15,7 +15,7 @@ class MockSMS implements SMSPort<undefined> {
         return Promise.resolve();
     }
 
-    sendSMSs(smss: SMSOptions[], senderOptions: undefined): Promise<void> {
+    sendSMSs(smss: SMSOptions[], _: undefined): Promise<void> {
         for (const sms of smss) {
             this.logger.log(
                 `Sending SMS to ${JSON.stringify(sms.to)}, body ${sms.text}`,

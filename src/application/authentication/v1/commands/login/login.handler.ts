@@ -7,22 +7,18 @@ import {
 } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 
+import { V1LoginResponseDto } from '@/application/authentication/v1/commands/login/dto/login.response.dto';
 import { V1CreateSessionCommandHandler } from '@/application/session/v1/commands/create-session/create-session.handler';
 import { OnLoginUserEvent } from '@/domain/authentication/events/on-login-user.event';
-import { AccessTokenPayload } from '@/domain/jwt/access-token-payload.type';
-import { RefreshTokenPayload } from '@/domain/jwt/refresh-token-payload.type';
 import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
+import { V1GenerateAccessTokenCommandHandler } from '@/infrastructure/token/v1/commands/generate-access-token/generate-access-token.handler';
+import { V1GenerateRefreshTokenCommandHandler } from '@/infrastructure/token/v1/commands/generate-refresh-token/generate-refresh-token.handler';
 
 import { V1LoginCommand } from './login.command';
 
-interface V1LoginCommandHandlerResponse {
-    accessToken: string;
-    refreshToken: string;
-}
-
 @CommandHandler(V1LoginCommand)
 export class V1LoginCommandHandler
-    implements ICommandHandler<V1LoginCommand, V1LoginCommandHandlerResponse>
+    implements ICommandHandler<V1LoginCommand, V1LoginResponseDto>
 {
     private readonly logger = new Logger(V1LoginCommandHandler.name);
 
@@ -36,15 +32,13 @@ export class V1LoginCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1LoginCommand,
-    ): Promise<V1LoginCommandHandlerResponse> {
-        return bus.execute<V1LoginCommand, V1LoginCommandHandlerResponse>(
+    ): Promise<V1LoginResponseDto> {
+        return bus.execute<V1LoginCommand, V1LoginResponseDto>(
             new V1LoginCommand(command.user, command.ip),
         );
     }
 
-    async execute(
-        command: V1LoginCommand,
-    ): Promise<V1LoginCommandHandlerResponse> {
+    async execute(command: V1LoginCommand): Promise<V1LoginResponseDto> {
         this.logger.log(
             `User ${command.user.id} has logged in with IP ${command.ip ?? 'unknown'}`,
         );
@@ -57,44 +51,31 @@ export class V1LoginCommandHandler
             },
         );
 
-        const accessToken = this.jwtService.sign(
-            {
-                type: 'access-token',
-                data: {
-                    sub: command.user.id,
-                    refreshToken: session.token,
+        const generatedAccessToken =
+            await V1GenerateAccessTokenCommandHandler.runHandler(
+                this.commandBus,
+                {
+                    user: command.user,
+                    session,
                     ip: command.ip,
                 },
-            } satisfies AccessTokenPayload,
-            {
-                expiresIn:
-                    this.authenticationConfigService.accessTokenExpiration,
-                algorithm: 'HS512',
-                secret: this.authenticationConfigService.jwtAccessSecret,
-            },
-        );
+            );
 
-        const refreshToken = this.jwtService.sign(
-            {
-                type: 'refresh-token',
-                data: {
+        const generatedRefreshToken =
+            await V1GenerateRefreshTokenCommandHandler.runHandler(
+                this.commandBus,
+                {
+                    user: command.user,
+                    session,
                     ip: command.ip,
-                    token: session.token,
                 },
-            } satisfies RefreshTokenPayload,
-            {
-                expiresIn:
-                    this.authenticationConfigService.refreshTokenExpiration,
-                algorithm: 'HS512',
-                secret: this.authenticationConfigService.jwtRefreshSecret,
-            },
-        );
+            );
 
         this.eventBus.publish(new OnLoginUserEvent(command.user, command.ip));
 
         return Promise.resolve({
-            accessToken,
-            refreshToken,
+            accessToken: generatedAccessToken.accessToken,
+            refreshToken: generatedRefreshToken.refreshToken,
         });
     }
 }

@@ -46,6 +46,7 @@ module.exports = {
                 argsIgnorePattern: '^_',
             },
         ],
+        "@typescript-eslint/no-invalid-void-type": 'warn',
 
         // TODO: Might need to remove this rule for strictness but otherwise it's a issue for zod
         'import/no-named-as-default-member': 'off',

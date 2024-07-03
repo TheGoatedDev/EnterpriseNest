@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 const StringToNumber = z.preprocess((x) => Number(x), z.number());
+const StringToBoolean = z.preprocess((x) => x === 'true', z.boolean());
 
 export const ConfigSchema = z.object({
     // Main
@@ -20,19 +21,24 @@ export const ConfigSchema = z.object({
 
     // Cache
     CACHE_TTL_MS: StringToNumber.default(60000),
-    CACHE_USE_REDIS: z.enum(['true', 'false']).default('false'),
+    CACHE_USE_REDIS: StringToBoolean.default('false'),
 
     // Throttler / Rate Limiter
     THROTTLER_DEFAULT_TTL_MS: StringToNumber.default(60000),
     THROTTLER_DEFAULT_LIMIT: StringToNumber.default(100),
-    THROTTLER_USE_REDIS: z.enum(['true', 'false']).default('false'),
+    THROTTLER_USE_REDIS: StringToBoolean.default('false'),
 
     // Authentication
-    AUTH_JWT_SECRET: z.string(),
-    AUTH_JWT_ACCESS_SECRET: z.string(),
-    AUTH_JWT_REFRESH_SECRET: z.string(),
-    AUTH_ACCESS_TOKEN_EXPIRATION: z.string().default('1h'),
-    AUTH_REFRESH_TOKEN_EXPIRATION: z.string().default('7d'),
+    AUTH_IP_STRICT: StringToBoolean.default('false'),
+
+    // JWT
+    JWT_SECRET: z.string(),
+
+    // Token
+    TOKEN_ACCESS_SECRET: z.string(),
+    TOKEN_REFRESH_SECRET: z.string(),
+    TOKEN_ACCESS_TOKEN_EXPIRATION: StringToNumber.default('3600'),
+    TOKEN_REFRESH_TOKEN_EXPIRATION: StringToNumber.default('604800'),
 
     // Email
     EMAIL_FROM: z.string().email().default('no-reply@test.com'),
