@@ -7,7 +7,7 @@ import {
 } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 
-import { VerifyEmailTokenPayload } from '@/domain/jwt/verify-email-token-payload.type';
+import { VerificationTokenPayload } from '@/domain/token/verification-token-payload.type';
 import { OnVerificationSentEvent } from '@/domain/verification/events/on-verification-sent.event';
 import { EmailConfigService } from '@/infrastructure/config/configs/email.config.service';
 import { MAILER } from '@/infrastructure/mailer/mailer.constants';
@@ -61,11 +61,11 @@ export class V1SendVerificationCommandHandler
 
         const verificationToken = this.jwtService.sign(
             {
-                type: 'verify-email',
+                type: 'verification',
                 data: {
                     sub: command.user.id,
                 },
-            } satisfies VerifyEmailTokenPayload,
+            } satisfies VerificationTokenPayload,
             {
                 expiresIn: '12h',
             },

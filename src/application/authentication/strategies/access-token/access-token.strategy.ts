@@ -5,7 +5,7 @@ import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 
 import { V1FindSessionByTokenQueryHandler } from '@/application/session/v1/queries/find-session-by-token/find-session-by-token.handler';
 import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-user-by-id/find-user-by-id.handler';
-import { AccessTokenPayload } from '@/domain/jwt/access-token-payload.type';
+import { AccessTokenPayload } from '@/domain/token/access-token-payload.type';
 import { User } from '@/domain/user/user.entity';
 import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
 import { GenericUnauthenticatedException } from '@/shared/exceptions/unauthenticated.exception';

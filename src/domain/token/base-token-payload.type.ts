@@ -1,5 +1,5 @@
 export type TokenType =
-    | 'verify-email'
+    | 'verification'
     | 'reset-password'
     | 'refresh-token'
     | 'access-token';

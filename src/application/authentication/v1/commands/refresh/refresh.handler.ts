@@ -9,7 +9,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 
 import { OnRefreshTokenEvent } from '@/domain/authentication/events/on-refresh-token.event';
-import { AccessTokenPayload } from '@/domain/jwt/access-token-payload.type';
+import { AccessTokenPayload } from '@/domain/token/access-token-payload.type';
 import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
 
 import { V1RefreshTokenCommand } from './refresh.command';
