@@ -2,6 +2,8 @@
 
 [![codecov](https://codecov.io/github/TheGoatedDev/EnterpriseNest/graph/badge.svg?token=584NODGC4R)](https://codecov.io/github/TheGoatedDev/EnterpriseNest)
 
+**This Project is a work in progress, and is not ready for production use. Please use at your own risk.**
+
 Enterprise-Nest is an enterprise-level API framework built on top of [NestJS](https://nestjs.com/). It is designed with scalability, best practices, and robustness in mind. The architecture of the framework is based on Domain-Driven Design (DDD), Onion Architecture, Clean Architecture, and Hexagonal Architecture.
 
 This was made due to the increasing need for a more robust and scalable API framework that can handle large-scale applications with ease. The framework is highly modular and extensible, allowing you to add or remove modules as needed.
