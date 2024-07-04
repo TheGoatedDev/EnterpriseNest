@@ -37,6 +37,8 @@ export const ConfigSchema = z.object({
     // Token
     TOKEN_ACCESS_SECRET: z.string(),
     TOKEN_REFRESH_SECRET: z.string(),
+    TOKEN_VERIFICATION_SECRET: z.string(),
+    TOKEN_VERIFICATION_TOKEN_EXPIRATION: StringToNumber.default('42600'),
     TOKEN_ACCESS_TOKEN_EXPIRATION: StringToNumber.default('3600'),
     TOKEN_REFRESH_TOKEN_EXPIRATION: StringToNumber.default('604800'),
 

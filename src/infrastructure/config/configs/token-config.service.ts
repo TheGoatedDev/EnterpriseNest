@@ -21,6 +21,18 @@ export class TokenConfigService {
         );
     }
 
+    get verificationTokenSecret() {
+        return this.configService.get<Config['TOKEN_VERIFICATION_SECRET']>(
+            'TOKEN_VERIFICATION_SECRET',
+        );
+    }
+
+    get verificationTokenExpiration() {
+        return this.configService.get<
+            Config['TOKEN_VERIFICATION_TOKEN_EXPIRATION']
+        >('TOKEN_VERIFICATION_TOKEN_EXPIRATION');
+    }
+
     get accessTokenExpiration() {
         return this.configService.get<Config['TOKEN_ACCESS_TOKEN_EXPIRATION']>(
             'TOKEN_ACCESS_TOKEN_EXPIRATION',
