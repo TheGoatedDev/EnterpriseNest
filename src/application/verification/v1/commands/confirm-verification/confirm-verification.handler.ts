@@ -12,6 +12,7 @@ import { V1UpdateUserCommandHandler } from '@/application/user/v1/commands/updat
 import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-user-by-id/find-user-by-id.handler';
 import { VerificationTokenPayload } from '@/domain/token/verification-token-payload.type';
 import { OnVerificationConfirmedEvent } from '@/domain/verification/events/on-verification-confirmed.event';
+import { TokenConfigService } from '@/infrastructure/config/configs/token-config.service';
 import { GenericUnauthenticatedException } from '@/shared/exceptions/unauthenticated.exception';
 
 import { V1ConfirmVerificationCommand } from './confirm-verification.command';
@@ -25,6 +26,7 @@ export class V1ConfirmVerificationCommandHandler
     );
 
     constructor(
+        private readonly tokenConfig: TokenConfigService,
         private readonly jwtService: JwtService,
         private readonly eventBus: EventBus,
         private readonly commandBus: CommandBus,
@@ -46,7 +48,10 @@ export class V1ConfirmVerificationCommandHandler
         );
 
         const payload = await this.jwtService
-            .verifyAsync<VerificationTokenPayload>(command.verificationToken)
+            .verifyAsync<VerificationTokenPayload>(command.verificationToken, {
+                ignoreExpiration: false,
+                secret: this.tokenConfig.verificationTokenSecret,
+            })
             .catch(() => {
                 this.logger.error('Invalid Token');
                 throw new GenericUnauthenticatedException('Invalid Token');
