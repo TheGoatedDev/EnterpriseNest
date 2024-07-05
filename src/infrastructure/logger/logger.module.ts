@@ -12,7 +12,7 @@ import { MainConfigService } from '@/infrastructure/config/configs/main-config.s
             inject: [MainConfigService],
             useFactory: (config: MainConfigService) => ({
                 pinoHttp: {
-                    level: config.NODE_ENV !== 'production' ? 'trace' : 'info',
+                    level: config.DEBUG ? 'trace' : 'info',
                     formatters: {
                         log: (object) => {
                             const span = trace.getSpan(context.active());

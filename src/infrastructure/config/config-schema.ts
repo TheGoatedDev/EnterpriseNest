@@ -10,7 +10,8 @@ export const ConfigSchema = z.object({
         .default('development'),
     PORT: StringToNumber.default(3000),
     APP_NAME: z.string().default('EnterpriseNest'),
-    BEHIND_PROXY: z.enum(['true', 'false']).default('false'),
+    BEHIND_PROXY: StringToBoolean.default('false'),
+    DEBUG: StringToBoolean.default('false'),
 
     // Redis
     REDIS_HOST: z.string().default('localhost'),

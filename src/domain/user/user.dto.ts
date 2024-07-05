@@ -5,7 +5,7 @@ import {
     IsEmail,
     IsEnum,
     IsNotEmpty,
-    Matches,
+    IsStrongPassword,
     MinLength,
 } from 'class-validator';
 
@@ -23,14 +23,9 @@ export class UserEmailDto {
 
 export class UserPasswordDto {
     @IsNotEmpty()
-    @MinLength(8)
-    @Matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/,
-        {
-            message:
-                'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character',
-        },
-    )
+    @IsStrongPassword({
+        minLength: 8,
+    })
     @ApiProperty({
         example: 'Password123!',
         description:
@@ -51,7 +46,6 @@ export class UserRoleDto {
 }
 
 export class UserFirstNameDto {
-    @IsNotEmpty()
     @Optional()
     @MinLength(2)
     @ApiProperty({
@@ -62,7 +56,6 @@ export class UserFirstNameDto {
 }
 
 export class UserLastNameDto {
-    @IsNotEmpty()
     @MinLength(2)
     @Optional()
     @ApiProperty({
