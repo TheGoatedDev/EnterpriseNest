@@ -27,6 +27,12 @@ export class TokenConfigService {
         );
     }
 
+    get resetPasswordTokenSecret() {
+        return this.configService.get<Config['TOKEN_RESET_PASSWORD_SECRET']>(
+            'TOKEN_RESET_PASSWORD_SECRET',
+        );
+    }
+
     get verificationTokenExpiration() {
         return this.configService.get<
             Config['TOKEN_VERIFICATION_TOKEN_EXPIRATION']
@@ -43,5 +49,11 @@ export class TokenConfigService {
         return this.configService.get<Config['TOKEN_REFRESH_TOKEN_EXPIRATION']>(
             'TOKEN_REFRESH_TOKEN_EXPIRATION',
         );
+    }
+
+    get resetPasswordTokenExpiration() {
+        return this.configService.get<
+            Config['TOKEN_RESET_PASSWORD_TOKEN_EXPIRATION']
+        >('TOKEN_RESET_PASSWORD_TOKEN_EXPIRATION');
     }
 }
