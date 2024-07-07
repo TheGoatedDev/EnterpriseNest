@@ -1,15 +1,8 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import z from 'zod';
 
 export type EntityID = string;
-
-export const BaseEntitySchema = z.object({
-    id: z.string(),
-    createdAt: z.date(),
-    updatedAt: z.date(),
-});
 
 export interface BaseEntityProps {
     id: EntityID;
