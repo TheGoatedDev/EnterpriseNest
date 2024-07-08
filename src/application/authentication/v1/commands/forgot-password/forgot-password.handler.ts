@@ -6,7 +6,7 @@ import {
     ICommandHandler,
 } from '@nestjs/cqrs';
 
-import { OnAuthenticationForgotPasswordEvent } from '@/domain/authentication/events/on-authentication-forgot-password.event';
+import { OnForgotPasswordEvent } from '@/domain/authentication/events/on-forgot-password.event';
 import { EmailConfigService } from '@/infrastructure/config/configs/email.config.service';
 import { MAILER } from '@/infrastructure/mailer/mailer.constants';
 import type { MailerPort } from '@/infrastructure/mailer/mailer.port';
@@ -73,7 +73,7 @@ export class V1ForgotPasswordCommandHandler
         });
 
         this.eventBus.publish(
-            new OnAuthenticationForgotPasswordEvent(
+            new OnForgotPasswordEvent(
                 command.user,
                 generatedResetPasswordToken.resetPasswordToken,
                 command.ip,
