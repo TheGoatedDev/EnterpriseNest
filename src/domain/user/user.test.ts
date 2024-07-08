@@ -1,6 +1,8 @@
+import { CreateMockUser } from '@tests/utils/create-mocks';
+
 import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
 
-import { CreateUserMock, User } from './user.entity';
+import { User } from './user.entity';
 import type { CreateUserProps } from './user.types';
 import { UserRoleEnum } from './user-role.enum';
 
@@ -8,7 +10,7 @@ describe('user', () => {
     let user: User;
 
     beforeEach(() => {
-        user = CreateUserMock();
+        user = CreateMockUser();
     });
 
     test('user can be created', () => {

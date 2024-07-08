@@ -5,12 +5,10 @@ import {
     EventBus,
     ICommandHandler,
 } from '@nestjs/cqrs';
-import { JwtService } from '@nestjs/jwt';
 
 import { V1LoginResponseDto } from '@/application/authentication/v1/commands/login/dto/login.response.dto';
 import { V1CreateSessionCommandHandler } from '@/application/session/v1/commands/create-session/create-session.handler';
 import { OnLoginEvent } from '@/domain/authentication/events/on-login.event';
-import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
 import { V1GenerateAccessTokenCommandHandler } from '@/infrastructure/token/v1/commands/generate-access-token/generate-access-token.handler';
 import { V1GenerateRefreshTokenCommandHandler } from '@/infrastructure/token/v1/commands/generate-refresh-token/generate-refresh-token.handler';
 
@@ -25,9 +23,7 @@ export class V1LoginCommandHandler
     private readonly logger = new Logger(V1LoginCommandHandler.name);
 
     constructor(
-        private readonly jwtService: JwtService,
         private readonly eventBus: EventBus,
-        private readonly authenticationConfigService: AuthenticationConfigService,
         private readonly commandBus: CommandBus,
     ) {}
 

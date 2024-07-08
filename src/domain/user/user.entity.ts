@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker';
 import { ApiProperty } from '@nestjs/swagger';
 import { createId } from '@paralleldrive/cuid2';
 import { Expose } from 'class-transformer';
@@ -17,12 +16,6 @@ import {
 } from '@/domain/user/user.types';
 import { AllStaffRoles, UserRoleEnum } from '@/domain/user/user-role.enum';
 import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
-
-export const CreateUserMock = (): User =>
-    User.create({
-        email: faker.internet.email(),
-        password: '$argon2id$Password123!',
-    });
 
 export class User extends Entity<UserProps> {
     static create(props: CreateUserProps): User {
