@@ -61,6 +61,7 @@ export class V1ForgotPasswordCommandHandler
                 },
             );
 
+        // TODO: Implement email template
         await this.mailer.sendEmail({
             from: this.emailConfig.from,
             to: command.user.email,

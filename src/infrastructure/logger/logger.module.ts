@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { context, trace } from '@opentelemetry/api';
+import { context, Span, trace } from '@opentelemetry/api';
 import { LoggerModule as BaseLoggerModule } from 'nestjs-pino';
 import PinoPretty from 'pino-pretty';
 
@@ -15,7 +15,11 @@ import { MainConfigService } from '@/infrastructure/config/configs/main-config.s
                     level: config.DEBUG ? 'trace' : 'info',
                     formatters: {
                         log: (object) => {
-                            const span = trace.getSpan(context.active());
+                            const span = trace.getSpan(context.active()) as
+                                | (Span & {
+                                      attributes: Record<string, string>;
+                                  })
+                                | undefined;
 
                             if (!span) return { ...object };
 
@@ -27,7 +31,15 @@ import { MainConfigService } from '@/infrastructure/config/configs/main-config.s
 
                             const { spanId, traceId } = spanContext;
 
-                            return { ...object, spanId, traceId };
+                            const { userId, userEmail } = span.attributes;
+
+                            return {
+                                ...object,
+                                spanId,
+                                traceId,
+                                userId,
+                                userEmail,
+                            };
                         },
                     },
                     transport:

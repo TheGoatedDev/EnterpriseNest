@@ -20,6 +20,7 @@ import { RepositoriesModule } from '@/infrastructure/repositories/repositories.m
 import { ThrottlerModule } from '@/infrastructure/throttler/throttler.module';
 import { TokenModule } from '@/infrastructure/token/token.module';
 import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-class-serializer.interceptor';
+import { TraceUserInterceptor } from '@/shared/interceptors/trace-user.interceptor';
 
 @Module({
     imports: [
@@ -58,6 +59,11 @@ import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-clas
         {
             provide: APP_GUARD,
             useClass: ThrottlerGuard,
+        },
+
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: TraceUserInterceptor,
         },
         {
             provide: APP_INTERCEPTOR,

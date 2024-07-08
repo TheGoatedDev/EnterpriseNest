@@ -10,6 +10,7 @@ import {
 import { V1RegisterResponseDto } from '@/application/authentication/v1/commands/register/dto/register.response.dto';
 import { V1CreateUserCommandHandler } from '@/application/user/v1/commands/create-user/create-user.handler';
 import { OnRegisterEvent } from '@/domain/authentication/events/on-register.event';
+import { AuthenticationConfigService } from '@/infrastructure/config/configs/authentication-config.service';
 
 import { V1RegisterCommand } from './register.command';
 
@@ -27,6 +28,8 @@ export class V1RegisterCommandHandler
         private readonly eventBus: EventBus,
 
         private readonly eventPublisher: EventPublisher,
+
+        private readonly authenticationConfigService: AuthenticationConfigService,
     ) {}
 
     static runHandler(
@@ -44,6 +47,10 @@ export class V1RegisterCommandHandler
         this.logger.log(
             `User ${command.user.id} has registered in with IP ${command.ip ?? 'unknown'}`,
         );
+
+        if (this.authenticationConfigService.autoVerify) {
+            command.user.verifiedAt = new Date();
+        }
 
         const user = this.eventPublisher.mergeObjectContext(command.user);
 

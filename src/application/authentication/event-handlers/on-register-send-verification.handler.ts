@@ -15,8 +15,15 @@ export class OnRegisterSendVerificationHandler
     constructor(private readonly commandBus: CommandBus) {}
 
     async handle(event: OnRegisterEvent) {
+        if (event.user.verifiedAt) {
+            this.logger.log(
+                `User ${event.user.id} has already been verified, skipping verification email`,
+            );
+            return;
+        }
+
         this.logger.log(
-            `Sending verification email to ${event.user.email} as part of registration process`,
+            `Sending verification email to ${event.user.id} as part of registration process`,
         );
 
         await V1SendVerificationCommandHandler.runHandler(this.commandBus, {

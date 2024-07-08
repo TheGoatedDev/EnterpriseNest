@@ -23,10 +23,10 @@ export class V1ForgotPasswordController {
     ) {}
 
     @Public()
-    // Throttle the forgot-password endpoint to prevent brute force attacks (5 Requests per 1 minute)
+    // Throttle the forgot-password endpoint to prevent brute force attacks (1 Requests per 1 minute)
     @Throttle({
         default: {
-            limit: 5,
+            limit: 1,
             ttl: 60 * 1000,
         },
     })
@@ -40,8 +40,8 @@ export class V1ForgotPasswordController {
         description: 'Forgot Password Email Sent Successfully',
     })
     @ApiStandardisedResponse({
-        status: 401,
-        description: 'User is Not Verified or Email or Password is Incorrect',
+        status: 404,
+        description: 'User is not found',
     })
     async forgotPassword(
         @Req() request: RequestWithUser,
@@ -58,11 +58,11 @@ export class V1ForgotPasswordController {
             throw new GenericNotFoundException('User not found');
         }
 
-        return V1ForgotPasswordCommandHandler.runHandler(this.commandBus, {
+        await V1ForgotPasswordCommandHandler.runHandler(this.commandBus, {
             user,
             ip: request.ip,
-        }).then((token) => {
-            return Promise.resolve();
         });
+
+        return Promise.resolve();
     }
 }

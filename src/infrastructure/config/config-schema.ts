@@ -35,6 +35,7 @@ export const ConfigSchema = z.object({
 
     // Authentication
     AUTH_IP_STRICT: StringToBoolean.default('false'),
+    AUTH_AUTO_VERIFY: StringToBoolean.default('false'),
 
     // JWT
     JWT_SECRET: z.string(),
