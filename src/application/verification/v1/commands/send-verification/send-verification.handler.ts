@@ -14,9 +14,15 @@ import { V1GenerateVerificationTokenCommandHandler } from '@/infrastructure/toke
 
 import { V1SendVerificationCommand } from './send-verification.command';
 
+type V1SendVerificationCommandHandlerResponse = true;
+
 @CommandHandler(V1SendVerificationCommand)
 export class V1SendVerificationCommandHandler
-    implements ICommandHandler<V1SendVerificationCommand, void>
+    implements
+        ICommandHandler<
+            V1SendVerificationCommand,
+            V1SendVerificationCommandHandlerResponse
+        >
 {
     private readonly logger = new Logger(V1SendVerificationCommandHandler.name);
 
@@ -31,13 +37,16 @@ export class V1SendVerificationCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1SendVerificationCommand,
-    ): Promise<void> {
-        return bus.execute<V1SendVerificationCommand, void>(
-            new V1SendVerificationCommand(command.user),
-        );
+    ): Promise<V1SendVerificationCommandHandlerResponse> {
+        return bus.execute<
+            V1SendVerificationCommand,
+            V1SendVerificationCommandHandlerResponse
+        >(new V1SendVerificationCommand(command.user));
     }
 
-    async execute(command: V1SendVerificationCommand): Promise<void> {
+    async execute(
+        command: V1SendVerificationCommand,
+    ): Promise<V1SendVerificationCommandHandlerResponse> {
         this.logger.log(
             `Sending verification email to ${command.user.email} with verification token`,
         );
@@ -67,6 +76,6 @@ export class V1SendVerificationCommandHandler
             ),
         );
 
-        return Promise.resolve();
+        return Promise.resolve(true);
     }
 }

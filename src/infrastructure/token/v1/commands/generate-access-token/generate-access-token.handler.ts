@@ -10,16 +10,19 @@ import { JwtService } from '@nestjs/jwt';
 import { AccessTokenPayload } from '@/domain/token/access-token-payload.type';
 import { OnAccessTokenGeneratedEvent } from '@/domain/token/events/on-access-token-generated.event';
 import { TokenConfigService } from '@/infrastructure/config/configs/token-config.service';
-import { V1GenerateAccessTokenResponseDto } from '@/infrastructure/token/v1/commands/generate-access-token/dto/generate-access-token.response.dto';
 
 import { V1GenerateAccessTokenCommand } from './generate-access-token.command';
+
+interface V1GenerateAccessTokenCommandHandlerResponse {
+    accessToken: string;
+}
 
 @CommandHandler(V1GenerateAccessTokenCommand)
 export class V1GenerateAccessTokenCommandHandler
     implements
         ICommandHandler<
             V1GenerateAccessTokenCommand,
-            V1GenerateAccessTokenResponseDto
+            V1GenerateAccessTokenCommandHandlerResponse
         >
 {
     private readonly logger = new Logger(
@@ -35,10 +38,10 @@ export class V1GenerateAccessTokenCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1GenerateAccessTokenCommand,
-    ): Promise<V1GenerateAccessTokenResponseDto> {
+    ): Promise<V1GenerateAccessTokenCommandHandlerResponse> {
         return bus.execute<
             V1GenerateAccessTokenCommand,
-            V1GenerateAccessTokenResponseDto
+            V1GenerateAccessTokenCommandHandlerResponse
         >(
             new V1GenerateAccessTokenCommand(
                 command.user,
@@ -50,7 +53,7 @@ export class V1GenerateAccessTokenCommandHandler
 
     async execute(
         command: V1GenerateAccessTokenCommand,
-    ): Promise<V1GenerateAccessTokenResponseDto> {
+    ): Promise<V1GenerateAccessTokenCommandHandlerResponse> {
         this.logger.log(`Generating Access Token for User ${command.user.id}`);
 
         const accessToken = this.jwtService.sign(

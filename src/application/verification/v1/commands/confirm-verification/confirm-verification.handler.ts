@@ -17,9 +17,15 @@ import { GenericUnauthenticatedException } from '@/shared/exceptions/unauthentic
 
 import { V1ConfirmVerificationCommand } from './confirm-verification.command';
 
+type V1ConfirmVerificationCommandHandlerResponse = true;
+
 @CommandHandler(V1ConfirmVerificationCommand)
 export class V1ConfirmVerificationCommandHandler
-    implements ICommandHandler<V1ConfirmVerificationCommand, void>
+    implements
+        ICommandHandler<
+            V1ConfirmVerificationCommand,
+            V1ConfirmVerificationCommandHandlerResponse
+        >
 {
     private readonly logger = new Logger(
         V1ConfirmVerificationCommandHandler.name,
@@ -36,13 +42,16 @@ export class V1ConfirmVerificationCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1ConfirmVerificationCommand,
-    ): Promise<void> {
-        return bus.execute<V1ConfirmVerificationCommand, void>(
-            new V1ConfirmVerificationCommand(command.verificationToken),
-        );
+    ): Promise<V1ConfirmVerificationCommandHandlerResponse> {
+        return bus.execute<
+            V1ConfirmVerificationCommand,
+            V1ConfirmVerificationCommandHandlerResponse
+        >(new V1ConfirmVerificationCommand(command.verificationToken));
     }
 
-    async execute(command: V1ConfirmVerificationCommand): Promise<void> {
+    async execute(
+        command: V1ConfirmVerificationCommand,
+    ): Promise<V1ConfirmVerificationCommandHandlerResponse> {
         this.logger.log(
             `Confirming verification for ${command.verificationToken}`,
         );
@@ -82,6 +91,6 @@ export class V1ConfirmVerificationCommandHandler
 
         this.eventBus.publish(new OnVerificationConfirmedEvent(user));
 
-        return Promise.resolve();
+        return Promise.resolve(true);
     }
 }

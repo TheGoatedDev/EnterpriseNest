@@ -11,9 +11,15 @@ import { V1FindUserByEmailQueryHandler } from '../../../../user/v1/queries/find-
 import { V1FindUserByEmailQuery } from '../../../../user/v1/queries/find-user-by-email/find-user-by-email.query';
 import { V1ValidateCredentialsQuery } from './validate-credentials.query';
 
+type V1ValidateCredentialsQueryHandlerResponse = User;
+
 @QueryHandler(V1ValidateCredentialsQuery)
 export class V1ValidateCredentialsQueryHandler
-    implements IQueryHandler<V1ValidateCredentialsQuery, User>
+    implements
+        IQueryHandler<
+            V1ValidateCredentialsQuery,
+            V1ValidateCredentialsQueryHandlerResponse
+        >
 {
     private readonly logger = new Logger(
         V1ValidateCredentialsQueryHandler.name,
@@ -28,16 +34,17 @@ export class V1ValidateCredentialsQueryHandler
     static runHandler(
         bus: QueryBus,
         query: V1ValidateCredentialsQuery,
-    ): Promise<User> {
-        return bus.execute<V1ValidateCredentialsQuery, User>(
-            new V1ValidateCredentialsQuery(query.email, query.password),
-        );
+    ): Promise<V1ValidateCredentialsQueryHandlerResponse> {
+        return bus.execute<
+            V1ValidateCredentialsQuery,
+            V1ValidateCredentialsQueryHandlerResponse
+        >(new V1ValidateCredentialsQuery(query.email, query.password));
     }
 
     async execute({
         email,
         password,
-    }: V1ValidateCredentialsQuery): Promise<User> {
+    }: V1ValidateCredentialsQuery): Promise<V1ValidateCredentialsQueryHandlerResponse> {
         const user = await V1FindUserByEmailQueryHandler.runHandler(
             this.queryBus,
             new V1FindUserByEmailQuery(email),

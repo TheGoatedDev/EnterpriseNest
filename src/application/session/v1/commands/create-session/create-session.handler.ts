@@ -11,9 +11,15 @@ import { V1FindUserByIDQueryHandler } from '../../../../user/v1/queries/find-use
 import { V1FindUserByIDQuery } from '../../../../user/v1/queries/find-user-by-id/find-user-by-id.query';
 import { V1CreateSessionCommand } from './create-session.command';
 
+type V1CreateSessionCommandHandlerResponse = Session;
+
 @CommandHandler(V1CreateSessionCommand)
 export class V1CreateSessionCommandHandler
-    implements ICommandHandler<V1CreateSessionCommand, Session>
+    implements
+        ICommandHandler<
+            V1CreateSessionCommand,
+            V1CreateSessionCommandHandlerResponse
+        >
 {
     private readonly logger = new Logger(V1CreateSessionCommandHandler.name);
 
@@ -27,13 +33,16 @@ export class V1CreateSessionCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1CreateSessionCommand,
-    ): Promise<Session> {
-        return bus.execute<V1CreateSessionCommand, Session>(
-            new V1CreateSessionCommand(command.user, command.ip),
-        );
+    ): Promise<V1CreateSessionCommandHandlerResponse> {
+        return bus.execute<
+            V1CreateSessionCommand,
+            V1CreateSessionCommandHandlerResponse
+        >(new V1CreateSessionCommand(command.user, command.ip));
     }
 
-    async execute(command: V1CreateSessionCommand): Promise<Session> {
+    async execute(
+        command: V1CreateSessionCommand,
+    ): Promise<V1CreateSessionCommandHandlerResponse> {
         this.logger.log(`Creating session for user ${command.user.id}`);
         // Check if the user exists
         const user = await V1FindUserByIDQueryHandler.runHandler(

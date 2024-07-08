@@ -8,9 +8,15 @@ import type { SessionRepositoryPort } from '@/infrastructure/repositories/module
 
 import { V1FindSessionByTokenQuery } from './find-session-by-token.query';
 
+type V1FindSessionByTokenQueryHandlerResponse = Session | undefined;
+
 @QueryHandler(V1FindSessionByTokenQuery)
 export class V1FindSessionByTokenQueryHandler
-    implements IQueryHandler<V1FindSessionByTokenQuery, Session | undefined>
+    implements
+        IQueryHandler<
+            V1FindSessionByTokenQuery,
+            V1FindSessionByTokenQueryHandlerResponse
+        >
 {
     private readonly logger = new Logger(V1FindSessionByTokenQueryHandler.name);
 
@@ -22,13 +28,16 @@ export class V1FindSessionByTokenQueryHandler
     static runHandler(
         bus: QueryBus,
         query: V1FindSessionByTokenQuery,
-    ): Promise<Session | undefined> {
-        return bus.execute<V1FindSessionByTokenQuery, Session | undefined>(
-            new V1FindSessionByTokenQuery(query.refreshToken),
-        );
+    ): Promise<V1FindSessionByTokenQueryHandlerResponse> {
+        return bus.execute<
+            V1FindSessionByTokenQuery,
+            V1FindSessionByTokenQueryHandlerResponse
+        >(new V1FindSessionByTokenQuery(query.refreshToken));
     }
 
-    execute(query: V1FindSessionByTokenQuery): Promise<Session | undefined> {
+    execute(
+        query: V1FindSessionByTokenQuery,
+    ): Promise<V1FindSessionByTokenQueryHandlerResponse> {
         this.logger.log(`Finding session by token ${query.refreshToken}`);
         return this.sessionRepository.findOneByToken(query.refreshToken);
     }

@@ -10,16 +10,19 @@ import { JwtService } from '@nestjs/jwt';
 import { OnVerificationTokenGeneratedEvent } from '@/domain/token/events/on-verification-token-generated.event';
 import { VerificationTokenPayload } from '@/domain/token/verification-token-payload.type';
 import { TokenConfigService } from '@/infrastructure/config/configs/token-config.service';
-import { V1GenerateVerificationTokenResponseDto } from '@/infrastructure/token/v1/commands/generate-verification-token/dto/generate-verification-token.response.dto';
 
 import { V1GenerateVerificationTokenCommand } from './generate-verification-token.command';
+
+interface V1GenerateVerificationTokenCommandHandlerResponse {
+    verificationToken: string;
+}
 
 @CommandHandler(V1GenerateVerificationTokenCommand)
 export class V1GenerateVerificationTokenCommandHandler
     implements
         ICommandHandler<
             V1GenerateVerificationTokenCommand,
-            V1GenerateVerificationTokenResponseDto
+            V1GenerateVerificationTokenCommandHandlerResponse
         >
 {
     private readonly logger = new Logger(
@@ -35,16 +38,16 @@ export class V1GenerateVerificationTokenCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1GenerateVerificationTokenCommand,
-    ): Promise<V1GenerateVerificationTokenResponseDto> {
+    ): Promise<V1GenerateVerificationTokenCommandHandlerResponse> {
         return bus.execute<
             V1GenerateVerificationTokenCommand,
-            V1GenerateVerificationTokenResponseDto
+            V1GenerateVerificationTokenCommandHandlerResponse
         >(new V1GenerateVerificationTokenCommand(command.user));
     }
 
     async execute(
         command: V1GenerateVerificationTokenCommand,
-    ): Promise<V1GenerateVerificationTokenResponseDto> {
+    ): Promise<V1GenerateVerificationTokenCommandHandlerResponse> {
         this.logger.log(
             `Generating Verification Token for User ${command.user.id}`,
         );

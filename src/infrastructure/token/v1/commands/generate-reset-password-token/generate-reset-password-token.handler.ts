@@ -10,16 +10,19 @@ import { JwtService } from '@nestjs/jwt';
 import { OnResetPasswordTokenGeneratedEvent } from '@/domain/token/events/on-reset-password-token-generated.event';
 import { ResetPasswordTokenPayload } from '@/domain/token/reset-password-token-payload.type';
 import { TokenConfigService } from '@/infrastructure/config/configs/token-config.service';
-import { V1GenerateResetPasswordTokenResponseDto } from '@/infrastructure/token/v1/commands/generate-reset-password-token/dto/generate-reset-password-token.response.dto';
 
 import { V1GenerateResetPasswordTokenCommand } from './generate-reset-password-token.command';
+
+interface V1GenerateResetPasswordTokenCommandHandlerResponse {
+    resetPasswordToken: string;
+}
 
 @CommandHandler(V1GenerateResetPasswordTokenCommand)
 export class V1GenerateResetPasswordTokenCommandHandler
     implements
         ICommandHandler<
             V1GenerateResetPasswordTokenCommand,
-            V1GenerateResetPasswordTokenResponseDto
+            V1GenerateResetPasswordTokenCommandHandlerResponse
         >
 {
     private readonly logger = new Logger(
@@ -35,16 +38,16 @@ export class V1GenerateResetPasswordTokenCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1GenerateResetPasswordTokenCommand,
-    ): Promise<V1GenerateResetPasswordTokenResponseDto> {
+    ): Promise<V1GenerateResetPasswordTokenCommandHandlerResponse> {
         return bus.execute<
             V1GenerateResetPasswordTokenCommand,
-            V1GenerateResetPasswordTokenResponseDto
+            V1GenerateResetPasswordTokenCommandHandlerResponse
         >(new V1GenerateResetPasswordTokenCommand(command.user));
     }
 
     async execute(
         command: V1GenerateResetPasswordTokenCommand,
-    ): Promise<V1GenerateResetPasswordTokenResponseDto> {
+    ): Promise<V1GenerateResetPasswordTokenCommandHandlerResponse> {
         this.logger.log(
             `Generating Reset Password Token for User ${command.user.id}`,
         );
