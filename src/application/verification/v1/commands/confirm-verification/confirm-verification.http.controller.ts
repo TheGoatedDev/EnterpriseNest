@@ -16,19 +16,10 @@ import { V1ConfirmVerificationRequestDto } from './dto/confirm-verification.requ
 export class V1ConfirmVerificationController {
     constructor(private readonly commandBus: CommandBus) {}
 
-    @Public()
-    // Throttle the confirm-verification endpoint to prevent brute force attacks (5 Requests per 1 hour)
-    @Throttle({
-        default: {
-            limit: 5,
-            ttl: 60 * 60 * 1000,
-        },
-    })
-    @Post('/verification/confirm')
     @ApiOperation({
         summary: 'Confirm Verification Email',
     })
-    @HttpCode(200)
+    // Throttle the confirm-verification endpoint to prevent brute force attacks (5 Requests per 1 hour)
     @ApiStandardisedResponse({
         status: 200,
         description: 'Verification Completed Successfully',
@@ -36,6 +27,15 @@ export class V1ConfirmVerificationController {
     @ApiStandardisedResponse({
         status: 403,
         description: 'User not found or Token is invalid',
+    })
+    @HttpCode(200)
+    @Post('/verification/confirm')
+    @Public()
+    @Throttle({
+        default: {
+            limit: 5,
+            ttl: 60 * 60 * 1000,
+        },
     })
     async confirmVerification(
         @Body() body: V1ConfirmVerificationRequestDto,

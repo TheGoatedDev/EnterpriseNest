@@ -20,8 +20,6 @@ export class V1PingController {
         private readonly eventBus: EventBus,
     ) {}
 
-    @Public()
-    @Get('/ping')
     @ApiOperation({
         summary: 'Ping',
     })
@@ -32,7 +30,9 @@ export class V1PingController {
         },
         PingResponseDto,
     )
+    @Get('/ping')
     @HttpCode(200)
+    @Public()
     healthCheck(): PingResponseDto {
         this.logger.log('Health Check is successful');
 

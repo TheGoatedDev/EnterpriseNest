@@ -22,19 +22,11 @@ export class V1ForgotPasswordController {
         private readonly queryBus: QueryBus,
     ) {}
 
-    @Public()
-    // Throttle the forgot-password endpoint to prevent brute force attacks (1 Requests per 1 minute)
-    @Throttle({
-        default: {
-            limit: 1,
-            ttl: 60 * 1000,
-        },
-    })
-    @Post('/authentication/forgot-password')
     @ApiOperation({
         summary:
             'User Forgot Password and send Email with Reset Password Token',
     })
+    // Throttle the forgot-password endpoint to prevent brute force attacks (1 Requests per 1 minute)
     @ApiStandardisedResponse({
         status: 201,
         description: 'Forgot Password Email Sent Successfully',
@@ -42,6 +34,14 @@ export class V1ForgotPasswordController {
     @ApiStandardisedResponse({
         status: 404,
         description: 'User is not found',
+    })
+    @Post('/authentication/forgot-password')
+    @Public()
+    @Throttle({
+        default: {
+            limit: 1,
+            ttl: 60 * 1000,
+        },
     })
     async forgotPassword(
         @Req() request: RequestWithUser,

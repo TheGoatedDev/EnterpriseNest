@@ -37,35 +37,35 @@ export abstract class Entity<EntityData> extends AggregateRoot {
     private readonly _createdAt: Date;
     private _updatedAt: Date;
 
-    @Expose()
     @ApiProperty({
         description: 'Entity ID',
         example: 'b0c4e5f2-3d2d-4f9f-8b4b-6d3b3d2d4f9f',
         type: String,
         required: true,
     })
+    @Expose()
     get id(): EntityID {
         return this._id;
     }
 
-    @Expose()
     @ApiProperty({
         description: 'Entity creation date',
         example: '2021-01-01T00:00:00.000Z',
         type: Date,
         required: true,
     })
+    @Expose()
     get createdAt(): Date {
         return this._createdAt;
     }
 
-    @Expose()
     @ApiProperty({
         description: 'Entity update date',
         example: '2021-01-01T00:00:00.000Z',
         type: Date,
         required: true,
     })
+    @Expose()
     get updatedAt(): Date {
         return this._updatedAt;
     }

@@ -132,6 +132,9 @@ importers:
         specifier: 3.23.8
         version: 3.23.8
     devDependencies:
+      '@elsikora/eslint-plugin-sort-decorators':
+        specifier: ^0.2.8
+        version: 0.2.8
       '@faker-js/faker':
         specifier: 8.4.1
         version: 8.4.1
@@ -426,6 +429,9 @@ packages:
     peerDependencies:
       effect: ^3.0.3
       fast-check: ^3.13.2
+
+  '@elsikora/eslint-plugin-sort-decorators@0.2.8':
+    resolution: {integrity: sha512-npg8JI0Y1HTByhlAaehEAcZsjM5q0zth4OKu7hQSqxaNhLZozg8GhB7FTaQgTT8/6aLmF7Kb/QYLQXq9Bab1Nw==}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -5767,6 +5773,8 @@ snapshots:
     dependencies:
       effect: 3.0.3
       fast-check: 3.17.2
+
+  '@elsikora/eslint-plugin-sort-decorators@0.2.8': {}
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true

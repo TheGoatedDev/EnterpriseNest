@@ -1,4 +1,4 @@
-import { Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Controller, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
@@ -21,16 +21,8 @@ import { V1LoginResponseDto } from './dto/login.response.dto';
 export class V1LoginController {
     constructor(private readonly commandBus: CommandBus) {}
 
-    @Public()
+    @ApiBody({ type: V1LoginRequestDto })
     // Throttle the login endpoint to prevent brute force attacks (5 Requests per 1 minute)
-    @Throttle({
-        default: {
-            limit: 5,
-            ttl: 60 * 1000,
-        },
-    })
-    @UseGuards(LocalAuthGuard)
-    @Post('/authentication/login')
     @ApiOperation({
         summary: 'Login to a User Account and get access and refresh token',
     })
@@ -45,7 +37,16 @@ export class V1LoginController {
         status: 401,
         description: 'User is Not Verified or Email or Password is Incorrect',
     })
-    @ApiBody({ type: V1LoginRequestDto })
+    @HttpCode(200)
+    @Post('/authentication/login')
+    @Public()
+    @Throttle({
+        default: {
+            limit: 5,
+            ttl: 60 * 1000,
+        },
+    })
+    @UseGuards(LocalAuthGuard)
     async login(
         @Req() request: RequestWithUser,
         @CurrentUser() user: User,

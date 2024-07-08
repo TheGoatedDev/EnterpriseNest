@@ -16,27 +16,27 @@ import { V1ConfirmForgotPasswordRequestDto } from './dto/confirm-forgot-password
 export class V1ConfirmForgotPasswordController {
     constructor(private readonly commandBus: CommandBus) {}
 
-    @Public()
+    @ApiOperation({
+        summary:
+            'Confirm Forgot Password - Confirm the forgot password request and reset the password',
+    })
     // Throttle the confirm-forgot-password endpoint to prevent brute force attacks (5 Requests per 1 minute)
+    @ApiStandardisedResponse({
+        status: 200,
+        description: 'Password has been reset successfully',
+    })
+    @ApiStandardisedResponse({
+        status: 404,
+        description: 'User is not found',
+    })
+    @HttpCode(200)
+    @Post('/authentication/confirm-forgot-password')
+    @Public()
     @Throttle({
         default: {
             limit: 5,
             ttl: 60 * 1000,
         },
-    })
-    @Post('/authentication/confirm-forgot-password')
-    @ApiOperation({
-        summary:
-            'Confirm Forgot Password - Confirm the forgot password request and reset the password',
-    })
-    @ApiStandardisedResponse({
-        status: 200,
-        description: 'Password has been reset successfully',
-    })
-    @HttpCode(200)
-    @ApiStandardisedResponse({
-        status: 404,
-        description: 'User is not found',
     })
     async confirmForgotPassword(
         @Body() body: V1ConfirmForgotPasswordRequestDto,

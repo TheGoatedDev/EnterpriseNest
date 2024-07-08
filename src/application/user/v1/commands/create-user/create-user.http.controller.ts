@@ -20,8 +20,6 @@ import { V1CreateUserResponseDto } from './dto/create-user.response.dto';
 export class V1CreateUserController {
     constructor(private readonly commandBus: CommandBus) {}
 
-    @Post('/user')
-    @Roles(...AllStaffRoles)
     @ApiOperation({
         summary: 'Creates a User',
         description:
@@ -34,6 +32,8 @@ export class V1CreateUserController {
         },
         V1CreateUserResponseDto,
     )
+    @Post('/user')
+    @Roles(...AllStaffRoles)
     async createUser(
         @Body() body: V1CreateUserRequestDto,
     ): Promise<V1CreateUserResponseDto> {

@@ -19,15 +19,11 @@ import { V1RefreshTokenResponseDto } from './dto/refresh.response.dto';
 export class V1RefreshTokenController {
     constructor(private readonly commandBus: CommandBus) {}
 
-    @Public() // This is to bypass the AccessTokenGuard
-    @UseGuards(RefreshTokenGuard)
-    @ApiSecurity('refresh-token')
-    @Post('/authentication/refresh')
-    @HttpCode(201)
     @ApiOperation({
         summary:
             'RefreshToken to a User Account and get access and refresh token',
-    })
+    }) // This is to bypass the AccessTokenGuard
+    @ApiSecurity('refresh-token')
     @ApiStandardisedResponse(
         {
             status: 201,
@@ -39,6 +35,10 @@ export class V1RefreshTokenController {
         status: 401,
         description: 'User is Not Verified or Email or Password is Incorrect',
     })
+    @HttpCode(201)
+    @Post('/authentication/refresh')
+    @Public()
+    @UseGuards(RefreshTokenGuard)
     async refreshToken(
         @Req() request: RequestWithUser,
         @CurrentUser() user: User,

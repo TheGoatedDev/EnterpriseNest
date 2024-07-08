@@ -18,8 +18,6 @@ import { V1FindUserByIDQuery } from './find-user-by-id.query';
 export class V1FindUserByIDController {
     constructor(private readonly queryBus: QueryBus) {}
 
-    @Get('/user/:id')
-    @Roles(...AllStaffRoles)
     @ApiOperation({
         summary: 'Find User by ID',
         description: 'Requires the user to be an read admin.',
@@ -35,6 +33,8 @@ export class V1FindUserByIDController {
         status: 404,
         description: 'The User could not be found.',
     })
+    @Get('/user/:id')
+    @Roles(...AllStaffRoles)
     async findUserById(
         @Param('id') id: string,
     ): Promise<V1FindUserByIDResponseDto> {

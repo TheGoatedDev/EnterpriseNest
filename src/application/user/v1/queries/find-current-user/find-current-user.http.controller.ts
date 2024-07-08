@@ -17,8 +17,6 @@ import { V1FindCurrentUserResponseDto } from './dto/find-current-user.response.d
 export class V1FindCurrentUserController {
     constructor(private readonly queryBus: QueryBus) {}
 
-    @Roles(UserRoleEnum.USER)
-    @Get('/user/me')
     @ApiOperation({
         summary: 'Find Current',
     })
@@ -29,6 +27,8 @@ export class V1FindCurrentUserController {
         },
         V1FindCurrentUserResponseDto,
     )
+    @Get('/user/me')
+    @Roles(UserRoleEnum.USER)
     findCurrentUser(
         @CurrentUser() user: User,
     ): Promise<V1FindCurrentUserResponseDto> {
