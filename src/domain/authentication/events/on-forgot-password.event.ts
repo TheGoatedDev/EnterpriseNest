@@ -1,6 +1,6 @@
 import { User } from '@/domain/user/user.entity';
 
-export class OnAuthenticationForgotPasswordEvent {
+export class OnForgotPasswordEvent {
     constructor(
         public readonly user: User,
         public readonly resetPasswordToken: string,
