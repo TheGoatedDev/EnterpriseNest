@@ -6,14 +6,10 @@ import {
     ICommandHandler,
     QueryBus,
 } from '@nestjs/cqrs';
-import { JwtService } from '@nestjs/jwt';
 
 import { V1UpdateUserCommandHandler } from '@/application/user/v1/commands/update-user/update-user.handler';
-import { V1FindUserByIDQueryHandler } from '@/application/user/v1/queries/find-user-by-id/find-user-by-id.handler';
-import { VerificationTokenPayload } from '@/domain/token/verification-token-payload.type';
 import { OnVerificationConfirmedEvent } from '@/domain/verification/events/on-verification-confirmed.event';
-import { TokenConfigService } from '@/infrastructure/config/configs/token-config.service';
-import { GenericUnauthenticatedException } from '@/shared/exceptions/unauthenticated.exception';
+import { V1VerifyVerificationTokenQueryHandler } from '@/infrastructure/token/v1/queries/verify-verification-token/verify-verification-token.handler';
 
 import { V1ConfirmVerificationCommand } from './confirm-verification.command';
 
@@ -32,8 +28,6 @@ export class V1ConfirmVerificationCommandHandler
     );
 
     constructor(
-        private readonly tokenConfig: TokenConfigService,
-        private readonly jwtService: JwtService,
         private readonly eventBus: EventBus,
         private readonly commandBus: CommandBus,
         private readonly queryBus: QueryBus,
@@ -56,32 +50,12 @@ export class V1ConfirmVerificationCommandHandler
             `Confirming verification for ${command.verificationToken}`,
         );
 
-        const payload = await this.jwtService
-            .verifyAsync<VerificationTokenPayload>(command.verificationToken, {
-                ignoreExpiration: false,
-                secret: this.tokenConfig.verificationTokenSecret,
-            })
-            .catch(() => {
-                this.logger.error('Invalid Token');
-                throw new GenericUnauthenticatedException('Invalid Token');
-            });
-
-        if (payload.type !== 'verification') {
-            throw new GenericUnauthenticatedException('Invalid Token Type');
-        }
-
-        const user = await V1FindUserByIDQueryHandler.runHandler(
+        const { user } = await V1VerifyVerificationTokenQueryHandler.runHandler(
             this.queryBus,
             {
-                id: payload.data.sub,
+                verificationToken: command.verificationToken,
             },
         );
-
-        if (!user) {
-            throw new GenericUnauthenticatedException(
-                'User not found or Token is invalid',
-            );
-        }
 
         user.verifiedAt = new Date();
 
