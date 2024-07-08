@@ -62,7 +62,8 @@ export class V1GenerateRefreshTokenCommandHandler
                 },
             } satisfies RefreshTokenPayload,
             {
-                expiresIn: this.tokenConfigService.refreshTokenExpiration,
+                expiresIn:
+                    this.tokenConfigService.refreshTokenExpiration ?? '80y',
                 algorithm: 'HS512',
                 secret: this.tokenConfigService.refreshTokenSecret,
             },

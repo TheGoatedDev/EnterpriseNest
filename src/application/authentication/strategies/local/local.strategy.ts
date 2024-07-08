@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 
 import { V1ValidateCredentialsQueryHandler } from '@/application/authentication/v1/queries/validate-credentials/validate-credentials.handler';
-import { OnUserUnverifiedEvent } from '@/domain/authentication/events/on-user-unverified.event';
+import { OnLoginUnverifiedEvent } from '@/domain/authentication/events/on-login-unverified.event';
 import { AuthenticationNoEmailMatchException } from '@/domain/authentication/exceptions/no-email-match.exception';
 import { AuthenticationPasswordIncorrectException } from '@/domain/authentication/exceptions/password-incorrect.exception';
 import { GenericNoPermissionException } from '@/shared/exceptions/no-permission.exception';
@@ -49,7 +49,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         });
 
         if (!user.verifiedAt) {
-            this.eventBus.publish(new OnUserUnverifiedEvent(user, request.ip));
+            this.eventBus.publish(new OnLoginUnverifiedEvent(user, request.ip));
             throw new GenericNoPermissionException('User is not verified');
         }
 

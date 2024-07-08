@@ -7,15 +7,20 @@ import {
 } from '@nestjs/cqrs';
 
 import { V1RefreshTokenResponseDto } from '@/application/authentication/v1/commands/refresh/dto/refresh.response.dto';
-import { OnRefreshTokenEvent } from '@/domain/authentication/events/on-refresh-token.event';
+import { OnTokenRefreshEvent } from '@/domain/authentication/events/on-token-refresh.event';
 import { V1GenerateAccessTokenCommandHandler } from '@/infrastructure/token/v1/commands/generate-access-token/generate-access-token.handler';
 
 import { V1RefreshTokenCommand } from './refresh.command';
 
+type V1RefreshTokenCommandHandlerResponse = V1RefreshTokenResponseDto;
+
 @CommandHandler(V1RefreshTokenCommand)
 export class V1RefreshTokenCommandHandler
     implements
-        ICommandHandler<V1RefreshTokenCommand, V1RefreshTokenResponseDto>
+        ICommandHandler<
+            V1RefreshTokenCommand,
+            V1RefreshTokenCommandHandlerResponse
+        >
 {
     private readonly logger = new Logger(V1RefreshTokenCommandHandler.name);
 
@@ -27,19 +32,16 @@ export class V1RefreshTokenCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1RefreshTokenCommand,
-    ): Promise<V1RefreshTokenResponseDto> {
-        return bus.execute<V1RefreshTokenCommand, V1RefreshTokenResponseDto>(
-            new V1RefreshTokenCommand(
-                command.user,
-                command.session,
-                command.ip,
-            ),
-        );
+    ): Promise<V1RefreshTokenCommandHandlerResponse> {
+        return bus.execute<
+            V1RefreshTokenCommand,
+            V1RefreshTokenCommandHandlerResponse
+        >(new V1RefreshTokenCommand(command.user, command.session, command.ip));
     }
 
     async execute(
         command: V1RefreshTokenCommand,
-    ): Promise<V1RefreshTokenResponseDto> {
+    ): Promise<V1RefreshTokenCommandHandlerResponse> {
         this.logger.log(
             `User ${command.user.id} has Refreshed Access Token with Session: ${command.session.id}, IP: ${command.ip ?? 'unknown'}`,
         );
@@ -55,7 +57,7 @@ export class V1RefreshTokenCommandHandler
             );
 
         this.eventBus.publish(
-            new OnRefreshTokenEvent(
+            new OnTokenRefreshEvent(
                 command.user,
                 command.session,
                 accessToken.accessToken,

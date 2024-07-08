@@ -57,7 +57,9 @@ export class V1GenerateVerificationTokenCommandHandler
                 },
             } satisfies VerificationTokenPayload,
             {
-                expiresIn: this.tokenConfigService.verificationTokenExpiration,
+                expiresIn:
+                    this.tokenConfigService.verificationTokenExpiration ??
+                    '80y',
                 algorithm: 'HS512',
                 secret: this.tokenConfigService.verificationTokenSecret,
             },

@@ -1,5 +1,7 @@
 import { Module, Type } from '@nestjs/common';
 
+import { V1ForgotPasswordCommandHandler } from '@/application/authentication/v1/commands/forgot-password/forgot-password.handler';
+import { V1ForgotPasswordController } from '@/application/authentication/v1/commands/forgot-password/forgot-password.http.controller';
 import { V1LoginCommandHandler } from '@/application/authentication/v1/commands/login/login.handler';
 import { V1LoginController } from '@/application/authentication/v1/commands/login/login.http.controller';
 import { V1LogoutController } from '@/application/authentication/v1/commands/logout/logout.http.controller';
@@ -16,12 +18,14 @@ const CommandHandlers: Type[] = [
     V1LoginCommandHandler,
     V1RegisterCommandHandler,
     V1RefreshTokenCommandHandler,
+    V1ForgotPasswordCommandHandler,
 ];
 const CommandControllers: Type[] = [
     V1LoginController,
     V1RegisterController,
     V1RefreshTokenController,
     V1LogoutController,
+    V1ForgotPasswordController,
 ];
 
 @Module({

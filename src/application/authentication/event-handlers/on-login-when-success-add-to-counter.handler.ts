@@ -2,11 +2,11 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Counter } from '@opentelemetry/api';
 import { MetricService } from 'nestjs-otel';
 
-import { OnLoginUserEvent } from '@/domain/authentication/events/on-login-user.event';
+import { OnLoginEvent } from '@/domain/authentication/events/on-login.event';
 
-@EventsHandler(OnLoginUserEvent)
-export class OnLoginUserWhenSuccessAddToCounterHandler
-    implements IEventHandler<OnLoginUserEvent>
+@EventsHandler(OnLoginEvent)
+export class OnLoginWhenSuccessAddToCounterHandler
+    implements IEventHandler<OnLoginEvent>
 {
     private readonly userLoginCounter: Counter;
     constructor(private readonly metricService: MetricService) {
@@ -18,7 +18,7 @@ export class OnLoginUserWhenSuccessAddToCounterHandler
         );
     }
 
-    handle(event: OnLoginUserEvent) {
+    handle(event: OnLoginEvent) {
         this.userLoginCounter.add(1, {
             email: event.user.email,
         });

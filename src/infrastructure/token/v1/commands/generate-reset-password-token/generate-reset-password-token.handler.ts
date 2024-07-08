@@ -57,7 +57,9 @@ export class V1GenerateResetPasswordTokenCommandHandler
                 },
             } satisfies ResetPasswordTokenPayload,
             {
-                expiresIn: this.tokenConfigService.resetPasswordTokenExpiration,
+                expiresIn:
+                    this.tokenConfigService.resetPasswordTokenExpiration ??
+                    '80y',
                 algorithm: 'HS512',
                 secret: this.tokenConfigService.resetPasswordTokenSecret,
             },

@@ -63,7 +63,8 @@ export class V1GenerateAccessTokenCommandHandler
                 },
             } satisfies AccessTokenPayload,
             {
-                expiresIn: this.tokenConfigService.accessTokenExpiration,
+                expiresIn:
+                    this.tokenConfigService.accessTokenExpiration ?? '80y',
                 algorithm: 'HS512',
                 secret: this.tokenConfigService.accessTokenSecret,
             },

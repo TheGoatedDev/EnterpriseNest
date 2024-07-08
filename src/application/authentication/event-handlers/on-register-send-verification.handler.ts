@@ -2,19 +2,19 @@ import { Logger } from '@nestjs/common';
 import { CommandBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
 import { V1SendVerificationCommandHandler } from '@/application/verification/v1/commands/send-verification/send-verification.handler';
-import { OnRegisterUserEvent } from '@/domain/authentication/events/on-register-user.event';
+import { OnRegisterEvent } from '@/domain/authentication/events/on-register.event';
 
-@EventsHandler(OnRegisterUserEvent)
-export class OnRegisterUserSendVerificationHandler
-    implements IEventHandler<OnRegisterUserEvent>
+@EventsHandler(OnRegisterEvent)
+export class OnRegisterSendVerificationHandler
+    implements IEventHandler<OnRegisterEvent>
 {
     private readonly logger = new Logger(
-        OnRegisterUserSendVerificationHandler.name,
+        OnRegisterSendVerificationHandler.name,
     );
 
     constructor(private readonly commandBus: CommandBus) {}
 
-    async handle(event: OnRegisterUserEvent) {
+    async handle(event: OnRegisterEvent) {
         this.logger.log(
             `Sending verification email to ${event.user.email} as part of registration process`,
         );
