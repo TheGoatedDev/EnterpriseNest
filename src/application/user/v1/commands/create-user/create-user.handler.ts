@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import {
     CommandBus,
     CommandHandler,
@@ -14,10 +14,18 @@ import type { UserRepositoryPort } from '@/infrastructure/repositories/modules/u
 
 import { V1CreateUserCommand } from './create-user.command';
 
+type V1CreateUserCommandHandlerResponse = User;
+
 @CommandHandler(V1CreateUserCommand)
 export class V1CreateUserCommandHandler
-    implements ICommandHandler<V1CreateUserCommand, User>
+    implements
+        ICommandHandler<
+            V1CreateUserCommand,
+            V1CreateUserCommandHandlerResponse
+        >
 {
+    private readonly logger = new Logger(V1CreateUserCommandHandler.name);
+
     constructor(
         @Inject(USER_REPOSITORY)
         private readonly userRepository: UserRepositoryPort,
@@ -28,13 +36,18 @@ export class V1CreateUserCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1CreateUserCommand,
-    ): Promise<User> {
-        return bus.execute<V1CreateUserCommand, User>(
-            new V1CreateUserCommand(command.user),
-        );
+    ): Promise<V1CreateUserCommandHandlerResponse> {
+        return bus.execute<
+            V1CreateUserCommand,
+            V1CreateUserCommandHandlerResponse
+        >(new V1CreateUserCommand(command.user));
     }
 
-    async execute(command: V1CreateUserCommand): Promise<User> {
+    async execute(
+        command: V1CreateUserCommand,
+    ): Promise<V1CreateUserCommandHandlerResponse> {
+        this.logger.log(`Creating user ${command.user.email}`);
+
         const userEntity = this.eventPublisher.mergeObjectContext(command.user);
 
         await this.userRepository.create(userEntity);

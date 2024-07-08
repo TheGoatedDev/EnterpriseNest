@@ -8,9 +8,15 @@ import type { SessionRepositoryPort } from '@/infrastructure/repositories/module
 
 import { V1FindAllSessionsByUserQuery } from './find-all-sessions-by-user.query';
 
+type V1FindAllSessionsByUserQueryHandlerResponse = Session[];
+
 @QueryHandler(V1FindAllSessionsByUserQuery)
 export class V1FindAllSessionsByUserQueryHandler
-    implements IQueryHandler<V1FindAllSessionsByUserQuery, Session[]>
+    implements
+        IQueryHandler<
+            V1FindAllSessionsByUserQuery,
+            V1FindAllSessionsByUserQueryHandlerResponse
+        >
 {
     private readonly logger = new Logger(
         V1FindAllSessionsByUserQueryHandler.name,
@@ -24,13 +30,16 @@ export class V1FindAllSessionsByUserQueryHandler
     static runHandler(
         bus: QueryBus,
         query: V1FindAllSessionsByUserQuery,
-    ): Promise<Session[]> {
-        return bus.execute<V1FindAllSessionsByUserQuery, Session[]>(
-            new V1FindAllSessionsByUserQuery(query.user),
-        );
+    ): Promise<V1FindAllSessionsByUserQueryHandlerResponse> {
+        return bus.execute<
+            V1FindAllSessionsByUserQuery,
+            V1FindAllSessionsByUserQueryHandlerResponse
+        >(new V1FindAllSessionsByUserQuery(query.user));
     }
 
-    execute(query: V1FindAllSessionsByUserQuery): Promise<Session[]> {
+    execute(
+        query: V1FindAllSessionsByUserQuery,
+    ): Promise<V1FindAllSessionsByUserQueryHandlerResponse> {
         this.logger.log(`Finding all sessions by user ${query.user.id}`);
         return this.sessionRepository.findAllByUser(query.user);
     }

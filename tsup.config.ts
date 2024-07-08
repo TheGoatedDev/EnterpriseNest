@@ -9,6 +9,7 @@ const tsupConfig = defineConfig({
     clean: true,
     sourcemap: isDev ? 'inline' : false,
     silent: !isWatch,
+    watch: isWatch ? ['src', '.env'] : false,
     onSuccess: isWatch ? 'node dist/index.js' : undefined,
     tsconfig: 'tsconfig.json',
     minify: isDev ? false : "terser",

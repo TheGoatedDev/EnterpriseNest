@@ -15,18 +15,18 @@ import type { RequestWithUser } from '@/types/express/request-with-user';
 export class V1LogoutController {
     constructor(private readonly commandBus: CommandBus) {}
 
-    @Public() // This is to bypass the AccessTokenGuard
-    @UseGuards(RefreshTokenGuard)
-    @ApiSecurity('refresh-token')
-    @Post('/authentication/logout')
-    @HttpCode(200)
     @ApiOperation({
         summary: 'Logout a User Account and invalidate the refresh token',
-    })
+    }) // This is to bypass the AccessTokenGuard
+    @ApiSecurity('refresh-token')
     @ApiStandardisedResponse({
         status: 200,
         description: 'User Logged Out Successfully',
     })
+    @HttpCode(200)
+    @Post('/authentication/logout')
+    @Public()
+    @UseGuards(RefreshTokenGuard)
     async refreshToken(@Req() request: RequestWithUser): Promise<void> {
         await V1RevokeSessionCommandHandler.runHandler(this.commandBus, {
             session: request.session,

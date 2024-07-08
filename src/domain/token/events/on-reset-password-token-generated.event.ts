@@ -1,8 +1,8 @@
 import { User } from '@/domain/user/user.entity';
 
-export class OnUserUnverifiedEvent {
+export class OnResetPasswordTokenGeneratedEvent {
     constructor(
+        public readonly resetPasswordToken: string,
         public readonly user: User,
-        public readonly ip?: string,
     ) {}
 }

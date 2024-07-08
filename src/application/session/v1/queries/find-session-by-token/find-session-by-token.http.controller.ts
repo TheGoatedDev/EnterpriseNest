@@ -27,7 +27,6 @@ export class V1FindSessionByTokenController {
 
     constructor(private readonly queryBus: QueryBus) {}
 
-    @Get('/session/:token')
     @ApiOperation({
         summary: 'Find Session By Token',
     })
@@ -38,6 +37,7 @@ export class V1FindSessionByTokenController {
         },
         V1FindSessionByTokenResponseDto,
     )
+    @Get('/session/:token')
     async findSessionByToken(
         @Param('token') token: string,
         @CurrentUser() currentUser: User,

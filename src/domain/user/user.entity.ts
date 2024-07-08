@@ -37,13 +37,13 @@ export class User extends Entity<UserProps> {
         return new User({ id, data });
     }
 
-    @Expose()
     @ApiProperty({
         description: 'User first name',
         example: 'John',
         type: String,
         required: false,
     })
+    @Expose()
     get firstName(): string | undefined {
         return this.data.firstName;
     }
@@ -60,13 +60,13 @@ export class User extends Entity<UserProps> {
         this.updated();
     }
 
-    @Expose()
     @ApiProperty({
         description: 'User last name',
         example: 'Doe',
         type: String,
         required: false,
     })
+    @Expose()
     get lastName(): string | undefined {
         return this.data.lastName;
     }
@@ -79,13 +79,13 @@ export class User extends Entity<UserProps> {
         this.updated();
     }
 
-    @Expose()
     @ApiProperty({
         description: 'User email',
         example: 'test@email.com',
         type: String,
         required: true,
     })
+    @Expose()
     get email(): string {
         return this.data.email;
     }
@@ -96,13 +96,13 @@ export class User extends Entity<UserProps> {
         this.updated();
     }
 
-    @Expose({
-        groups: [...AllStaffRoles],
-    })
     @ApiProperty({
         description: 'User password',
         type: String,
         required: false,
+    })
+    @Expose({
+        groups: [...AllStaffRoles],
     })
     get password(): string {
         return this.data.password;
@@ -118,11 +118,11 @@ export class User extends Entity<UserProps> {
         this.updated();
     }
 
-    @Expose()
     @ApiProperty({
         description: 'User role',
         enum: UserRoleEnum,
     })
+    @Expose()
     get role(): UserRoleEnum {
         return this.data.role;
     }
@@ -133,12 +133,12 @@ export class User extends Entity<UserProps> {
         this.updated();
     }
 
-    @Expose()
     @ApiProperty({
         description: 'User Verified At',
         type: Date,
         required: false,
     })
+    @Expose()
     get verifiedAt(): Date | undefined {
         return this.data.verifiedAt;
     }

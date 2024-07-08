@@ -31,8 +31,6 @@ export class V1UpdateUserController {
         private readonly queryBus: QueryBus,
     ) {}
 
-    @Put('/user/:id')
-    @Roles(...AllStaffRoles)
     @ApiOperation({
         summary: 'Updates the  for a user',
         description:
@@ -56,6 +54,8 @@ export class V1UpdateUserController {
         },
         undefined,
     )
+    @Put('/user/:id')
+    @Roles(...AllStaffRoles)
     async updateUser(
         @Param('id') id: string,
         @Body() body: V1UpdateUserRequestDto,

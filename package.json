@@ -36,6 +36,7 @@
   "author": "TheGoatedDev",
   "license": "MIT",
   "devDependencies": {
+    "@elsikora/eslint-plugin-sort-decorators": "^0.2.8",
     "@faker-js/faker": "8.4.1",
     "@nestjs/jwt": "10.2.0",
     "@nestjs/testing": "10.3.9",

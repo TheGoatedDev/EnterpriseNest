@@ -22,13 +22,13 @@ export class V1CheckHealthController {
         private readonly disk: DiskHealthIndicator,
     ) {}
 
-    @Public()
-    @Get('/health')
     @ApiOperation({
         summary: 'Health Check',
     })
+    @Get('/health')
     @HealthCheck()
     @HttpCode(200)
+    @Public()
     healthCheck() {
         this.logger.log('Checking health');
 

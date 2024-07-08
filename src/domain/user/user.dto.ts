@@ -5,79 +5,72 @@ import {
     IsEmail,
     IsEnum,
     IsNotEmpty,
-    Matches,
+    IsStrongPassword,
     MinLength,
 } from 'class-validator';
 
 import { UserRoleEnum } from './user-role.enum';
 
 export class UserEmailDto {
-    @IsNotEmpty()
-    @IsEmail()
     @ApiProperty({
         description: 'User email',
         example: 'test@email.com',
     })
+    @IsEmail()
+    @IsNotEmpty()
     email!: string;
 }
 
 export class UserPasswordDto {
-    @IsNotEmpty()
-    @MinLength(8)
-    @Matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/,
-        {
-            message:
-                'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character',
-        },
-    )
     @ApiProperty({
         example: 'Password123!',
         description:
             'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character and be at least 8 characters long.',
     })
+    @IsNotEmpty()
+    @IsStrongPassword({
+        minLength: 8,
+    })
     password!: string;
 }
 
 export class UserRoleDto {
-    @IsNotEmpty()
-    @IsEnum(UserRoleEnum)
     @ApiProperty({
         enum: UserRoleEnum,
         example: UserRoleEnum.USER,
         description: 'User role',
     })
+    @IsEnum(UserRoleEnum)
+    @IsNotEmpty()
     role!: UserRoleEnum;
 }
 
 export class UserFirstNameDto {
-    @IsNotEmpty()
-    @Optional()
-    @MinLength(2)
     @ApiProperty({
         description: 'User first name',
         example: 'John',
     })
+    @MinLength(2)
+    @Optional()
     firstName!: string | undefined;
 }
 
 export class UserLastNameDto {
-    @IsNotEmpty()
-    @MinLength(2)
-    @Optional()
     @ApiProperty({
         description: 'User last name',
         example: 'Doe',
     })
+    @MinLength(2)
+    @Optional()
     lastName!: string | undefined;
 }
 
 export class UserVerifiedAtDto {
-    @Optional()
-    @IsDate()
     @ApiProperty({
         description: 'User verified at',
         example: new Date(),
     })
+    @IsDate()
+    @Optional()
     verifiedAt!: Date | undefined;
 }

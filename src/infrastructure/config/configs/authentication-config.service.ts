@@ -14,4 +14,10 @@ export class AuthenticationConfigService {
             'AUTH_IP_STRICT',
         );
     }
+
+    get autoVerify() {
+        return this.configService.get<Config['AUTH_AUTO_VERIFY']>(
+            'AUTH_AUTO_VERIFY',
+        );
+    }
 }

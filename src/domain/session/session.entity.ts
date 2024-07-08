@@ -24,46 +24,46 @@ export class Session extends Entity<SessionProps> {
         return new Session({ id, data });
     }
 
-    @Expose()
     @ApiProperty({
         description: 'The user ID of the session',
         example: 'b0c4e5f2-3d2d-4f9f-8b4b-6d3b3d2d4f9f',
         type: String,
         required: true,
     })
+    @Expose()
     get userId(): string {
         return this.data.userId;
     }
 
-    @Expose()
     @ApiProperty({
         description: 'The token of the session',
         example: 'b0c4e5f2-3d2d-4f9f-8b4b-6d3b3d2d4f9f',
         type: String,
         required: true,
     })
+    @Expose()
     get token(): string {
         return this.data.token;
     }
 
-    @Expose()
     @ApiProperty({
         description: 'If the session is revoked',
         type: Boolean,
         required: true,
         example: false,
     })
+    @Expose()
     get isRevoked(): boolean {
         return this.data.isRevoked;
     }
 
-    @Expose({
-        groups: [...AllStaffRoles],
-    })
     @ApiProperty({
         description: 'The IP of the session (if available)',
         type: String,
         example: '1.1.1.1',
+    })
+    @Expose({
+        groups: [...AllStaffRoles],
     })
     get ip(): string | undefined {
         return this.data.ip;

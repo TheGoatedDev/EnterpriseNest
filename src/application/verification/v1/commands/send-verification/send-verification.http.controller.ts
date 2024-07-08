@@ -22,19 +22,10 @@ export class V1SendVerificationController {
         private readonly queryBus: QueryBus,
     ) {}
 
-    @Public()
-    // Throttle the confirm-verification endpoint to prevent brute force attacks (5 Requests per 1 hour)
-    @Throttle({
-        default: {
-            limit: 5,
-            ttl: 60 * 60 * 1000,
-        },
-    })
-    @Post('/verification/send')
     @ApiOperation({
         summary: 'Send Verification Email',
     })
-    @HttpCode(200)
+    // Throttle the confirm-verification endpoint to prevent brute force attacks (5 Requests per 1 hour)
     @ApiStandardisedResponse({
         status: 200,
         description: 'Verification Email Sent Successfully',
@@ -42,6 +33,15 @@ export class V1SendVerificationController {
     @ApiStandardisedResponse({
         status: 403,
         description: 'User not found or already verified',
+    })
+    @HttpCode(200)
+    @Post('/verification/send')
+    @Public()
+    @Throttle({
+        default: {
+            limit: 5,
+            ttl: 60 * 60 * 1000,
+        },
     })
     async sendVerification(
         @Body() body: V1SendVerificationRequestDto,

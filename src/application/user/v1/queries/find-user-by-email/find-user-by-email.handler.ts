@@ -8,9 +8,15 @@ import type { UserRepositoryPort } from '@/infrastructure/repositories/modules/u
 
 import { V1FindUserByEmailQuery } from './find-user-by-email.query';
 
+type V1FindUserByEmailQueryHandlerResponse = User | undefined;
+
 @QueryHandler(V1FindUserByEmailQuery)
 export class V1FindUserByEmailQueryHandler
-    implements IQueryHandler<V1FindUserByEmailQuery, User | undefined>
+    implements
+        IQueryHandler<
+            V1FindUserByEmailQuery,
+            V1FindUserByEmailQueryHandlerResponse
+        >
 {
     private readonly logger = new Logger(V1FindUserByEmailQueryHandler.name);
 
@@ -22,13 +28,17 @@ export class V1FindUserByEmailQueryHandler
     static runHandler(
         bus: QueryBus,
         query: V1FindUserByEmailQuery,
-    ): Promise<User | undefined> {
-        return bus.execute<V1FindUserByEmailQuery, User | undefined>(
-            new V1FindUserByEmailQuery(query.email),
-        );
+    ): Promise<V1FindUserByEmailQueryHandlerResponse> {
+        return bus.execute<
+            V1FindUserByEmailQuery,
+            V1FindUserByEmailQueryHandlerResponse
+        >(new V1FindUserByEmailQuery(query.email));
     }
 
-    execute(query: V1FindUserByEmailQuery): Promise<User | undefined> {
+    execute(
+        query: V1FindUserByEmailQuery,
+    ): Promise<V1FindUserByEmailQueryHandlerResponse> {
+        this.logger.log(`Finding user by email ${query.email}`);
         return this.userRepository.findOneByEmail(query.email);
     }
 }

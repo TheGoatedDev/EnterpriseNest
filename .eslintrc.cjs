@@ -23,8 +23,8 @@ module.exports = {
         '@vercel/style-guide/eslint/node',
         '@vercel/style-guide/eslint/typescript',
         '@vercel/style-guide/eslint/jest',
-    ].map(require.resolve), 'prettier'],
-    plugins: ['prettier', 'simple-import-sort', 'unused-imports'],
+    ].map(require.resolve), 'prettier', 'plugin:@elsikora/sort-decorators/strict'],
+    plugins: ['prettier', 'simple-import-sort', 'unused-imports', "@elsikora/sort-decorators"],
 
     rules: {
         'prettier/prettier': 'error',

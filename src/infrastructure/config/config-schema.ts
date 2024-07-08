@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
 const StringToNumber = z.preprocess((x) => Number(x), z.number());
+const StringToNumberOptional = z.preprocess(
+    (x) => Number(x),
+    z.number().optional(),
+);
 const StringToBoolean = z.preprocess((x) => x === 'true', z.boolean());
 
 export const ConfigSchema = z.object({
@@ -10,7 +14,8 @@ export const ConfigSchema = z.object({
         .default('development'),
     PORT: StringToNumber.default(3000),
     APP_NAME: z.string().default('EnterpriseNest'),
-    BEHIND_PROXY: z.enum(['true', 'false']).default('false'),
+    BEHIND_PROXY: StringToBoolean.default('false'),
+    DEBUG: StringToBoolean.default('false'),
 
     // Redis
     REDIS_HOST: z.string().default('localhost'),
@@ -30,6 +35,7 @@ export const ConfigSchema = z.object({
 
     // Authentication
     AUTH_IP_STRICT: StringToBoolean.default('false'),
+    AUTH_AUTO_VERIFY: StringToBoolean.default('false'),
 
     // JWT
     JWT_SECRET: z.string(),
@@ -37,8 +43,13 @@ export const ConfigSchema = z.object({
     // Token
     TOKEN_ACCESS_SECRET: z.string(),
     TOKEN_REFRESH_SECRET: z.string(),
-    TOKEN_ACCESS_TOKEN_EXPIRATION: StringToNumber.default('3600'),
-    TOKEN_REFRESH_TOKEN_EXPIRATION: StringToNumber.default('604800'),
+    TOKEN_VERIFICATION_SECRET: z.string(),
+    TOKEN_RESET_PASSWORD_SECRET: z.string(),
+
+    TOKEN_ACCESS_TOKEN_EXPIRATION: StringToNumberOptional.optional(),
+    TOKEN_REFRESH_TOKEN_EXPIRATION: StringToNumberOptional.optional(),
+    TOKEN_VERIFICATION_TOKEN_EXPIRATION: StringToNumberOptional.optional(),
+    TOKEN_RESET_PASSWORD_TOKEN_EXPIRATION: StringToNumberOptional.optional(),
 
     // Email
     EMAIL_FROM: z.string().email().default('no-reply@test.com'),
