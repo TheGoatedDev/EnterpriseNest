@@ -1,4 +1,6 @@
-import { CreateUserMock, User } from '@/domain/user/user.entity';
+import { CreateMockUser } from '@tests/utils/create-mocks';
+
+import { User } from '@/domain/user/user.entity';
 import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
 
 import { Session } from './session.entity';
@@ -8,7 +10,7 @@ describe('session', () => {
     let user: User;
 
     beforeEach(() => {
-        user = CreateUserMock();
+        user = CreateMockUser();
 
         session = Session.create({
             userId: user.id,

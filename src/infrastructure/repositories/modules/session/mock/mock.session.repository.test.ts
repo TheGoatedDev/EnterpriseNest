@@ -1,5 +1,7 @@
+import { CreateMockUser } from '@tests/utils/create-mocks';
+
 import { Session } from '@/domain/session/session.entity';
-import { CreateUserMock, User } from '@/domain/user/user.entity';
+import { User } from '@/domain/user/user.entity';
 import { MockSessionRepository } from '@/infrastructure/repositories/modules/session/mock/mock.session.repository';
 
 describe('mockSessionRepository', () => {
@@ -9,7 +11,7 @@ describe('mockSessionRepository', () => {
 
     beforeEach(() => {
         mockSessionRepository = new MockSessionRepository();
-        user = CreateUserMock();
+        user = CreateMockUser();
 
         testSession = Session.create({
             userId: user.id,

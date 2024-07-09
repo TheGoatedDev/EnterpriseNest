@@ -1,4 +1,6 @@
-import { CreateUserMock, User } from '@/domain/user/user.entity';
+import { CreateMockUser } from '@tests/utils/create-mocks';
+
+import { User } from '@/domain/user/user.entity';
 import { HashingService } from '@/shared/services/hashing/hashing.service';
 
 import { MockUserRepository } from './mock.user.repository';
@@ -12,7 +14,7 @@ describe('mockUserRepository', () => {
         hashingService = new HashingService();
         mockUserRepository = new MockUserRepository(hashingService);
 
-        testUser = CreateUserMock();
+        testUser = CreateMockUser();
 
         await mockUserRepository.create(testUser);
     });

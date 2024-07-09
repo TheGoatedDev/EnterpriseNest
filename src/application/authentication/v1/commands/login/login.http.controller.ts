@@ -54,11 +54,6 @@ export class V1LoginController {
         return V1LoginCommandHandler.runHandler(this.commandBus, {
             user,
             ip: request.ip,
-        }).then((token) => {
-            return {
-                accessToken: token.accessToken,
-                refreshToken: token.refreshToken,
-            };
         });
     }
 }

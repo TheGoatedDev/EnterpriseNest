@@ -2,8 +2,9 @@ import { CqrsModule, QueryBus } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
+import { CreateMockUser } from '@tests/utils/create-mocks';
 
-import { CreateUserMock, User } from '@/domain/user/user.entity';
+import { User } from '@/domain/user/user.entity';
 import { USER_REPOSITORY } from '@/infrastructure/repositories/modules/user/user.repository.constants';
 import { UserRepositoryPort } from '@/infrastructure/repositories/modules/user/user.repository.port';
 import { MockRepositoriesModule } from '@/infrastructure/repositories/presets/mock-repositories.module';
@@ -33,7 +34,7 @@ describe('findUserByIDQueryHandler', () => {
         mockUserRepository = module.get<UserRepositoryPort>(USER_REPOSITORY);
         queryBus = module.get<QueryBus>(QueryBus);
 
-        testUsers = [...Array.from({ length: 100 }, () => CreateUserMock())];
+        testUsers = [...Array.from({ length: 100 }, () => CreateMockUser())];
 
         await Promise.all(
             testUsers.map((user) => mockUserRepository.create(user)),
@@ -43,7 +44,7 @@ describe('findUserByIDQueryHandler', () => {
     it('should find the user', async () => {
         const user =
             testUsers[Math.floor(Math.random() * testUsers.length)] ??
-            CreateUserMock();
+            CreateMockUser();
 
         const result = await V1FindUserByIDQueryHandler.runHandler(
             queryBus,

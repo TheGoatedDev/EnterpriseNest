@@ -68,6 +68,9 @@ importers:
       '@paralleldrive/cuid2':
         specifier: 2.2.2
         version: 2.2.2
+      '@types/jsonwebtoken':
+        specifier: ^9.0.6
+        version: 9.0.6
       axios:
         specifier: 1.7.2
         version: 1.7.2
@@ -1785,6 +1788,9 @@ packages:
 
   '@types/jsonwebtoken@9.0.5':
     resolution: {integrity: sha512-VRLSGzik+Unrup6BsouBeHsf4d1hOEgYWTm/7Nmw1sXoN1+tRly/Gy/po3yeahnP4jfnQWWAhQAqcNfH7ngOkA==}
+
+  '@types/jsonwebtoken@9.0.6':
+    resolution: {integrity: sha512-/5hndP5dCjloafCXns6SZyESp3Ldq7YjH3zwzwczYnjxIT0Fqzk5ROSYVGfFyczIue7IUEj8hkvLbPoLQ18vQw==}
 
   '@types/keygrip@1.0.6':
     resolution: {integrity: sha512-lZuNAY9xeJt7Bx4t4dx0rYCDqGPW8RXhQZK1td7d4H6E9zYbLoOtjBvfwdTKpsyxQI/2jv+armjX/RW+ZNpXOQ==}
@@ -7281,6 +7287,10 @@ snapshots:
     dependencies:
       '@types/node': 20.14.9
 
+  '@types/jsonwebtoken@9.0.6':
+    dependencies:
+      '@types/node': 20.14.9
+
   '@types/keygrip@1.0.6': {}
 
   '@types/koa-compose@3.2.8':
@@ -7326,7 +7336,7 @@ snapshots:
 
   '@types/passport-jwt@4.0.1':
     dependencies:
-      '@types/jsonwebtoken': 9.0.5
+      '@types/jsonwebtoken': 9.0.6
       '@types/passport-strategy': 0.2.38
 
   '@types/passport-local@1.0.38':
