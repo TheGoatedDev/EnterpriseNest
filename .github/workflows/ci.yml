@@ -11,7 +11,7 @@ jobs:
       store-path: ${{ steps.store-path.outputs.path }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -26,14 +26,14 @@ jobs:
           cache: 'pnpm'
 
       - name: Get pnpm store directory
-        id: store-path
-        run: echo "::set-output name=path::$(pnpm store path --silent)"
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-
-      - name: Cache pnpm store
-        uses: actions/cache@v4
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
         with:
-          path: ${{ needs.setup.outputs.store-path }}
+          path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
