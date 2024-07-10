@@ -43,7 +43,13 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: template-updates
 
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --exit-code || echo "changes_detected=true" >> $GITHUB_ENV
+
       - name: Create Pull Request
+        if: env.changes_detected == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
