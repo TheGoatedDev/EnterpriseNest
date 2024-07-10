@@ -41,7 +41,9 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
   dependencies:
-    needs: cache
+    needs:
+      - cache
+      - setup
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
