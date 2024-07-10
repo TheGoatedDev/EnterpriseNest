@@ -44,11 +44,11 @@ jobs:
           branch: template-updates
 
       - name: Create Pull Request
-        uses: repo-sync/pull-request@v2
+        uses: peter-evans/create-pull-request@v6
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_title: "Merge template updates into develop"
-          pr_body: "This PR merges the latest template updates into the develop branch."
-          pr_label: "template-update"
-          pr_base: "develop"  # Base branch to merge into
-          pr_head: "template-updates"  # Head branch to merge from
+          title: "Merge template updates into develop"
+          body: "This PR merges the latest template updates into the develop branch."
+          labels: "template-update"
+          base: "develop"  # Base branch to merge into
+          branch: "template-updates"  # Head branch to merge from
+          delete-branch: true
