@@ -46,6 +46,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           title: "Merge template updates into develop"
           body: "This PR merges the latest template updates into the develop branch."
           labels: "template-update"
