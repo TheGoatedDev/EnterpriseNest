@@ -1,0 +1,37 @@
+name: Update From Template Repo
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # Runs at 00:00 UTC every day
+
+jobs:
+  update-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repo
+        uses: actions/checkout@v4
+        with:
+          ref: template
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+
+      - name: Add template repository as a remote
+        run: git remote add template https://github.com/TheGoatedDev/EnterpriseNest.git
+
+      - name: Fetch changes from template repository
+        run: git fetch template
+
+      - name: Merge changes from template
+        run: |
+          git merge template/main --allow-unrelated-histories -m "Merge template changes"
+          # Handle merge conflicts or use strategies like --strategy-option theirs
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: 'template'
