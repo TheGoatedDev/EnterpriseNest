@@ -5,7 +5,7 @@ on:
     branches: [ develop, main ]
 
 jobs:
-  setup:
+  ci:
     runs-on: ubuntu-latest
     outputs:
       store-path: ${{ steps.store-path.outputs.path }}
@@ -29,35 +29,17 @@ jobs:
         id: store-path
         run: echo "::set-output name=path::$(pnpm store path --silent)"
 
-  cache:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/cache@v4
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
         with:
           path: ${{ needs.setup.outputs.store-path }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-  dependencies:
-    needs:
-      - cache
-      - setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Install dependencies
         run: pnpm install
-
-  quality-checks:
-    needs: dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
 
       - name: Run typecheck
         run: pnpm typecheck
@@ -68,22 +50,8 @@ jobs:
       - name: Run formatting check
         run: pnpm format:check
 
-  test:
-    needs: dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Run tests
         run: pnpm test
-
-  build:
-    needs: dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
 
       - name: Run dry build
         run: pnpm build
