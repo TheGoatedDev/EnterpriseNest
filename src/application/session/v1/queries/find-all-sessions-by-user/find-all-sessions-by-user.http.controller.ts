@@ -31,7 +31,6 @@ export class V1FindAllSessionsByUserController {
 
     constructor(private readonly queryBus: QueryBus) {}
 
-    @Get('/session/user/:userid')
     @ApiOperation({
         summary: 'Find all Sessions By user',
     })
@@ -42,6 +41,7 @@ export class V1FindAllSessionsByUserController {
         },
         V1FindAllSessionsByUserResponseDto,
     )
+    @Get('/session/user/:userid')
     async findSessionByToken(
         @Param('userid') userId: string,
         @CurrentUser() currentUser: User,

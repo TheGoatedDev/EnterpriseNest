@@ -22,11 +22,13 @@ const config = {
         ],
     },
     transformIgnorePatterns: ['node_modules'],
-    testRegex: '(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
+    testRegex: '(test|spec)\\.(jsx?|tsx?)$',
     extensionsToTreatAsEsm: ['.ts'],
     moduleNameMapper: {
         '^@/(.*)$': '<rootDir>/src/$1',
+        "^@tests/(.*)$": "<rootDir>/tests/$1",
     },
+    collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts'],
 };
 
 module.exports = config;

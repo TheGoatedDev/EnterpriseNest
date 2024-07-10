@@ -1,9 +1,9 @@
 import { Module, Type } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 
-import { OnLoginUserWhenSuccessAddToCounterHandler } from '@/application/authentication/event-handlers/on-login-user-when-success-add-to-counter.handler';
-import { OnRegisterUserAddToCounterHandler } from '@/application/authentication/event-handlers/on-register-user-add-to-counter.handler';
-import { OnRegisterUserSendVerificationHandler } from '@/application/authentication/event-handlers/on-register-user-send-verification.handler';
+import { OnLoginWhenSuccessAddToCounterHandler } from '@/application/authentication/event-handlers/on-login-when-success-add-to-counter.handler';
+import { OnRegisterAddToCounterHandler } from '@/application/authentication/event-handlers/on-register-add-to-counter.handler';
+import { OnRegisterSendVerificationHandler } from '@/application/authentication/event-handlers/on-register-send-verification.handler';
 import { OnValidateCredentialsWhenPasswordIncorrectAddToCounterHandler } from '@/application/authentication/event-handlers/on-validate-credentials-when-password-incorrect-add-to-counter.handler';
 import { AccessTokenStrategy } from '@/application/authentication/strategies/access-token/access-token.strategy';
 import { LocalStrategy } from '@/application/authentication/strategies/local/local.strategy';
@@ -13,9 +13,9 @@ import { JwtModule } from '@/infrastructure/jwt/jwt.module';
 
 const EventHandlers: Type[] = [
     OnValidateCredentialsWhenPasswordIncorrectAddToCounterHandler,
-    OnLoginUserWhenSuccessAddToCounterHandler,
-    OnRegisterUserAddToCounterHandler,
-    OnRegisterUserSendVerificationHandler,
+    OnLoginWhenSuccessAddToCounterHandler,
+    OnRegisterAddToCounterHandler,
+    OnRegisterSendVerificationHandler,
 ];
 
 @Module({

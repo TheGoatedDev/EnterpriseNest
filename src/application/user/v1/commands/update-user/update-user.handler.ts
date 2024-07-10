@@ -8,9 +8,15 @@ import type { UserRepositoryPort } from '@/infrastructure/repositories/modules/u
 
 import { V1UpdateUserCommand } from './update-user.command';
 
+type V1UpdateUserCommandHandlerResponse = User;
+
 @CommandHandler(V1UpdateUserCommand)
 export class V1UpdateUserCommandHandler
-    implements ICommandHandler<V1UpdateUserCommand, User>
+    implements
+        ICommandHandler<
+            V1UpdateUserCommand,
+            V1UpdateUserCommandHandlerResponse
+        >
 {
     private readonly logger = new Logger(V1UpdateUserCommandHandler.name);
 
@@ -23,13 +29,18 @@ export class V1UpdateUserCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1UpdateUserCommand,
-    ): Promise<User> {
-        return bus.execute<V1UpdateUserCommand, User>(
-            new V1UpdateUserCommand(command.user),
-        );
+    ): Promise<V1UpdateUserCommandHandlerResponse> {
+        return bus.execute<
+            V1UpdateUserCommand,
+            V1UpdateUserCommandHandlerResponse
+        >(new V1UpdateUserCommand(command.user));
     }
 
-    async execute({ user }: V1UpdateUserCommand): Promise<User> {
+    async execute({
+        user,
+    }: V1UpdateUserCommand): Promise<V1UpdateUserCommandHandlerResponse> {
+        this.logger.log(`Updating user ${user.id}`);
+
         const entity = this.eventPublisher.mergeObjectContext(user);
 
         const updatedEntity = await this.userRepository.update(entity);

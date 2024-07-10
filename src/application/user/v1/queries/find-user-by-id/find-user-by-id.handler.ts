@@ -8,9 +8,12 @@ import type { UserRepositoryPort } from '@/infrastructure/repositories/modules/u
 
 import { V1FindUserByIDQuery } from './find-user-by-id.query';
 
+type V1FindUserByIDQueryHandlerResponse = User | undefined;
+
 @QueryHandler(V1FindUserByIDQuery)
 export class V1FindUserByIDQueryHandler
-    implements IQueryHandler<V1FindUserByIDQuery, User | undefined>
+    implements
+        IQueryHandler<V1FindUserByIDQuery, V1FindUserByIDQueryHandlerResponse>
 {
     private readonly logger = new Logger(V1FindUserByIDQueryHandler.name);
 
@@ -22,13 +25,17 @@ export class V1FindUserByIDQueryHandler
     static runHandler(
         bus: QueryBus,
         query: V1FindUserByIDQuery,
-    ): Promise<User | undefined> {
-        return bus.execute<V1FindUserByIDQuery, User | undefined>(
-            new V1FindUserByIDQuery(query.id),
-        );
+    ): Promise<V1FindUserByIDQueryHandlerResponse> {
+        return bus.execute<
+            V1FindUserByIDQuery,
+            V1FindUserByIDQueryHandlerResponse
+        >(new V1FindUserByIDQuery(query.id));
     }
 
-    execute(query: V1FindUserByIDQuery): Promise<User | undefined> {
+    execute(
+        query: V1FindUserByIDQuery,
+    ): Promise<V1FindUserByIDQueryHandlerResponse> {
+        this.logger.log(`Finding user by id ${query.id}`);
         return this.userRepository.findOneById(query.id);
     }
 }

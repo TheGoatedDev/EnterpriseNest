@@ -36,6 +36,7 @@
   "author": "TheGoatedDev",
   "license": "MIT",
   "devDependencies": {
+    "@elsikora/eslint-plugin-sort-decorators": "^0.2.8",
     "@faker-js/faker": "8.4.1",
     "@nestjs/jwt": "10.2.0",
     "@nestjs/testing": "10.3.9",
@@ -90,6 +91,7 @@
     "@opentelemetry/sdk-node": "0.52.1",
     "@opentelemetry/semantic-conventions": "1.25.1",
     "@paralleldrive/cuid2": "2.2.2",
+    "@types/jsonwebtoken": "^9.0.6",
     "axios": "1.7.2",
     "cache-manager-redis-yet": "5.1.2",
     "class-transformer": "0.5.1",

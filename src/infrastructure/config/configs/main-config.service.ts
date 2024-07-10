@@ -21,7 +21,11 @@ export class MainConfigService {
         return this.configService.get('APP_NAME');
     }
 
-    get BEHIND_PROXY() {
-        return this.configService.get('BEHIND_PROXY') === 'true';
+    get BEHIND_PROXY(): Config['BEHIND_PROXY'] {
+        return this.configService.get('BEHIND_PROXY');
+    }
+
+    get DEBUG(): Config['DEBUG'] {
+        return this.configService.get('DEBUG');
     }
 }

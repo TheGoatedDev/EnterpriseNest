@@ -19,18 +19,10 @@ import { V1RegisterResponseDto } from './dto/register.response.dto';
 export class V1RegisterController {
     constructor(private readonly commandBus: CommandBus) {}
 
-    @Public()
-    // Throttle the register endpoint to prevent brute force attacks (10 Requests per minute)
-    @Throttle({
-        default: {
-            limit: 10,
-            ttl: 60 * 1000,
-        },
-    })
-    @Post('/authentication/register')
     @ApiOperation({
         summary: 'Register to a User',
     })
+    // Throttle the register endpoint to prevent brute force attacks (10 Requests per minute)
     @ApiStandardisedResponse(
         {
             status: 201,
@@ -45,6 +37,14 @@ export class V1RegisterController {
     @ApiStandardisedResponse({
         status: 400,
         description: 'Validation Error',
+    })
+    @Post('/authentication/register')
+    @Public()
+    @Throttle({
+        default: {
+            limit: 10,
+            ttl: 60 * 1000,
+        },
     })
     async register(
         @Req() request: RequestWithUser,

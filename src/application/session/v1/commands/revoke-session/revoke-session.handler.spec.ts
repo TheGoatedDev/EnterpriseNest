@@ -2,9 +2,10 @@ import { CommandBus, CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
+import { CreateMockUser } from '@tests/utils/create-mocks';
 
 import { Session } from '@/domain/session/session.entity';
-import { CreateUserMock, User } from '@/domain/user/user.entity';
+import { User } from '@/domain/user/user.entity';
 import { SESSION_REPOSITORY } from '@/infrastructure/repositories/modules/session/session.repository.constants';
 import { SessionRepositoryPort } from '@/infrastructure/repositories/modules/session/session.repository.port';
 import { USER_REPOSITORY } from '@/infrastructure/repositories/modules/user/user.repository.constants';
@@ -79,7 +80,7 @@ describe('revokeSessionCommandHandler', () => {
                 commandBus,
                 new V1RevokeSessionCommand(
                     Session.create({
-                        userId: CreateUserMock().id,
+                        userId: CreateMockUser().id,
                         ip: '1.1.1.1',
                     }),
                 ),

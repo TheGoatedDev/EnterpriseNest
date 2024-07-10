@@ -29,7 +29,6 @@ export class V1RevokeSessionController {
         private readonly commandBus: CommandBus,
     ) {}
 
-    @Delete('/session/:token')
     @ApiOperation({
         summary: 'Revoke Session',
     })
@@ -40,6 +39,7 @@ export class V1RevokeSessionController {
         },
         V1RevokeSessionResponseDto,
     )
+    @Delete('/session/:token')
     async revokeSession(
         @Param('token') token: string,
         @CurrentUser() currentUser: User,

@@ -10,16 +10,19 @@ import { JwtService } from '@nestjs/jwt';
 import { OnRefreshTokenGeneratedEvent } from '@/domain/token/events/on-refresh-token-generated.event';
 import { RefreshTokenPayload } from '@/domain/token/refresh-token-payload.type';
 import { TokenConfigService } from '@/infrastructure/config/configs/token-config.service';
-import { V1GenerateRefreshTokenResponseDto } from '@/infrastructure/token/v1/commands/generate-refresh-token/dto/generate-refresh-token.response.dto';
 
 import { V1GenerateRefreshTokenCommand } from './generate-refresh-token.command';
+
+interface V1GenerateRefreshTokenCommandHandlerResponse {
+    refreshToken: string;
+}
 
 @CommandHandler(V1GenerateRefreshTokenCommand)
 export class V1GenerateRefreshTokenCommandHandler
     implements
         ICommandHandler<
             V1GenerateRefreshTokenCommand,
-            V1GenerateRefreshTokenResponseDto
+            V1GenerateRefreshTokenCommandHandlerResponse
         >
 {
     private readonly logger = new Logger(
@@ -35,10 +38,10 @@ export class V1GenerateRefreshTokenCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1GenerateRefreshTokenCommand,
-    ): Promise<V1GenerateRefreshTokenResponseDto> {
+    ): Promise<V1GenerateRefreshTokenCommandHandlerResponse> {
         return bus.execute<
             V1GenerateRefreshTokenCommand,
-            V1GenerateRefreshTokenResponseDto
+            V1GenerateRefreshTokenCommandHandlerResponse
         >(
             new V1GenerateRefreshTokenCommand(
                 command.user,
@@ -50,7 +53,7 @@ export class V1GenerateRefreshTokenCommandHandler
 
     async execute(
         command: V1GenerateRefreshTokenCommand,
-    ): Promise<V1GenerateRefreshTokenResponseDto> {
+    ): Promise<V1GenerateRefreshTokenCommandHandlerResponse> {
         this.logger.log(`Generating Refresh Token for User ${command.user.id}`);
 
         const refreshToken = this.jwtService.sign(
@@ -62,7 +65,8 @@ export class V1GenerateRefreshTokenCommandHandler
                 },
             } satisfies RefreshTokenPayload,
             {
-                expiresIn: this.tokenConfigService.refreshTokenExpiration,
+                expiresIn:
+                    this.tokenConfigService.refreshTokenExpiration ?? '80y',
                 algorithm: 'HS512',
                 secret: this.tokenConfigService.refreshTokenSecret,
             },

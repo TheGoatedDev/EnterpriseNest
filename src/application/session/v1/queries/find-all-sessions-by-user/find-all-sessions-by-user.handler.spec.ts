@@ -2,9 +2,10 @@ import { CqrsModule, QueryBus } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
+import { CreateMockUser } from '@tests/utils/create-mocks';
 
 import { Session } from '@/domain/session/session.entity';
-import { CreateUserMock, User } from '@/domain/user/user.entity';
+import { User } from '@/domain/user/user.entity';
 import { SESSION_REPOSITORY } from '@/infrastructure/repositories/modules/session/session.repository.constants';
 import { SessionRepositoryPort } from '@/infrastructure/repositories/modules/session/session.repository.port';
 import { USER_REPOSITORY } from '@/infrastructure/repositories/modules/user/user.repository.constants';
@@ -70,7 +71,7 @@ describe('findSessionByUserQueryHandler', () => {
     it('should return undefined if user not found', async () => {
         const result = await V1FindAllSessionsByUserQueryHandler.runHandler(
             queryBus,
-            new V1FindAllSessionsByUserQuery(CreateUserMock()),
+            new V1FindAllSessionsByUserQuery(CreateMockUser()),
         );
 
         expect(result).toHaveLength(0);

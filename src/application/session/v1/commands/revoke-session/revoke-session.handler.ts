@@ -8,9 +8,15 @@ import type { SessionRepositoryPort } from '@/infrastructure/repositories/module
 
 import { V1RevokeSessionCommand } from './revoke-session.command';
 
+type V1RevokeSessionCommandHandlerResponse = Session;
+
 @CommandHandler(V1RevokeSessionCommand)
 export class V1RevokeSessionCommandHandler
-    implements ICommandHandler<V1RevokeSessionCommand, Session>
+    implements
+        ICommandHandler<
+            V1RevokeSessionCommand,
+            V1RevokeSessionCommandHandlerResponse
+        >
 {
     private readonly logger = new Logger(V1RevokeSessionCommandHandler.name);
 
@@ -23,13 +29,16 @@ export class V1RevokeSessionCommandHandler
     static runHandler(
         bus: CommandBus,
         command: V1RevokeSessionCommand,
-    ): Promise<Session> {
-        return bus.execute<V1RevokeSessionCommand, Session>(
-            new V1RevokeSessionCommand(command.session),
-        );
+    ): Promise<V1RevokeSessionCommandHandlerResponse> {
+        return bus.execute<
+            V1RevokeSessionCommand,
+            V1RevokeSessionCommandHandlerResponse
+        >(new V1RevokeSessionCommand(command.session));
     }
 
-    async execute(command: V1RevokeSessionCommand): Promise<Session> {
+    async execute(
+        command: V1RevokeSessionCommand,
+    ): Promise<V1RevokeSessionCommandHandlerResponse> {
         this.logger.log(`Revoking session ${command.session.token}`);
 
         const session = this.eventPublisher.mergeObjectContext(command.session);
