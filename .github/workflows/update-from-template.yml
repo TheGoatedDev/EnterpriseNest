@@ -1,4 +1,4 @@
-name: Update From Template Repo
+name: Update From Template and Create PR
 
 on:
   workflow_dispatch:
@@ -6,32 +6,45 @@ on:
     - cron: '0 0 * * *'  # Runs at 00:00 UTC every day
 
 jobs:
-  update-repo:
+  update-and-create-pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout current repo
+      - name: Checkout develop branch
         uses: actions/checkout@v4
         with:
-          ref: template
+          ref: develop
+
+      - name: Create new branch for template updates
+        run: git checkout -b template-updates
 
       - name: Configure Git
         run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
+          git config --global user.email "actions@github.com"
+          git config --global user.name "EnterpriseNest Template Bot"
 
       - name: Add template repository as a remote
-        run: git remote add template https://github.com/TheGoatedDev/EnterpriseNest.git
+        run: git remote add template https://github.com/TheGoatedDev/EnterpriseNest.git || true
 
       - name: Fetch changes from template repository
         run: git fetch template
 
-      - name: Merge changes from template
+      - name: Merge changes from template into template-updates
         run: |
           git merge template/main --allow-unrelated-histories -m "Merge template changes"
           # Handle merge conflicts or use strategies like --strategy-option theirs
 
-      - name: Push changes
+      - name: Push template-updates branch
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: 'template'
+          branch: template-updates
+
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "Merge template updates into develop"
+          pr_body: "This PR merges the latest template updates into the develop branch."
+          pr_label: "template-update"
+          pr_base: "develop"  # Base branch to merge into
+          pr_head: "template-updates"  # Head branch to merge from
