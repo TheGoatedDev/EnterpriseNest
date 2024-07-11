@@ -160,7 +160,7 @@ importers:
         specifier: 29.5.12
         version: 29.5.12
       '@types/jsonwebtoken':
-        specifier: ^9.0.6
+        specifier: 9.0.6
         version: 9.0.6
       '@types/node':
         specifier: 20.14.9
