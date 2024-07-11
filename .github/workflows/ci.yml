@@ -1,22 +1,20 @@
-# .github/workflows/ci.yml
 name: CI
 
 on:
-  push:
-    branches: [ develop, main ]
   pull_request:
     branches: [ develop, main ]
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
-
+    outputs:
+      store-path: ${{ steps.store-path.outputs.path }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
           version: 9
           run_install: false
