@@ -1,6 +1,9 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { validateSync } from 'class-validator';
+
+import { CreatedAt, ID, UpdatedAt } from '@/domain/base/entity/entity.base.dto';
+import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
 
 export type EntityID = string;
 
@@ -20,6 +23,7 @@ export interface CreateEntityProps<EntityData> {
 export abstract class Entity<EntityData> extends AggregateRoot {
     constructor(props: CreateEntityProps<EntityData>) {
         super();
+
         this._id = props.id;
 
         const now = new Date();
@@ -37,35 +41,20 @@ export abstract class Entity<EntityData> extends AggregateRoot {
     private readonly _createdAt: Date;
     private _updatedAt: Date;
 
-    @ApiProperty({
-        description: 'Entity ID',
-        example: 'b0c4e5f2-3d2d-4f9f-8b4b-6d3b3d2d4f9f',
-        type: String,
-        required: true,
-    })
     @Expose()
+    @ID()
     get id(): EntityID {
         return this._id;
     }
 
-    @ApiProperty({
-        description: 'Entity creation date',
-        example: '2021-01-01T00:00:00.000Z',
-        type: Date,
-        required: true,
-    })
+    @CreatedAt()
     @Expose()
     get createdAt(): Date {
         return this._createdAt;
     }
 
-    @ApiProperty({
-        description: 'Entity update date',
-        example: '2021-01-01T00:00:00.000Z',
-        type: Date,
-        required: true,
-    })
     @Expose()
+    @UpdatedAt()
     get updatedAt(): Date {
         return this._updatedAt;
     }
@@ -85,5 +74,20 @@ export abstract class Entity<EntityData> extends AggregateRoot {
     }
 
     // Throws an error if the entity is invalid
-    public abstract validate(): void;
+    public validate(): void {
+        const errors = validateSync(this.data as object);
+        errors.push(...validateSync(this));
+
+        if (errors.length > 0) {
+            throw new GenericInternalValidationException(
+                errors
+                    .map((error) =>
+                        Object.values(
+                            error.constraints as Record<string, string>,
+                        ).join(', '),
+                    )
+                    .join('\n'),
+            );
+        }
+    }
 }

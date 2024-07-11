@@ -68,9 +68,6 @@ importers:
       '@paralleldrive/cuid2':
         specifier: 2.2.2
         version: 2.2.2
-      '@types/jsonwebtoken':
-        specifier: ^9.0.6
-        version: 9.0.6
       axios:
         specifier: 1.7.2
         version: 1.7.2
@@ -136,7 +133,7 @@ importers:
         version: 3.23.8
     devDependencies:
       '@elsikora/eslint-plugin-sort-decorators':
-        specifier: ^0.2.8
+        specifier: 0.2.8
         version: 0.2.8
       '@faker-js/faker':
         specifier: 8.4.1
@@ -162,6 +159,9 @@ importers:
       '@types/jest':
         specifier: 29.5.12
         version: 29.5.12
+      '@types/jsonwebtoken':
+        specifier: 9.0.6
+        version: 9.0.6
       '@types/node':
         specifier: 20.14.9
         version: 20.14.9

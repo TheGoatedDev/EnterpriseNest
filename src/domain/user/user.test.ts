@@ -2,8 +2,7 @@ import { CreateMockUser } from '@tests/utils/create-mocks';
 
 import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
 
-import { User } from './user.entity';
-import type { CreateUserProps } from './user.types';
+import { CreateUserProps, User } from './user.entity';
 import { UserRoleEnum } from './user-role.enum';
 
 describe('user', () => {
