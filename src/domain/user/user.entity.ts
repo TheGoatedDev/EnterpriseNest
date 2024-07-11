@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IntersectionType } from '@nestjs/swagger';
 import { createId } from '@paralleldrive/cuid2';
-import { Expose } from 'class-transformer';
+import { Expose, plainToInstance } from 'class-transformer';
 
 import { Entity } from '@/domain/base/entity/entity.base';
 import { OnUserChangedEmailEvent } from '@/domain/user/events/on-user-changed-email.event';
@@ -10,33 +10,52 @@ import { OnUserChangedPasswordEvent } from '@/domain/user/events/on-user-changed
 import { OnUserChangedRoleEvent } from '@/domain/user/events/on-user-changed-role.event';
 import { OnUserChangedVerifiedAtEvent } from '@/domain/user/events/on-user-changed-verified-at.event';
 import {
-    CreateUserProps,
-    UserDataSchema,
-    UserProps,
-} from '@/domain/user/user.types';
+    UserEmail,
+    UserEmailDto,
+    UserFirstName,
+    UserFirstNameDto,
+    UserLastName,
+    UserLastNameDto,
+    UserPassword,
+    UserPasswordDto,
+    UserRole,
+    UserRoleDto,
+    UserVerifiedAt,
+    UserVerifiedAtDto,
+} from '@/domain/user/user.dto';
 import { AllStaffRoles, UserRoleEnum } from '@/domain/user/user-role.enum';
-import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
 
-export class User extends Entity<UserProps> {
+export class UserData extends IntersectionType(
+    UserFirstNameDto,
+    UserLastNameDto,
+    UserEmailDto,
+    UserPasswordDto,
+    UserVerifiedAtDto,
+    UserRoleDto,
+) {}
+
+export interface CreateUserProps {
+    firstName?: string;
+    lastName?: string;
+    email: string;
+    password: string;
+}
+
+export class User extends Entity<UserData> {
     static create(props: CreateUserProps): User {
         const id = createId();
 
-        const data: UserProps = {
+        const data: UserData = plainToInstance(UserData, {
             role: UserRoleEnum.USER,
             verifiedAt: undefined,
             ...props,
-        };
+        });
 
         return new User({ id, data });
     }
 
-    @ApiProperty({
-        description: 'User first name',
-        example: 'John',
-        type: String,
-        required: false,
-    })
     @Expose()
+    @UserFirstName()
     get firstName(): string | undefined {
         return this.data.firstName;
     }
@@ -53,13 +72,8 @@ export class User extends Entity<UserProps> {
         this.updated();
     }
 
-    @ApiProperty({
-        description: 'User last name',
-        example: 'Doe',
-        type: String,
-        required: false,
-    })
     @Expose()
+    @UserLastName()
     get lastName(): string | undefined {
         return this.data.lastName;
     }
@@ -72,13 +86,8 @@ export class User extends Entity<UserProps> {
         this.updated();
     }
 
-    @ApiProperty({
-        description: 'User email',
-        example: 'test@email.com',
-        type: String,
-        required: true,
-    })
     @Expose()
+    @UserEmail()
     get email(): string {
         return this.data.email;
     }
@@ -89,14 +98,10 @@ export class User extends Entity<UserProps> {
         this.updated();
     }
 
-    @ApiProperty({
-        description: 'User password',
-        type: String,
-        required: false,
-    })
     @Expose({
         groups: [...AllStaffRoles],
     })
+    @UserPassword()
     get password(): string {
         return this.data.password;
     }
@@ -111,11 +116,8 @@ export class User extends Entity<UserProps> {
         this.updated();
     }
 
-    @ApiProperty({
-        description: 'User role',
-        enum: UserRoleEnum,
-    })
     @Expose()
+    @UserRole()
     get role(): UserRoleEnum {
         return this.data.role;
     }
@@ -126,12 +128,8 @@ export class User extends Entity<UserProps> {
         this.updated();
     }
 
-    @ApiProperty({
-        description: 'User Verified At',
-        type: Date,
-        required: false,
-    })
     @Expose()
+    @UserVerifiedAt()
     get verifiedAt(): Date | undefined {
         return this.data.verifiedAt;
     }
@@ -158,16 +156,5 @@ export class User extends Entity<UserProps> {
 
     get isPasswordHashed(): boolean {
         return this.password.startsWith('$argon2id$');
-    }
-
-    validate(): void {
-        try {
-            UserDataSchema.parse(this.data);
-        } catch (error) {
-            if (error instanceof Error) {
-                throw new GenericInternalValidationException(error);
-            }
-            throw new GenericInternalValidationException();
-        }
     }
 }

@@ -10,10 +10,10 @@ import {
 
 export class V1UpdateUserRequestDto extends PartialType(
     IntersectionType(
+        UserFirstNameDto,
+        UserLastNameDto,
         UserEmailDto,
         UserPasswordDto,
         UserRoleDto,
-        UserFirstNameDto,
-        UserLastNameDto,
     ),
 ) {}

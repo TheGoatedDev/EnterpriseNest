@@ -1,70 +1,68 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IntersectionType } from '@nestjs/swagger';
 import { createId } from '@paralleldrive/cuid2';
-import { Expose } from 'class-transformer';
-import { ZodError } from 'zod';
+import { Expose, plainToInstance } from 'class-transformer';
 
 import { Entity } from '@/domain/base/entity/entity.base';
 import { OnSessionRevokedEvent } from '@/domain/session/events/on-session-revoked.event';
+import {
+    SessionIp,
+    SessionIpDto,
+    SessionIsRevoked,
+    SessionIsRevokedDto,
+    SessionToken,
+    SessionTokenDto,
+    SessionUserId,
+    SessionUserIdDto,
+} from '@/domain/session/session.dto';
 import { AllStaffRoles } from '@/domain/user/user-role.enum';
-import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
 
-import type { CreateSessionProps, SessionProps } from './session.types';
-import { SessionSchema } from './session.types';
+export class SessionData extends IntersectionType(
+    SessionUserIdDto,
+    SessionTokenDto,
+    SessionIsRevokedDto,
+    SessionIpDto,
+) {}
 
-export class Session extends Entity<SessionProps> {
+export interface CreateSessionProps {
+    userId: string;
+    ip?: string;
+}
+
+export class Session extends Entity<SessionData> {
     static create(props: CreateSessionProps): Session {
         const id = createId();
 
-        const data: SessionProps = {
+        const data: SessionData = plainToInstance(SessionData, {
             ...props,
             isRevoked: false,
             token: createId(),
-        };
+        });
 
         return new Session({ id, data });
     }
 
-    @ApiProperty({
-        description: 'The user ID of the session',
-        example: 'b0c4e5f2-3d2d-4f9f-8b4b-6d3b3d2d4f9f',
-        type: String,
-        required: true,
-    })
     @Expose()
+    @SessionUserId()
     get userId(): string {
         return this.data.userId;
     }
 
-    @ApiProperty({
-        description: 'The token of the session',
-        example: 'b0c4e5f2-3d2d-4f9f-8b4b-6d3b3d2d4f9f',
-        type: String,
-        required: true,
-    })
     @Expose()
+    @SessionToken()
     get token(): string {
         return this.data.token;
     }
 
-    @ApiProperty({
-        description: 'If the session is revoked',
-        type: Boolean,
-        required: true,
-        example: false,
-    })
     @Expose()
+    @SessionIsRevoked()
     get isRevoked(): boolean {
         return this.data.isRevoked;
     }
 
-    @ApiProperty({
-        description: 'The IP of the session (if available)',
-        type: String,
-        example: '1.1.1.1',
-    })
     @Expose({
         groups: [...AllStaffRoles],
     })
+    @SessionIp()
     get ip(): string | undefined {
         return this.data.ip;
     }
@@ -73,17 +71,5 @@ export class Session extends Entity<SessionProps> {
         this.data.isRevoked = true;
         this.apply(new OnSessionRevokedEvent(this));
         this.updated();
-    }
-
-    validate(): void {
-        try {
-            SessionSchema.parse(this.data);
-        } catch (error) {
-            if (error instanceof ZodError) {
-                throw new GenericInternalValidationException(error);
-            }
-
-            throw new GenericInternalValidationException();
-        }
     }
 }
