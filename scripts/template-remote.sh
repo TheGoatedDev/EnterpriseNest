@@ -12,6 +12,12 @@ if git remote get-url template > /dev/null 2>&1; then
   git remote remove template
 fi
 
+# Delete the template branch if it already exists
+if git branch --list template > /dev/null 2>&1; then
+  git branch -D template
+  git push origin --delete template
+fi
+
 # Save current branch
 current_branch=$(git branch --show-current)
 
