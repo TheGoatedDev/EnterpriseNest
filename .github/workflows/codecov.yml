@@ -44,6 +44,12 @@ jobs:
 
       - name: Run tests
         run: pnpm test:coverage
+        env:
+          JWT_SECRET: "TESTING"
+          TOKEN_ACCESS_SECRET: "TESTING"
+          TOKEN_REFRESH_SECRET: "TESTING"
+          TOKEN_VERIFICATION_SECRET: "TESTING"
+          TOKEN_RESET_PASSWORD_SECRET: "TESTING"
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
