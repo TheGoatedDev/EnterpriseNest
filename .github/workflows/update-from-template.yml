@@ -34,8 +34,7 @@ jobs:
 
       - name: Merge changes from template into template-updates
         run: |
-          git merge template/main --allow-unrelated-histories -m "Merge template changes"
-          # Handle merge conflicts or use strategies like --strategy-option theirs
+          git merge template/main --allow-unrelated-histories -m "Merge template changes" -s recursive -X theirs
 
       - name: Push template-updates branch
         uses: ad-m/github-push-action@master
