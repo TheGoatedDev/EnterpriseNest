@@ -46,7 +46,7 @@ git checkout $current_branch
 git remote remove template
 
 # Setup PR for the saved branch
-gh pr create --base $current_branch --head template --title "Merge template changes" --body "This PR merges the latest changes from the template repository"
+gh pr create --base $current_branch --head template --title "Merge template changes" --body "This PR merges the latest changes from the template repository" -d --auto
 
 # Print success message
 echo "Template remote setup successfully"
