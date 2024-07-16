@@ -68,6 +68,29 @@ describe('abstractMockRepository', () => {
         expect(entities).toEqual([entity]);
     });
 
+    it('should find all entities paginated', async () => {
+        const entity = MockEntity.createMockEntity();
+        await repository.create(MockEntity.createMockEntity());
+        await repository.create(entity);
+
+        const getOne = await repository.findAllPaginated(1, 1);
+        const getTwo = await repository.findAllPaginated(1, 2);
+
+        const getThree = await repository.findAllPaginated(2, 1);
+
+        expect(getOne.entities.length).toBe(1);
+        expect(getOne.totalPages).toBe(2);
+        expect(getOne.totalItems).toBe(2);
+
+        expect(getTwo.entities.length).toBe(2);
+        expect(getTwo.totalPages).toBe(1);
+        expect(getTwo.totalItems).toBe(2);
+
+        expect(getThree.entities.length).toBe(1);
+        expect(getThree.totalPages).toBe(2);
+        expect(getThree.totalItems).toBe(2);
+    });
+
     it('should update an entity', async () => {
         const entity = MockEntity.createMockEntity();
         const createdEntity = await repository.create(entity);

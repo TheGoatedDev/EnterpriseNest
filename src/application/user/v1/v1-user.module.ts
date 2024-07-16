@@ -6,6 +6,8 @@ import { V1DeleteUserCommandHandler } from '@/application/user/v1/commands/delet
 import { V1DeleteUserController } from '@/application/user/v1/commands/delete-user/delete-user.http.controller';
 import { V1UpdateUserCommandHandler } from '@/application/user/v1/commands/update-user/update-user.handler';
 import { V1UpdateUserController } from '@/application/user/v1/commands/update-user/update-user.http.controller';
+import { V1FindAllUsersQueryHandler } from '@/application/user/v1/queries/find-all-users/find-all-users.handler';
+import { V1FindAllUsersController } from '@/application/user/v1/queries/find-all-users/find-all-users.http.controller';
 import { V1FindCurrentUserController } from '@/application/user/v1/queries/find-current-user/find-current-user.http.controller';
 import { V1FindUserByEmailQueryHandler } from '@/application/user/v1/queries/find-user-by-email/find-user-by-email.handler';
 import { V1FindUserByEmailController } from '@/application/user/v1/queries/find-user-by-email/find-user-by-email.http.controller';
@@ -15,11 +17,13 @@ import { V1FindUserByIDController } from '@/application/user/v1/queries/find-use
 const QueryHandlers: Type[] = [
     V1FindUserByEmailQueryHandler,
     V1FindUserByIDQueryHandler,
+    V1FindAllUsersQueryHandler,
 ];
 const QueryControllers: Type[] = [
     V1FindUserByEmailController,
     V1FindCurrentUserController,
     V1FindUserByIDController,
+    V1FindAllUsersController,
 ];
 
 const CommandHandlers: Type[] = [
