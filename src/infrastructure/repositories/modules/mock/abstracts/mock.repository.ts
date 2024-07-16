@@ -49,6 +49,24 @@ export abstract class AbstractMockRepository<EntityType extends Entity<unknown>>
     findAll: () => Promise<EntityType[]> = async () =>
         Promise.resolve(this.data);
 
+    findAllPaginated: (
+        page: number,
+        limit: number,
+    ) => Promise<{
+        entities: EntityType[];
+        totalPages: number;
+        totalItems: number;
+    }> = async (page: number, limit: number) => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+
+        return Promise.resolve({
+            entities: this.data.slice(start, end),
+            totalPages: Math.ceil(this.data.length / limit),
+            totalItems: this.data.length,
+        });
+    };
+
     transaction: <T>(handler: () => Promise<T>) => Promise<T> = async <T>(
         handler: () => Promise<T>,
     ) => {
