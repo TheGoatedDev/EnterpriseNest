@@ -44,6 +44,22 @@ export interface RepositoryPort<EntityType extends Entity<unknown>> {
     findAll: () => Promise<EntityType[]>;
 
     /**
+     * Finds all Entities paginated.
+     * @param page - The page number.
+     * @param limit - The number of items per page.
+     * @returns A promise containing an array of all entities.
+     * @throws Error If the search process fails.
+     */
+    findAllPaginated: (
+        page: number,
+        limit: number,
+    ) => Promise<{
+        entities: EntityType[];
+        totalPages: number;
+        totalItems: number;
+    }>;
+
+    /**
      * Implements a transaction operation.
      * @param handler - The handler for the transaction.
      * @returns A promise containing the transaction result.
