@@ -6,11 +6,11 @@ import {
     Put,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
-import { Roles } from '@/application/authentication/decorator/roles.decorator';
 import { V1UpdateUserResponseDto } from '@/application/user/v1/commands/update-user/dto/update-user.response.dto';
 import { AllStaffRoles } from '@/domain/user/user-role.enum';
+import { ApiOperationWithRoles } from '@/shared/decorator/api-operation-with-roles.decorator';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
 import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
@@ -31,11 +31,14 @@ export class V1UpdateUserController {
         private readonly queryBus: QueryBus,
     ) {}
 
-    @ApiOperation({
-        summary: 'Updates the  for a user',
-        description:
-            'Updates the  for a user, but if you are a "USER" role you can only edit your own user id',
-    })
+    @ApiOperationWithRoles(
+        {
+            summary: 'Updates the for a user',
+            description:
+                'Updates the  for a user, but if you are a "USER" role you can only edit your own user id',
+        },
+        AllStaffRoles,
+    )
     @ApiStandardisedResponse(
         {
             status: 200,
@@ -55,7 +58,6 @@ export class V1UpdateUserController {
         undefined,
     )
     @Put('/user/:id')
-    @Roles(...AllStaffRoles)
     async updateUser(
         @Param('id') id: string,
         @Body() body: V1UpdateUserRequestDto,

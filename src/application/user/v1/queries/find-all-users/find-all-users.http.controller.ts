@@ -1,10 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
-import { Roles } from '@/application/authentication/decorator/roles.decorator';
 import { V1FindAllUsersQueryHandler } from '@/application/user/v1/queries/find-all-users/find-all-users.handler';
 import { AllStaffRoles } from '@/domain/user/user-role.enum';
+import { ApiOperationWithRoles } from '@/shared/decorator/api-operation-with-roles.decorator';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 
 import { V1FindAllUsersResponseDto } from './dto/find-all-users.response.dto';
@@ -16,10 +16,13 @@ import { V1FindAllUsersResponseDto } from './dto/find-all-users.response.dto';
 export class V1FindAllUsersController {
     constructor(private readonly queryBus: QueryBus) {}
 
-    @ApiOperation({
-        summary: 'Find all Users',
-        description: 'Requires the user to be an read admin.',
-    })
+    @ApiOperationWithRoles(
+        {
+            summary: 'Find all Users',
+            description: 'Requires the user to be an read admin.',
+        },
+        AllStaffRoles,
+    )
     @ApiStandardisedResponse(
         {
             status: 200,
@@ -32,7 +35,6 @@ export class V1FindAllUsersController {
         description: 'The User could not be found.',
     })
     @Get('/user')
-    @Roles(...AllStaffRoles)
     async findAllUsers(): Promise<V1FindAllUsersResponseDto> {
         const users = await V1FindAllUsersQueryHandler.runHandler(
             this.queryBus,

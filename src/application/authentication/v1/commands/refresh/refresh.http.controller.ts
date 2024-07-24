@@ -1,12 +1,13 @@
 import { Controller, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '@/application/authentication/decorator/current-user.decorator';
 import { Public } from '@/application/authentication/decorator/public.decorator';
 import { RefreshTokenGuard } from '@/application/authentication/strategies/refresh-token/refresh-token.guard';
 import { V1RefreshTokenCommandHandler } from '@/application/authentication/v1/commands/refresh/refresh.handler';
 import { User } from '@/domain/user/user.entity';
+import { ApiOperationWithRoles } from '@/shared/decorator/api-operation-with-roles.decorator';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 import type { RequestWithUser } from '@/types/express/request-with-user';
 
@@ -19,7 +20,7 @@ import { V1RefreshTokenResponseDto } from './dto/refresh.response.dto';
 export class V1RefreshTokenController {
     constructor(private readonly commandBus: CommandBus) {}
 
-    @ApiOperation({
+    @ApiOperationWithRoles({
         summary:
             'RefreshToken to a User Account and get access and refresh token',
     }) // This is to bypass the AccessTokenGuard
