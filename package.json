@@ -30,7 +30,10 @@
     "------ CI  ------": "",
     "ci": "npm run lint && npm run typecheck && npm run test",
     "------ Docker ------": "",
-    "docker:build": "docker build --platform linux/amd64,linux/arm64 -t enterprise-nest ."
+    "docker:build": "docker build --platform linux/amd64,linux/arm64 -t enterprise-nest .",
+    "docker:run": "docker run -p 3000:3000 enterprise-nest",
+    "------ Template ------": "",
+    "template:update": "./scripts/template-remote.sh"
   },
   "keywords": [],
   "author": "TheGoatedDev",
