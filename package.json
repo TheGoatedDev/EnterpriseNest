@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A Enterprise-Level API Framework based on NestJS, built for scaleability, best-practise and robustness. Based on DDD, Onion, Clean and Hexagonal Architecture.",
   "scripts": {
+    "------ SETUP/HOOKS ------": "",
     "prepare": "husky || true",
     "preinstall": "syncpack fix-mismatches || true",
     "------ DEVELOPMENT  ------": "",
@@ -30,7 +31,10 @@
     "------ CI  ------": "",
     "ci": "npm run lint && npm run typecheck && npm run test",
     "------ Docker ------": "",
-    "docker:build": "docker build --platform linux/amd64,linux/arm64 -t enterprise-nest ."
+    "docker:build": "docker build --platform linux/amd64,linux/arm64 -t enterprise-nest .",
+    "docker:run": "docker run -p 3000:3000 enterprise-nest",
+    "------ Template ------": "",
+    "template:update": "./scripts/template-remote.sh"
   },
   "keywords": [],
   "author": "TheGoatedDev",
