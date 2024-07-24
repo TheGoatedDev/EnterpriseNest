@@ -7,11 +7,12 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '@/application/authentication/decorator/current-user.decorator';
 import { User } from '@/domain/user/user.entity';
 import { UserRoleEnum } from '@/domain/user/user-role.enum';
+import { ApiOperationWithRoles } from '@/shared/decorator/api-operation-with-roles.decorator';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 
 import { V1FindUserByIDQueryHandler } from '../../../../user/v1/queries/find-user-by-id/find-user-by-id.handler';
@@ -31,8 +32,10 @@ export class V1FindAllSessionsByUserController {
 
     constructor(private readonly queryBus: QueryBus) {}
 
-    @ApiOperation({
+    @ApiOperationWithRoles({
         summary: 'Find all Sessions By user',
+        description:
+            "If User's Roles is User, the session must be owned by the User.",
     })
     @ApiStandardisedResponse(
         {

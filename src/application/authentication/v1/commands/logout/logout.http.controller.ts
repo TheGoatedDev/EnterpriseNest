@@ -1,10 +1,11 @@
 import { Controller, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 import { Public } from '@/application/authentication/decorator/public.decorator';
 import { RefreshTokenGuard } from '@/application/authentication/strategies/refresh-token/refresh-token.guard';
 import { V1RevokeSessionCommandHandler } from '@/application/session/v1/commands/revoke-session/revoke-session.handler';
+import { ApiOperationWithRoles } from '@/shared/decorator/api-operation-with-roles.decorator';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 import type { RequestWithUser } from '@/types/express/request-with-user';
 
@@ -15,7 +16,7 @@ import type { RequestWithUser } from '@/types/express/request-with-user';
 export class V1LogoutController {
     constructor(private readonly commandBus: CommandBus) {}
 
-    @ApiOperation({
+    @ApiOperationWithRoles({
         summary: 'Logout a User Account and invalidate the refresh token',
     }) // This is to bypass the AccessTokenGuard
     @ApiSecurity('refresh-token')
