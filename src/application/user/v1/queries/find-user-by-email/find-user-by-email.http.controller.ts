@@ -1,11 +1,11 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
-import { Roles } from '@/application/authentication/decorator/roles.decorator';
 import { V1FindUserByEmailParamDto } from '@/application/user/v1/queries/find-user-by-email/dto/find-user-by-email.param.dto';
 import { V1FindUserByEmailQueryHandler } from '@/application/user/v1/queries/find-user-by-email/find-user-by-email.handler';
 import { AllStaffRoles } from '@/domain/user/user-role.enum';
+import { ApiOperationWithRoles } from '@/shared/decorator/api-operation-with-roles.decorator';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
 
@@ -18,10 +18,13 @@ import { V1FindUserByEmailResponseDto } from './dto/find-user-by-email.response.
 export class V1FindUserByEmailController {
     constructor(private readonly queryBus: QueryBus) {}
 
-    @ApiOperation({
-        summary: 'Find User by Email',
-        description: 'Requires the user to be an read admin.',
-    })
+    @ApiOperationWithRoles(
+        {
+            summary: 'Find User by Email',
+            description: 'Requires the user to be an read admin.',
+        },
+        AllStaffRoles,
+    )
     @ApiStandardisedResponse(
         {
             status: 200,
@@ -34,7 +37,6 @@ export class V1FindUserByEmailController {
         description: 'The User could not be found.',
     })
     @Get('/user/email/:email')
-    @Roles(...AllStaffRoles)
     async findUserById(
         @Param() params: V1FindUserByEmailParamDto,
     ): Promise<V1FindUserByEmailResponseDto> {

@@ -1,10 +1,10 @@
 import { BadRequestException, Controller, Delete, Param } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
-import { Roles } from '@/application/authentication/decorator/roles.decorator';
 import { V1DeleteUserResponseDto } from '@/application/user/v1/commands/delete-user/dto/delete-user.response.dto';
 import { AllStaffRoles } from '@/domain/user/user-role.enum';
+import { ApiOperationWithRoles } from '@/shared/decorator/api-operation-with-roles.decorator';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 import { GenericInternalValidationException } from '@/shared/exceptions/internal-validation.exception';
 import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
@@ -24,11 +24,14 @@ export class V1DeleteUserController {
         private readonly queryBus: QueryBus,
     ) {}
 
-    @ApiOperation({
-        summary: 'Delete a user',
-        description:
-            'Delete the user with the given ID. This action is irreversible.',
-    })
+    @ApiOperationWithRoles(
+        {
+            summary: 'Delete a user',
+            description:
+                'Delete the user with the given ID. This action is irreversible.',
+        },
+        AllStaffRoles,
+    )
     @ApiStandardisedResponse(
         {
             status: 200,
@@ -44,7 +47,6 @@ export class V1DeleteUserController {
         undefined,
     )
     @Delete('/user/:id')
-    @Roles(...AllStaffRoles)
     async deleteUser(
         @Param('id') id: string,
     ): Promise<V1DeleteUserResponseDto> {

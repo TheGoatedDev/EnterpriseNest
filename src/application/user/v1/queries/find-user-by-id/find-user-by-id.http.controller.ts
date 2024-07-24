@@ -1,9 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
-import { Roles } from '@/application/authentication/decorator/roles.decorator';
 import { AllStaffRoles } from '@/domain/user/user-role.enum';
+import { ApiOperationWithRoles } from '@/shared/decorator/api-operation-with-roles.decorator';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 import { GenericNotFoundException } from '@/shared/exceptions/not-found.exception';
 
@@ -18,10 +18,13 @@ import { V1FindUserByIDQuery } from './find-user-by-id.query';
 export class V1FindUserByIDController {
     constructor(private readonly queryBus: QueryBus) {}
 
-    @ApiOperation({
-        summary: 'Find User by ID',
-        description: 'Requires the user to be an read admin.',
-    })
+    @ApiOperationWithRoles(
+        {
+            summary: 'Find User by ID',
+            description: 'Requires the user to be an read admin.',
+        },
+        AllStaffRoles,
+    )
     @ApiStandardisedResponse(
         {
             status: 200,
@@ -34,7 +37,6 @@ export class V1FindUserByIDController {
         description: 'The User could not be found.',
     })
     @Get('/user/:id')
-    @Roles(...AllStaffRoles)
     async findUserById(
         @Param('id') id: string,
     ): Promise<V1FindUserByIDResponseDto> {
