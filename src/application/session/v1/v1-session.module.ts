@@ -3,8 +3,10 @@ import { Module, Type } from '@nestjs/common';
 import { V1CreateSessionCommandHandler } from '@/application/session/v1/commands/create-session/create-session.handler';
 import { V1RevokeSessionCommandHandler } from '@/application/session/v1/commands/revoke-session/revoke-session.handler';
 import { V1RevokeSessionController } from '@/application/session/v1/commands/revoke-session/revoke-session.http.controller';
+import { V1FindAllSessionsByCurrentUserController } from '@/application/session/v1/queries/find-all-sessions-by-current-user/find-all-sessions-by-current-user.http.controller';
 import { V1FindAllSessionsByUserQueryHandler } from '@/application/session/v1/queries/find-all-sessions-by-user/find-all-sessions-by-user.handler';
 import { V1FindAllSessionsByUserController } from '@/application/session/v1/queries/find-all-sessions-by-user/find-all-sessions-by-user.http.controller';
+import { V1FindCurrentSessionController } from '@/application/session/v1/queries/find-current-session/find-current-session.http.controller';
 import { V1FindSessionByTokenQueryHandler } from '@/application/session/v1/queries/find-session-by-token/find-session-by-token.handler';
 import { V1FindSessionByTokenController } from '@/application/session/v1/queries/find-session-by-token/find-session-by-token.http.controller';
 
@@ -21,6 +23,8 @@ const queryHandlers: Type[] = [
 ];
 
 const queryControllers: Type[] = [
+    V1FindCurrentSessionController,
+    V1FindAllSessionsByCurrentUserController,
     V1FindAllSessionsByUserController,
     V1FindSessionByTokenController,
 ];
