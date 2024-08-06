@@ -16,8 +16,7 @@ export const SessionToken = () =>
     applyDecorators(
         ApiProperty({
             description: 'The token of the session',
-            example:
-                "export type CreateSessionProps = Omit<SessionProps, 'token' | 'isRevoked'>;",
+            example: 'jokemgtxc2pb7flis7v6ln8l',
             type: String,
             required: true,
         }),

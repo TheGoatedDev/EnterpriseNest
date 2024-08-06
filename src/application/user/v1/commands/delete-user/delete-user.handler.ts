@@ -13,10 +13,7 @@ type V1DeleteUserCommandHandlerResponse = User;
 @CommandHandler(V1DeleteUserCommand)
 export class V1DeleteUserCommandHandler
     implements
-        ICommandHandler<
-            V1DeleteUserCommand,
-            V1DeleteUserCommandHandlerResponse
-        >
+        ICommandHandler<V1DeleteUserCommand, V1DeleteUserCommandHandlerResponse>
 {
     private readonly logger = new Logger(V1DeleteUserCommandHandler.name);
 

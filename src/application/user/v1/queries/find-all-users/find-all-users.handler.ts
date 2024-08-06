@@ -34,7 +34,7 @@ export class V1FindAllUsersQueryHandler
     execute(
         query: V1FindAllUsersQuery,
     ): Promise<V1FindAllUsersQueryHandlerResponse> {
-        this.logger.log(`Finding all users`);
+        this.logger.log('Finding all users');
 
         return this.userRepository.findAll();
     }

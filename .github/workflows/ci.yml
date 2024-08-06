@@ -1,63 +1,60 @@
 name: CI
 
 on:
-  pull_request:
-    branches: [ develop, main ]
+    pull_request:
+        branches: [develop, main]
 
 jobs:
-  ci:
-    runs-on: ubuntu-latest
-    outputs:
-      store-path: ${{ steps.store-path.outputs.path }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    ci:
+        runs-on: ubuntu-latest
+        outputs:
+            store-path: ${{ steps.store-path.outputs.path }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: false
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 9
+                  run_install: false
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: 'pnpm'
 
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+            - name: Get pnpm store directory
+              shell: bash
+              run: |
+                  echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            - uses: actions/cache@v4
+              name: Setup pnpm cache
+              with:
+                  path: ${{ env.STORE_PATH }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-store-
 
-      - name: Install dependencies
-        run: pnpm install
+            - name: Install dependencies
+              run: pnpm install
 
-      - name: Run typecheck
-        run: pnpm typecheck
+            - name: Run typecheck
+              run: pnpm typecheck
 
-      - name: Run linting
-        run: pnpm lint
+            - name: Run linting
+              run: pnpm lint
 
-      - name: Run formatting check
-        run: pnpm format:check
+            - name: Run tests
+              run: pnpm test
+              env:
+                  JWT_SECRET: 'TESTING'
+                  TOKEN_ACCESS_SECRET: 'TESTING'
+                  TOKEN_REFRESH_SECRET: 'TESTING'
+                  TOKEN_VERIFICATION_SECRET: 'TESTING'
+                  TOKEN_RESET_PASSWORD_SECRET: 'TESTING'
 
-      - name: Run tests
-        run: pnpm test
-        env:
-          JWT_SECRET: "TESTING"
-          TOKEN_ACCESS_SECRET: "TESTING"
-          TOKEN_REFRESH_SECRET: "TESTING"
-          TOKEN_VERIFICATION_SECRET: "TESTING"
-          TOKEN_RESET_PASSWORD_SECRET: "TESTING"
-
-      - name: Run dry build
-        run: pnpm build
+            - name: Run dry build
+              run: pnpm build

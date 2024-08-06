@@ -19,7 +19,6 @@ export class V1RevokeSessionCommandHandler
         >
 {
     private readonly logger = new Logger(V1RevokeSessionCommandHandler.name);
-
     constructor(
         @Inject(SESSION_REPOSITORY)
         private readonly sessionRepository: SessionRepositoryPort,

@@ -19,10 +19,7 @@ type V1CreateUserCommandHandlerResponse = User;
 @CommandHandler(V1CreateUserCommand)
 export class V1CreateUserCommandHandler
     implements
-        ICommandHandler<
-            V1CreateUserCommand,
-            V1CreateUserCommandHandlerResponse
-        >
+        ICommandHandler<V1CreateUserCommand, V1CreateUserCommandHandlerResponse>
 {
     private readonly logger = new Logger(V1CreateUserCommandHandler.name);
 

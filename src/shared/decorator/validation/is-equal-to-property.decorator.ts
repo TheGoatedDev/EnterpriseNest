@@ -1,7 +1,7 @@
 import {
-    registerDecorator,
     ValidationArguments,
     ValidationOptions,
+    registerDecorator,
 } from 'class-validator';
 
 /* eslint-disable -- This is just annoying to type */
@@ -19,6 +19,7 @@ export function IsEqualToProperty(
             constraints: [property],
             options: validationOptions,
             validator: {
+                // biome-ignore lint/suspicious/noExplicitAny: Required by class-validator
                 validate(value: any, args: ValidationArguments) {
                     const [relatedPropertyName] = args.constraints;
 
