@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 
 import { Injectable } from '@nestjs/common';
-import { argon2id, argon2Verify } from 'hash-wasm';
+import { argon2Verify, argon2id } from 'hash-wasm';
 
 @Injectable()
 export class HashingService {

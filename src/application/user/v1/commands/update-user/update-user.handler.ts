@@ -13,10 +13,7 @@ type V1UpdateUserCommandHandlerResponse = User;
 @CommandHandler(V1UpdateUserCommand)
 export class V1UpdateUserCommandHandler
     implements
-        ICommandHandler<
-            V1UpdateUserCommand,
-            V1UpdateUserCommandHandlerResponse
-        >
+        ICommandHandler<V1UpdateUserCommand, V1UpdateUserCommandHandlerResponse>
 {
     private readonly logger = new Logger(V1UpdateUserCommandHandler.name);
 
