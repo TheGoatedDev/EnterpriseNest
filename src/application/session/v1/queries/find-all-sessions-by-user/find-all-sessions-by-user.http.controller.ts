@@ -10,8 +10,8 @@ import { QueryBus } from '@nestjs/cqrs';
 import { ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '@/application/authentication/decorator/current-user.decorator';
-import { User } from '@/domain/user/user.entity';
 import { UserRoleEnum } from '@/domain/user/user-role.enum';
+import { User } from '@/domain/user/user.entity';
 import { ApiOperationWithRoles } from '@/shared/decorator/api-operation-with-roles.decorator';
 import { ApiStandardisedResponse } from '@/shared/decorator/api-standardised-response.decorator';
 
@@ -57,7 +57,7 @@ export class V1FindAllSessionsByUserController {
         });
 
         if (!foundUser) {
-            this.logger.error(`User Not Found`);
+            this.logger.error('User Not Found');
             throw new NotFoundException('User Not Found');
         }
 

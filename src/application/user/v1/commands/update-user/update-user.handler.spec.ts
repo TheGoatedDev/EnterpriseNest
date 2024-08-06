@@ -3,8 +3,8 @@ import { JwtModule } from '@nestjs/jwt';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 
-import { CreateUserProps, User } from '@/domain/user/user.entity';
 import { UserRoleEnum } from '@/domain/user/user-role.enum';
+import { CreateUserProps, User } from '@/domain/user/user.entity';
 import { USER_REPOSITORY } from '@/infrastructure/repositories/modules/user/user.repository.constants';
 import { UserRepositoryPort } from '@/infrastructure/repositories/modules/user/user.repository.port';
 import { MockRepositoriesModule } from '@/infrastructure/repositories/presets/mock-repositories.module';

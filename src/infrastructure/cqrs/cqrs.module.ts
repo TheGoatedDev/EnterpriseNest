@@ -1,7 +1,7 @@
 import { Logger, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import {
-    CommandBus,
     CqrsModule as BaseCqrsModule,
+    CommandBus,
     EventBus,
     QueryBus,
 } from '@nestjs/cqrs';

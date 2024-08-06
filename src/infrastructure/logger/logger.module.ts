@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { context, Span, trace } from '@opentelemetry/api';
+import { Span, context, trace } from '@opentelemetry/api';
 import { LoggerModule as BaseLoggerModule } from 'nestjs-pino';
 import PinoPretty from 'pino-pretty';
 

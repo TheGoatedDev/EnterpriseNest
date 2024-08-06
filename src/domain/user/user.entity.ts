@@ -9,6 +9,7 @@ import { OnUserChangedLastNameEvent } from '@/domain/user/events/on-user-changed
 import { OnUserChangedPasswordEvent } from '@/domain/user/events/on-user-changed-password.event';
 import { OnUserChangedRoleEvent } from '@/domain/user/events/on-user-changed-role.event';
 import { OnUserChangedVerifiedAtEvent } from '@/domain/user/events/on-user-changed-verified-at.event';
+import { AllStaffRoles, UserRoleEnum } from '@/domain/user/user-role.enum';
 import {
     UserEmail,
     UserEmailDto,
@@ -23,7 +24,6 @@ import {
     UserVerifiedAt,
     UserVerifiedAtDto,
 } from '@/domain/user/user.dto';
-import { AllStaffRoles, UserRoleEnum } from '@/domain/user/user-role.enum';
 
 export class UserData extends IntersectionType(
     UserFirstNameDto,

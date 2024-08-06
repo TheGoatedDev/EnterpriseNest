@@ -1,6 +1,6 @@
 import {
-    CacheModule as NestCacheModule,
     CacheOptions,
+    CacheModule as NestCacheModule,
 } from '@nestjs/cache-manager';
 import { Global, Logger, Module } from '@nestjs/common';
 import * as redisStore from 'cache-manager-redis-yet';

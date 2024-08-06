@@ -1,4 +1,4 @@
-import { applyDecorators, Type } from '@nestjs/common';
+import { Type, applyDecorators } from '@nestjs/common';
 import {
     ApiExtraModels,
     ApiResponse,

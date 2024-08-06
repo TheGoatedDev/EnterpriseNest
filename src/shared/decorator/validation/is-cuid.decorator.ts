@@ -1,11 +1,9 @@
 import { isCuid } from '@paralleldrive/cuid2';
 import {
-    registerDecorator,
     ValidationArguments,
     ValidationOptions,
+    registerDecorator,
 } from 'class-validator';
-
-/* eslint-disable -- This is just annoying to type */
 
 export function IsCuid(validationOptions?: ValidationOptions) {
     return function _(object: object, propertyName: string) {
@@ -15,6 +13,7 @@ export function IsCuid(validationOptions?: ValidationOptions) {
             propertyName,
             options: validationOptions,
             validator: {
+                // biome-ignore lint/suspicious/noExplicitAny: Required by class-validator
                 validate(value: any, args: ValidationArguments) {
                     return isCuid(value);
                 },

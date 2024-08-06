@@ -1,4 +1,4 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, createParamDecorator } from '@nestjs/common';
 
 import { CurrentUserFactory } from '@/application/authentication/decorator/current-user.decorator';
 import { RequestWithUser } from '@/types/express/request-with-user';
