@@ -68,6 +68,9 @@ dependencies:
   axios:
     specifier: 1.7.2
     version: 1.7.2
+  bluebird:
+    specifier: ^3.7.2
+    version: 3.7.2
   cache-manager-redis-yet:
     specifier: 5.1.2
     version: 5.1.2
@@ -148,6 +151,9 @@ devDependencies:
   '@swc/jest':
     specifier: 0.2.36
     version: 0.2.36(@swc/core@1.7.6)
+  '@types/bluebird':
+    specifier: ^3.5.42
+    version: 3.5.42
   '@types/compression':
     specifier: 1.7.5
     version: 1.7.5
@@ -2909,6 +2915,10 @@ packages:
       '@babel/types': 7.25.2
     dev: true
 
+  /@types/bluebird@3.5.42:
+    resolution: {integrity: sha512-Jhy+MWRlro6UjVi578V/4ZGNfeCOcNCp0YaFNIUGFKlImowqwb1O/22wDVk3FDGMLqxdpOV3qQHD5fPEH4hK6A==}
+    dev: true
+
   /@types/body-parser@1.19.5:
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
     dependencies:
@@ -3426,6 +3436,10 @@ packages:
       inherits: 2.0.4
       readable-stream: 3.6.2
     dev: true
+
+  /bluebird@3.7.2:
+    resolution: {integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==}
+    dev: false
 
   /body-parser@1.20.2:
     resolution: {integrity: sha512-ml9pReCu3M61kGlqoTm2umSXTlRTuGTx0bfYj+uIUKKYycG5NtSbeetV3faSU6R7ajOPw0g/J1PvK4qNy7s5bA==}

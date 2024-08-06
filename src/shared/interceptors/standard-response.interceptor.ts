@@ -14,18 +14,13 @@ import { NonStandardResponseKey } from '@/shared/decorator/non-standard-response
 import { StandardHttpResponseDto } from '@/shared/dto/standard-http-response.dto';
 
 @Injectable()
-export class StandardHttpResponseInterceptor<T> implements NestInterceptor {
+export class StandardResponseInterceptor<T> implements NestInterceptor {
     constructor(private readonly reflector: Reflector) {}
 
     intercept(
         context: ExecutionContext,
         next: CallHandler,
     ): Observable<unknown> {
-        // Check that the context type is http
-        if (context.getType() !== 'http') {
-            return next.handle();
-        }
-
         const shouldSkip = this.reflector.getAllAndOverride<boolean>(
             NonStandardResponseKey,
             [context.getHandler(), context.getClass()],
