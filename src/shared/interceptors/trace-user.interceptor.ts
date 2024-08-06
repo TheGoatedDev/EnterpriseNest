@@ -18,9 +18,13 @@ export class TraceUserInterceptor implements NestInterceptor {
         context: ExecutionContext,
         next: CallHandler,
     ): Observable<unknown> {
-        const httpContext = context.switchToHttp();
-        const request = httpContext.getRequest<RequestWithUser>();
-        const user = request.user as User | undefined;
+        let user: User | undefined = undefined;
+
+        if (context.getType() === 'http') {
+            const httpContext = context.switchToHttp();
+            const request = httpContext.getRequest<RequestWithUser>();
+            user = request.user;
+        }
 
         if (user) {
             const span = this.traceService.getSpan();
