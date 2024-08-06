@@ -1,8 +1,9 @@
 import 'reflect-metadata';
+global.Promise = require('bluebird');
 
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import compression from 'compression';
 import helmet from 'helmet';
@@ -79,7 +80,7 @@ const bootstrap = async () => {
             );
         })
         .catch((error: unknown) => {
-            logger.error(error);
+            console.error(error);
 
             process.exit(1);
         });

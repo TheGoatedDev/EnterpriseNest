@@ -20,7 +20,7 @@ import { RepositoriesModule } from '@/infrastructure/repositories/repositories.m
 import { ThrottlerModule } from '@/infrastructure/throttler/throttler.module';
 import { TokenModule } from '@/infrastructure/token/token.module';
 import { RolesClassSerializerInterceptor } from '@/shared/interceptors/role-class-serializer.interceptor';
-import { StandardHttpResponseInterceptor } from '@/shared/interceptors/standard-http-response.interceptor';
+import { StandardResponseInterceptor } from '@/shared/interceptors/standard-response.interceptor';
 import { TraceUserInterceptor } from '@/shared/interceptors/trace-user.interceptor';
 
 @Module({
@@ -64,10 +64,6 @@ import { TraceUserInterceptor } from '@/shared/interceptors/trace-user.intercept
 
         {
             provide: APP_INTERCEPTOR,
-            useClass: StandardHttpResponseInterceptor,
-        },
-        {
-            provide: APP_INTERCEPTOR,
             useClass: TraceUserInterceptor,
         },
         {
@@ -78,6 +74,10 @@ import { TraceUserInterceptor } from '@/shared/interceptors/trace-user.intercept
                     enableImplicitConversion: true,
                     excludeExtraneousValues: true,
                 }),
+        },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: StandardResponseInterceptor,
         },
     ],
 })
