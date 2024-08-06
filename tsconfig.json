@@ -1,33 +1,30 @@
 {
-  "compilerOptions": {
-    "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "lib": ["ESNext"],
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "moduleResolution": "Bundler",
-    "noUncheckedIndexedAccess": true,
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "ES2022",
-    "outDir": "dist",
-    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@tests/*": ["./tests/*"],
-    },
-    "typeRoots": ["./src/types/**/*","node_modules/@types"],
-  },
-  "include": ["src",
-    "tests",
-    "generators"
-  ],
-  "exclude": ["node_modules", "dist", "coverage"]
+	"compilerOptions": {
+		"declaration": true,
+		"declarationMap": true,
+		"esModuleInterop": true,
+		"incremental": true,
+		"isolatedModules": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"lib": ["ESNext"],
+		"module": "ESNext",
+		"moduleDetection": "force",
+		"moduleResolution": "Bundler",
+		"noUncheckedIndexedAccess": true,
+		"allowJs": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"target": "ES2022",
+		"outDir": "dist",
+		"tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+		"paths": {
+			"@/*": ["./src/*"],
+			"@tests/*": ["./tests/*"]
+		},
+		"typeRoots": ["./src/types/**/*", "node_modules/@types"]
+	},
+	"include": ["src/**/*", "tests/**/*", "generators/**/*"],
+	"exclude": ["node_modules", "dist", "coverage"]
 }
