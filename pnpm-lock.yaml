@@ -137,7 +137,7 @@ devDependencies:
     specifier: 8.4.1
     version: 8.4.1
   '@golevelup/ts-jest':
-    specifier: ^0.5.0
+    specifier: 0.5.0
     version: 0.5.0
   '@nestjs/jwt':
     specifier: 10.2.0
