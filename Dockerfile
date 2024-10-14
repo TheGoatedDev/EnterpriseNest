@@ -1,33 +1,27 @@
 # Base Stage
-FROM node:20-alpine as base
+FROM oven/bun:1.1.30-alpine as base
 WORKDIR /app
 COPY . .
 ENV HUSKY=0
 
 # Dev Dependencies Stage
 FROM base as dev-deps
-RUN npm install -g pnpm
-RUN pnpm install --dev
+RUN bun install
 
 # Prod Dependencies Stage
 FROM base as prod-deps
-RUN npm install -g pnpm
-RUN pnpm install --prod
+RUN bun install --frozen-lockfile --production
 
 # Build Stage
 FROM dev-deps as build
-RUN pnpm install
-RUN pnpm run build
+RUN bun run build
 
 # Runner Stage
 FROM base as runner
 
-RUN apk add --no-cache curl
+COPY --from=build --chown=bun:bun /app/dist ./dist
+COPY --from=prod-deps --chown=bun:bun /app/node_modules ./node_modules
+USER bun
 
-COPY --from=build /app/dist ./dist
-COPY --from=prod-deps /app/node_modules ./node_modules
-USER node
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:3000/v1/ping || exit 1
-
-CMD ["node", "dist/index.js"]
+CMD ["bun", "dist/index.js"]
